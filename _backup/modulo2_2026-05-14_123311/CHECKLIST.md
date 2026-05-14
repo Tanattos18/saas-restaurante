@@ -25,16 +25,16 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 2.1 | `lib/jwt.ts` — signAccessToken, signRefreshToken, verifyToken (jose) | 🟢 |
-| 2.2 | `lib/auth.ts` — getTokenFromRequest, getAuthContext | 🟢 |
-| 2.3 | `middleware.ts` — valida JWT, injeta headers, RBAC por rota | 🟢 |
-| 2.4 | `app/api/auth/login/route.ts` — POST login com Zod + bcrypt | 🟢 |
-| 2.5 | `app/api/auth/register/route.ts` — POST registro com transaction | 🟢 |
-| 2.6 | `app/api/auth/refresh/route.ts` — POST refresh token | 🟢 |
-| 2.7 | `app/api/auth/logout/route.ts` — POST limpa cookies | 🟢 |
-| 2.8 | `app/api/auth/me/route.ts` — GET dados do usuário logado | 🟢 |
-| 2.9 | `lib/validations/auth.schema.ts` — schemas login e register | 🟢 |
-| 2.10 | Páginas: login, register, forgot-password | 🟢 |
+| 2.1 | `lib/jwt.ts` — signAccessToken, signRefreshToken, verifyToken (jose) | 🔴 |
+| 2.2 | `lib/auth.ts` — getTokenFromRequest, getAuthContext | 🔴 |
+| 2.3 | `middleware.ts` — valida JWT, injeta headers, RBAC por rota | 🔴 |
+| 2.4 | `app/api/auth/login/route.ts` — POST login com Zod + bcrypt | 🔴 |
+| 2.5 | `app/api/auth/register/route.ts` — POST registro com transaction | 🔴 |
+| 2.6 | `app/api/auth/refresh/route.ts` — POST refresh token | 🔴 |
+| 2.7 | `app/api/auth/logout/route.ts` — POST limpa cookies | 🔴 |
+| 2.8 | `app/api/auth/me/route.ts` — GET dados do usuário logado | 🔴 |
+| 2.9 | `lib/validations/auth.schema.ts` — schemas login e register | 🔴 |
+| 2.10 | Páginas: login, register, forgot-password | 🔴 |
 
 ---
 
@@ -167,7 +167,7 @@
 | Fase | Total Itens | Concluídos | Progresso |
 |------|-------------|------------|-----------|
 | Módulo 1 — Base | 10 | 8 | 80% |
-| Módulo 2 — Auth | 10 | 10 | 100% |
+| Módulo 2 — Auth | 10 | 0 | 0% |
 | Módulo 3 — Cardápio | 10 | 0 | 0% |
 | Módulo 4 — WhatsApp | 7 | 0 | 0% |
 | Módulo 5 — KDS | 9 | 0 | 0% |
@@ -176,7 +176,7 @@
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **18** | **20%** |
+| **Total** | **88** | **8** | **9%** |
 
 ---
 *Última atualização: 14/05/2026*
