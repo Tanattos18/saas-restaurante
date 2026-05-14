@@ -82,6 +82,8 @@
 | 5.7 | `components/platform/kds/OrderTicket.tsx` — card do pedido | 🟢 |
 | 5.8 | `components/platform/kds/KitchenTimer.tsx` — timer colorido | 🟢 |
 | 5.9 | Página KDS fullscreen + registro de dispositivo | 🟢 |
+| 5.10 | `lib/sounds.ts` — som de notificação via Web Audio API | 🟢 |
+| 5.11 | Som ao chegar novo pedido no KitchenBoard | 🟢 |
 
 ---
 
@@ -170,7 +172,7 @@
 | Módulo 2 — Auth | 10 | 10 | 100% |
 | Módulo 3 — Cardápio | 10 | 9 | 90% |
 | Módulo 4 — WhatsApp | 7 | 7 | 100% |
-| Módulo 5 — KDS | 9 | 9 | 100% |
+| Módulo 5 — KDS | 11 | 11 | 100% |
 | Módulo 6 — QR Code | 9 | 9 | 100% |
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
@@ -184,9 +186,8 @@
 | P2 | Integrar fidelidade com bot (earnPoints ao finalizar pedido) | 9 | Média |
 | P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
 | P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
-| P5 | Som de notificação no KDS (Web Audio API) | 5 | Baixa |
 
-| **Total** | **93** | **83** | **89%** |
+| **Total** | **95** | **85** | **89%** |
 
 ---
 *Última atualização: 14/05/2026*

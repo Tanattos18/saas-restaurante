@@ -36,8 +36,13 @@ Implementar o sistema de tela de cozinha com atualizações em tempo real via Po
 ### api/kds/devices/route.ts
 - POST: registra novo dispositivo KDS
 
+### lib/sounds.ts
+- Utilitário de som usando Web Audio API (sem arquivos externos)
+- `playNotificationSound()`: toca um timbre de dois tons ao chegar novo pedido
+- Sem dependências — usa `AudioContext` nativo do navegador
+
 ### Componentes
-- KitchenBoard: 3 colunas (Pendentes | Em Preparo | Prontos) com SSE
+- KitchenBoard: 3 colunas (Pendentes | Em Preparo | Prontos) com SSE + detecção de novos pedidos + som
 - OrderTicket: card com número, canal, itens, observações, timer, botão de ação
 - KitchenTimer: contador colorido (verde <15min, amarelo 15-25min, vermelho >25min)
 

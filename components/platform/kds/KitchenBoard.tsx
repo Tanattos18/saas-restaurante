@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { OrderTicket } from './OrderTicket'
+import { playNotificationSound } from '@/lib/sounds'
 
 interface OrderItem {
   quantity: number
@@ -48,6 +49,7 @@ export function KitchenBoard({ deviceCode }: Props) {
 
   useEffect(() => {
     const eventSource = new EventSource(`/api/kds/stream?deviceCode=${deviceCode}`)
+    const knownIds = new Set<string>()
 
     eventSource.onopen = () => setConnected(true)
     eventSource.onerror = () => setConnected(false)
@@ -55,8 +57,18 @@ export function KitchenBoard({ deviceCode }: Props) {
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        if (data.type === 'INIT' || data.type === 'UPDATE') {
+        if (data.type === 'INIT') {
+          data.orders.forEach((o: Order) => knownIds.add(o.id))
           setOrders(data.orders)
+        }
+        if (data.type === 'UPDATE') {
+          const incoming = data.orders as Order[]
+          const hasNew = incoming.some((o: Order) => !knownIds.has(o.id))
+          if (hasNew) {
+            playNotificationSound()
+          }
+          incoming.forEach((o: Order) => knownIds.add(o.id))
+          setOrders(incoming)
         }
       } catch {
         // ignore parse errors
