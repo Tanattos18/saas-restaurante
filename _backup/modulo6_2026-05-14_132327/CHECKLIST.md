@@ -89,15 +89,15 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 6.1 | `services/qr-code.service.ts` — geração de QR Codes | 🟢 |
-| 6.2 | `app/api/qr-code/tables/route.ts` — GET QR Codes | 🟢 |
-| 6.3 | `app/(public)/menu/[tenantSlug]/page.tsx` — cardápio público mobile-first | 🟢 |
-| 6.4 | `app/(public)/table/[tenantSlug]/[tableNumber]/page.tsx` — pedido na mesa | 🟢 |
-| 6.5 | `components/public/MenuViewer.tsx` — visualizador cardápio | 🟢 |
-| 6.6 | `components/public/ProductCard.tsx` — card de produto público | 🟢 |
-| 6.7 | `components/public/Cart.tsx` — carrinho de compras | 🟢 |
-| 6.8 | `components/public/Checkout.tsx` — checkout público | 🟢 |
-| 6.9 | Página de gestão de QR Codes no painel | 🟢 |
+| 6.1 | `services/qr-code.service.ts` — geração de QR Codes | 🔴 |
+| 6.2 | `app/api/qr-code/tables/route.ts` — GET QR Codes + PDF | 🔴 |
+| 6.3 | `app/(public)/menu/[tenantSlug]/page.tsx` — cardápio público mobile-first | 🔴 |
+| 6.4 | `app/(public)/table/[tenantSlug]/[tableNumber]/page.tsx` — pedido na mesa | 🔴 |
+| 6.5 | `components/public/MenuViewer.tsx` — visualizador cardápio | 🔴 |
+| 6.6 | `components/public/ProductCard.tsx` — card de produto público | 🔴 |
+| 6.7 | `components/public/Cart.tsx` — carrinho de compras | 🔴 |
+| 6.8 | `components/public/Checkout.tsx` — checkout público | 🔴 |
+| 6.9 | Página de gestão de QR Codes no painel | 🔴 |
 
 ---
 
@@ -171,12 +171,12 @@
 | Módulo 3 — Cardápio | 10 | 9 | 90% |
 | Módulo 4 — WhatsApp | 7 | 7 | 100% |
 | Módulo 5 — KDS | 9 | 9 | 100% |
-| Módulo 6 — QR Code | 9 | 9 | 100% |
+| Módulo 6 — QR Code | 9 | 0 | 0% |
 | Módulo 7 — Dashboard | 11 | 0 | 0% |
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **52** | **59%** |
+| **Total** | **88** | **43** | **49%** |
 
 ---
 *Última atualização: 14/05/2026*
