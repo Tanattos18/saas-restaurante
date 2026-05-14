@@ -123,14 +123,14 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 8.1 | `lib/stripe.ts` — instância Stripe + PLANS config | 🔴 |
-| 8.2 | `services/stripe.service.ts` — customer, subscription, webhook handler | 🔴 |
-| 8.3 | `app/api/webhooks/stripe/route.ts` — webhook Stripe | 🔴 |
-| 8.4 | `app/api/payment/stripe/create-checkout/route.ts` | 🔴 |
-| 8.5 | `app/api/payment/stripe/portal/route.ts` | 🔴 |
-| 8.6 | `app/api/payment/pix/create/route.ts` — geração PIX | 🔴 |
-| 8.7 | Página de assinatura (plano atual, upgrade, downgrade) | 🔴 |
-| 8.8 | Middleware de plano (FREE > 50 pedidos → 402) | 🔴 |
+| 8.1 | `lib/stripe.ts` — instância Stripe + PLANS config | 🟢 |
+| 8.2 | `services/stripe.service.ts` — customer, subscription, webhook handler | 🟢 |
+| 8.3 | `app/api/webhooks/stripe/route.ts` — webhook Stripe | 🟢 |
+| 8.4 | `app/api/payment/stripe/create-checkout/route.ts` | 🟢 |
+| 8.5 | `app/api/payment/stripe/portal/route.ts` | 🟢 |
+| 8.6 | `app/api/payment/pix/create/route.ts` — geração PIX | 🟢 |
+| 8.7 | Página de assinatura (plano atual, upgrade, downgrade) | 🟢 |
+| 8.8 | Middleware de plano (plan no JWT + header + limite orders) | 🟢 |
 
 ---
 
@@ -173,10 +173,10 @@
 | Módulo 5 — KDS | 9 | 9 | 100% |
 | Módulo 6 — QR Code | 9 | 9 | 100% |
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
-| Módulo 8 — Stripe | 8 | 0 | 0% |
+| Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **63** | **72%** |
+| **Total** | **88** | **71** | **81%** |
 
 ---
 *Última atualização: 14/05/2026*
