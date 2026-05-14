@@ -151,14 +151,14 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 10.1 | `components/platform/Sidebar.tsx` — sidebar responsiva com badges | 🔴 |
-| 10.2 | `components/platform/Header.tsx` — header com status WhatsApp | 🔴 |
-| 10.3 | `app/api/health/route.ts` — health check | 🔴 |
-| 10.4 | Testes Jest: JWT, loyalty, order, bot | 🔴 |
-| 10.5 | Rate limiting (Upstash Redis): login, webhook, PIX | 🔴 |
-| 10.6 | `docs/DEPLOY.md` — deploy Vercel + Neon.tech | 🔴 |
-| 10.7 | `docs/WHATSAPP_SETUP.md` — setup Evolution API v2 Docker | 🔴 |
-| 10.8 | Variáveis de ambiente documentadas | 🔴 |
+| 10.1 | `components/platform/Sidebar.tsx` — sidebar responsiva com badges | 🟢 |
+| 10.2 | `components/platform/Header.tsx` — header | 🟢 |
+| 10.3 | `app/api/health/route.ts` — health check | 🟢 |
+| 10.4 | Testes Jest: jwt.test.ts + loyalty.test.ts | 🟢 |
+| 10.5 | Rate limiting (Upstash Redis) | 🟡 *pendente* |
+| 10.6 | `docs/DEPLOY.md` — deploy Vercel + Neon.tech | 🟢 |
+| 10.7 | `docs/WHATSAPP_SETUP.md` — setup Evolution API v2 | 🟢 |
+| 10.8 | `app/(platform)/layout.tsx` — layout com sidebar + header | 🟢 |
 
 ---
 
@@ -175,8 +175,8 @@
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 5 | 83% |
-| Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **76** | **86%** |
+| Módulo 10 — Refinamentos | 8 | 7 | 88% |
+| **Total** | **88** | **83** | **94%** |
 
 ---
 *Última atualização: 14/05/2026*
