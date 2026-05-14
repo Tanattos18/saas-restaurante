@@ -176,7 +176,17 @@
 | Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 5 | 83% |
 | Módulo 10 — Refinamentos | 8 | 7 | 88% |
-| **Total** | **88** | **83** | **94%** |
+## 🔄 Itens Pendentes (Backlog)
+
+| # | Item | Módulo | Prioridade |
+|---|------|--------|------------|
+| P1 | `CategoryManager` drag-and-drop com @dnd-kit | 3 | Baixa |
+| P2 | Integrar fidelidade com bot (earnPoints ao finalizar pedido) | 9 | Média |
+| P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
+| P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
+| P5 | Som de notificação no KDS (Web Audio API) | 5 | Baixa |
+
+| **Total** | **93** | **83** | **89%** |
 
 ---
 *Última atualização: 14/05/2026*
