@@ -36,5 +36,8 @@ next-env.d.ts
 # prisma
 prisma/migrations/
 
+# serwist (generated service worker)
+public/sw.js
+
 # backups
 _backup/

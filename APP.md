@@ -339,19 +339,23 @@ v1.2.3
 
 ## 💡 Recomendação Final
 
-### Para começar (fase 1 — imediato)
+### ✅ Fase 1 — PWA (Concluída em 14/05/2026)
 
-**Usar PWA (Progressive Web App):** o Next.js já suporta PWA com um `next-pwa` ou `@serwist/next`. O usuário pode "instalar" o site como um aplicativo no navegador:
+**Implementado com `@serwist/next`:**
 
 ```bash
-npm install @serwist/next
+npm install @serwist/next serwist
 ```
 
-Vantagens:
-- Zero esforço de desenvolvimento
-- Funciona offline parcial (Service Worker)
-- Pode ser "instalado" no celular/desktop
-- Atualiza automaticamente
+O que foi criado:
+- `app/sw.ts` — Service worker com cache offline
+- `public/manifest.json` — Manifest PWA com ícones SVG
+- `public/icons/icon-192.svg` e `icon-512.svg` — Ícones
+- `app/layout.tsx` — Metadados PWA (apple-web-app, theme-color, manifest)
+
+O usuário pode "instalar" o site como aplicativo no navegador (Chrome, Edge, Safari).
+Funciona offline parcial (Service Worker).
+Atualiza automaticamente (sempre a versão mais recente do Next.js).
 
 ### Para produção (fase 2 — médio prazo)
 
@@ -415,3 +419,4 @@ saas-restaurante-app/              # Novo repositório
 > **Documento criado em:** 14/05/2026
 > **Versão do projeto:** v1.0
 > **Autor:** SaaS Restaurante Team
+> **Status PWA:** ✅ Implementado (14/05/2026) — `@serwist/next` + service worker + manifest

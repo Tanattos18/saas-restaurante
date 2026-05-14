@@ -161,6 +161,10 @@
 | 10.6 | `docs/DEPLOY.md` — deploy Vercel + Neon.tech | 🟢 |
 | 10.7 | `docs/WHATSAPP_SETUP.md` — setup Evolution API v2 | 🟢 |
 | 10.8 | `app/(platform)/layout.tsx` — layout com sidebar + header | 🟢 |
+| 10.9 | PWA (Progressive Web App) com @serwist/next | 🟢 |
+| 10.10 | Service worker com cache offline | 🟢 |
+| 10.11 | Manifest.json + ícones SVG | 🟢 |
+| 10.12 | Metadados apple-web-app e theme-color | 🟢 |
 
 ---
 
@@ -177,7 +181,7 @@
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 5 | 83% |
-| Módulo 10 — Refinamentos | 8 | 7 | 88% |
+| Módulo 10 — Refinamentos | 12 | 11 | 92% |
 ## 🔄 Itens Pendentes (Backlog)
 
 | # | Item | Módulo | Prioridade |
@@ -187,7 +191,7 @@
 | P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
 | P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
 
-| **Total** | **95** | **85** | **89%** |
+| **Total** | **99** | **89** | **90%** |
 
 ---
 *Última atualização: 14/05/2026*
