@@ -105,17 +105,17 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 7.1 | `services/analytics.service.ts` — métricas e gráficos | 🟢 |
-| 7.2 | `services/order.service.ts` — CRUD com orderNumber sequencial | 🟢 |
-| 7.3 | Página dashboard com cards + gráficos (Recharts) | 🟢 |
-| 7.4 | `components/platform/dashboard/StatsCards.tsx` | 🟢 |
-| 7.5 | `components/platform/dashboard/RecentOrders.tsx` | 🟢 |
-| 7.6 | `components/platform/dashboard/SalesChart.tsx` | 🟢 |
-| 7.7 | Página de pedidos (kanban) com filtros | 🟢 |
-| 7.8 | `components/platform/orders/OrderKanban.tsx` | 🟢 |
-| 7.9 | `components/platform/orders/OrderCard.tsx` | 🟢 |
-| 7.10 | `components/platform/orders/OrderDetails.tsx` | 🟢 |
-| 7.11 | Página de detalhe do pedido com timeline | 🟢 |
+| 7.1 | `services/analytics.service.ts` — métricas e gráficos | 🔴 |
+| 7.2 | `services/order.service.ts` — CRUD com orderNumber sequencial | 🔴 |
+| 7.3 | Página dashboard com cards + gráficos (Recharts) | 🔴 |
+| 7.4 | `components/platform/dashboard/StatsCards.tsx` | 🔴 |
+| 7.5 | `components/platform/dashboard/RecentOrders.tsx` | 🔴 |
+| 7.6 | `components/platform/dashboard/SalesChart.tsx` | 🔴 |
+| 7.7 | Página de pedidos (kanban) com filtros | 🔴 |
+| 7.8 | `components/platform/orders/OrderKanban.tsx` | 🔴 |
+| 7.9 | `components/platform/orders/OrderCard.tsx` | 🔴 |
+| 7.10 | `components/platform/orders/OrderDetails.tsx` | 🔴 |
+| 7.11 | Página de detalhe do pedido com timeline | 🔴 |
 
 ---
 
@@ -172,11 +172,11 @@
 | Módulo 4 — WhatsApp | 7 | 7 | 100% |
 | Módulo 5 — KDS | 9 | 9 | 100% |
 | Módulo 6 — QR Code | 9 | 9 | 100% |
-| Módulo 7 — Dashboard | 11 | 11 | 100% |
+| Módulo 7 — Dashboard | 11 | 0 | 0% |
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **63** | **72%** |
+| **Total** | **88** | **52** | **59%** |
 
 ---
 *Última atualização: 14/05/2026*
