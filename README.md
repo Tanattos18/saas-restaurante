@@ -36,6 +36,7 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 - **CRM + Fidelidade**: programa de pontos e níveis
 - **Assinaturas**: planos mensais via Stripe
 - **Dashboard**: métricas e gráficos do restaurante
+- **PWA**: instalável como aplicativo no navegador (desktop/mobile)
 
 ---
 
@@ -58,6 +59,7 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 - 3 colunas: Pendentes | Em Preparo | Prontos
 - Atualização em tempo real via PostgreSQL LISTEN/NOTIFY
 - Timer colorido (verde <15min, amarelo 15-25min, vermelho >25min)
+- Som de notificação ao chegar novo pedido (Web Audio API)
 - Botão contextual por status
 - Modo fullscreen
 
@@ -73,6 +75,13 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 - Resgate: 100 pontos = R$5 de desconto
 - Níveis: Bronze, Prata, Ouro, Platina
 - Detecção de churn (clientes >30 dias sem pedir)
+
+### 📲 PWA (Progressive Web App)
+- Instalável como aplicativo no navegador (Chrome, Edge, Safari)
+- Cache offline via Service Worker (@serwist/next)
+- Modo standalone sem barra do navegador
+- Theme-color verde e ícones SVG personalizados
+- Atualiza automaticamente (sempre a versão mais recente)
 
 ### 💳 Assinaturas (Stripe)
 - Planos: FREE (50 pedidos/mês), BASIC (R$97), PRO (R$197), ENTERPRISE (R$497)
@@ -100,6 +109,7 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 | **QR Code** | qrcode + pdfkit | ^1.5 |
 | **Gráficos** | Recharts | ^2.15 |
 | **Testes** | Jest + Testing Library | ^29 |
+| **PWA** | @serwist/next | ^9 |
 
 ### Por que estas escolhas?
 
@@ -159,6 +169,7 @@ saas-restaurante/
 │   ├── whatsapp.ts                   # Cliente Evolution API
 │   ├── stripe.ts                     # Instância + planos
 │   ├── pg-notify.ts                  # PostgreSQL LISTEN/NOTIFY
+│   ├── sounds.ts                     # Web Audio API (notificação KDS)
 │   └── validations/                  # Schemas Zod
 │
 ├── services/                         # Lógica de negócio
@@ -185,6 +196,7 @@ saas-restaurante/
 │   ├── migrations/                   # Migrations SQL
 │   └── seed.ts                       # Dados de teste
 │
+├── app/sw.ts                         # Service worker PWA
 ├── __tests__/                        # Testes Jest
 ├── docs/                             # DEPLOY.md, WHATSAPP_SETUP.md
 ├── modulos/                          # Documentação de cada módulo
@@ -192,7 +204,8 @@ saas-restaurante/
 │
 ├── CHECKLIST.md                      # Acompanhamento de progresso
 ├── INDEX.md                          # Roadmap geral
-└── MANUAL-DE-TRABALHO.md             # Guia de desenvolvimento
+├── MANUAL-DE-TRABALHO.md             # Guia de desenvolvimento
+└── APP.md                            # Plano de app instalado (Electron/Tauri/PWA)
 ```
 
 ---
@@ -420,8 +433,8 @@ npm run lint          # ESLint
 | Métrica | Valor |
 |---------|-------|
 | Módulos implementados | 10/10 |
-| Itens concluídos | 83/93 (89%) |
-| Tags de backup | 11 (v0.1 a v1.0) |
+| Itens concluídos | 89/99 (90%) |
+| Tags de backup | 13 (v0.1 a v1.2) |
 | TypeScript | 0 erros |
 | Prisma | Schema válido |
 

@@ -30,6 +30,7 @@ saas-restaurante/
 │   ├── whatsapp.ts                 # Cliente Evolution API v2
 │   ├── stripe.ts                   # Integração Stripe
 │   ├── pg-notify.ts                # PostgreSQL LISTEN/NOTIFY
+│   ├── sounds.ts                   # Web Audio API (notificação KDS)
 │   └── utils.ts                    # Utilitários gerais
 │
 ├── services/                       # Lógica de negócio
@@ -55,6 +56,7 @@ saas-restaurante/
 ├── public/                         # Assets estáticos
 ├── docs/                           # Documentação de deploy
 │
+├── app/sw.ts                       # Service worker PWA
 ├── middleware.ts                   # Next.js Middleware (auth + tenant)
 ├── .env.example
 ├── next.config.js
@@ -118,14 +120,14 @@ saas-restaurante/
 ---
 
 ### Módulo 5 — KDS (Kitchen Display System)
-**Arquivos:** `lib/pg-notify.ts`, `prisma/migrations/add_kds_trigger.sql`, `app/api/kds/stream/route.ts`, `services/kds.service.ts`, `app/api/kds/orders/[id]/status/route.ts`, `components/platform/kds/KitchenBoard.tsx`, `components/platform/kds/OrderTicket.tsx`, página KDS
+**Arquivos:** `lib/pg-notify.ts`, `lib/sounds.ts`, `prisma/migrations/add_kds_trigger.sql`, `app/api/kds/stream/route.ts`, `services/kds.service.ts`, `app/api/kds/orders/[id]/status/route.ts`, `components/platform/kds/KitchenBoard.tsx`, `components/platform/kds/OrderTicket.tsx`, página KDS
 
 - Real-time via PostgreSQL LISTEN/NOTIFY (sem polling)
 - Trigger SQL que notifica mudanças de status nos pedidos
 - 3 colunas: Novos | Em Preparo | Prontos
 - Timer por pedido (verde < 15min, amarelo 15-25min, vermelho > 25min)
-- Som de notificação ao chegar novo pedido
-- Drag-and-drop entre colunas
+- Som de notificação ao chegar novo pedido (Web Audio API)
+- Detecção de novos pedidos via Set de IDs no SSE
 - Tela fullscreen (modo cozinha)
 
 ---
@@ -182,15 +184,18 @@ saas-restaurante/
 ---
 
 ### Módulo 10 — Refinamentos Finais
-**Arquivos:** `components/platform/Sidebar.tsx`, `components/platform/Header.tsx`, `__tests__/*`, `app/api/health/route.ts`, `docs/DEPLOY.md`, `docs/WHATSAPP_SETUP.md`
+**Arquivos:** `components/platform/Sidebar.tsx`, `components/platform/Header.tsx`, `__tests__/*`, `app/api/health/route.ts`, `app/sw.ts`, `public/manifest.json`, `public/icons/*.svg`, `docs/DEPLOY.md`, `docs/WHATSAPP_SETUP.md`, `APP.md`
 
 - Sidebar responsiva com badges de notificação
 - Header com status WhatsApp online/offline
 - Testes Jest: JWT, fidelidade, pedidos, bot
 - Health check com teste de conexão ao banco
-- Rate limiting com Upstash Redis (login: 5 tentativas/15min, webhook: 100/min)
+- PWA com @serwist/next: service worker, cache offline, manifest
+- Ícones PWA em SVG (192x192 e 512x512) com theme-color verde
+- Metadados apple-web-app para iOS
 - Documentação de deploy (Vercel + Neon.tech)
 - Guia de setup da Evolution API v2 com Docker Compose
+- APP.md: plano de app instalado (Electron/Tauri/PWA)
 
 ---
 
@@ -208,6 +213,7 @@ saas-restaurante/
 | Pagamentos | Stripe (assinaturas) + PIX |
 | WhatsApp | Evolution API v2 (self-hosted) |
 | Real-time | PostgreSQL LISTEN/NOTIFY |
+| PWA | @serwist/next |
 | Deploy | Vercel / VPS Ubuntu 22.04 |
 
 ---

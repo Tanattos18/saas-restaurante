@@ -35,6 +35,7 @@ Cada módulo segue este ciclo rigorosamente:
 | WhatsApp | Evolution API v2 | self-hosted, HTTP REST |
 | Pagamentos | Stripe | Assinaturas dos restaurantes |
 | Real-time | PostgreSQL LISTEN/NOTIFY | Sem custo extra, <100ms latência |
+| PWA | @serwist/next | Service worker + cache offline + manifest |
 
 ---
 
@@ -75,13 +76,19 @@ saas-restaurante/
 │   ├── ui/                 # shadcn/ui
 │   ├── platform/           # Componentes da área logada
 │   └── public/             # Componentes do cardápio público
-├── lib/                    # Utilitários (prisma, jwt, auth, whatsapp, pg-notify)
+├── lib/                    # Utilitários (prisma, jwt, auth, whatsapp, pg-notify, sounds)
+├── app/
+│   └── sw.ts               # Service worker PWA (Serwist)
 ├── services/               # Lógica de negócio (cada domínio em um arquivo)
 ├── hooks/                  # Custom hooks React
 ├── types/                  # Tipos TypeScript
 ├── prisma/                 # Schema, migrations, seed
 ├── modulos/                # Documentação de cada módulo
 ├── _backup/                # Backups físicos
+├── public/
+│   ├── manifest.json       # Manifest PWA
+│   └── icons/              # Ícones PWA (SVG)
+├── APP.md                  # Plano de app instalado (Electron/Tauri/PWA)
 ├── docs/                   # Documentação de deploy
 ├── __tests__/              # Testes Jest
 ├── .env.example            # Template de variáveis de ambiente
@@ -271,6 +278,8 @@ git push origin v0.N-moduloN   # Enviar tag
 | v0.4-modulo3 | 3 | CRUD de Cardápio |
 | v0.5-modulo4 | 4 | Bot WhatsApp |
 | v0.6-modulo5 | 5 | KDS Kitchen Display System |
+| v1.1-som-kds | 5 | Som de notificação no KDS (Web Audio API) |
+| v1.2-pwa | PWA | PWA com @serwist/next, service worker, manifest |
 
 ---
 
@@ -363,15 +372,14 @@ $content = Get-Content "arquivo" -Raw
 
 ---
 
-## 12. Próximos Módulos (ordem fixa)
+## 12. Itens Pendentes (backlog)
 
-| # | Módulo | Dependente de |
-|---|--------|---------------|
-| 6 | QR Code e Cardápio Público | Módulo 3 (cardápio) |
-| 7 | Dashboard e Pedidos | Módulo 3 (produtos) |
-| 8 | Stripe e Assinaturas | Módulo 2 (auth) |
-| 9 | CRM e Fidelidade | Módulo 4 (clientes WhatsApp) |
-| 10 | Refinamentos Finais | Todos anteriores |
+| # | Item | Módulo | Prioridade |
+|---|------|--------|------------|
+| P1 | `CategoryManager` drag-and-drop com @dnd-kit | 3 | Baixa |
+| P2 | Integrar fidelidade com bot (earnPoints ao finalizar pedido) | 9 | Média |
+| P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
+| P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
 
 ---
 
