@@ -140,6 +140,106 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 ```
 saas-restaurante/
 │
+├── app -> src/frontend/app/         # Symlink para compatibilidade Next.js
+│
+├── src/
+│   ├── frontend/                    # UI Next.js
+│   │   ├── app/                     # Next.js App Router
+│   │   │   ├── (auth)/              # Login, registro, recuperar senha
+│   │   │   ├── (platform)/          # Área logada do restaurante
+│   │   │   │   └── [tenantSlug]/    # Subdomínio: burgerking.app.com
+│   │   │   │       ├── dashboard/   # Métricas e gráficos
+│   │   │   │       ├── menu/        # CRUD de produtos
+│   │   │   │       ├── orders/      # Kanban de pedidos
+│   │   │   │       ├── kds/         # Tela da cozinha (fullscreen)
+│   │   │   │       ├── customers/   # CRM de clientes
+│   │   │   │       ├── loyalty/     # Programa de fidelidade
+│   │   │   │       ├── qr-code/     # Gestão de QR Codes
+│   │   │   │       └── settings/    # Configurações + assinatura
+│   │   │   ├── (public)/            # Cardápio público (sem auth)
+│   │   │   │   ├── menu/[slug]/     # Cardápio digital
+│   │   │   │   └── table/[slug]/[n]/ # Pedido na mesa
+│   │   │   └── api/                 # API Routes
+│   │   │       ├── auth/            # login, register, refresh, logout, me
+│   │   │       ├── categories/      # CRUD + reorder
+│   │   │       ├── products/        # CRUD + toggle + stock
+│   │   │       ├── orders/          # CRUD + status
+│   │   │       ├── kds/             # SSE stream + devices + status
+│   │   │       ├── payment/         # Stripe + PIX
+│   │   │       └── webhooks/        # WhatsApp + Stripe
+│   │   ├── components/             # Componentes React
+│   │   │   ├── platform/            # Sidebar, Header, dashboard, kds, orders
+│   │   │   └── public/              # ProductCard, Cart, Checkout, MenuViewer
+│   │   ├── hooks/                   # React hooks
+│   │   ├── public/                  # Arquivos estáticos (icons, images)
+│   │   └── types/                   # TypeScript types
+│   │
+│   └── backend/                     # Backend / API
+│       ├── lib/                     # Biblioteca e utilitários
+│       │   ├── prisma.ts            # Singleton Prisma
+│       │   ├── tenant-prisma.ts      # Factory com auto-filtro tenantId
+│       │   ├── jwt.ts               # Sign/verify JWT (jose)
+│       │   ├── auth.ts              # getAuthContext, getTokenFromRequest
+│       │   ├── whatsapp.ts          # Cliente Evolution API
+│       │   ├── stripe.ts            # Instância + planos
+│       │   ├── pg-notify.ts         # PostgreSQL LISTEN/NOTIFY
+│       │   ├── sounds.ts            # Web Audio API (notificação KDS)
+│       │   └── validations/         # Schemas Zod
+│       ├── services/                # Lógica de negócio
+│       │   ├── category.service.ts  # CRUD categorias
+│       │   ├── product.service.ts   # CRUD produtos
+│       │   ├── order.service.ts     # Pedidos + limite de plano
+│       │   ├── customer.service.ts  # CRM clientes
+│       │   ├── kds.service.ts       # KDS + dispositivos
+│       │   ├── analytics.service.ts # Métricas e gráficos
+│       │   ├── stripe.service.ts    # Stripe webhooks
+│       │   ├── loyalty.service.ts   # Pontos e fidelidade
+│       │   ├── qr-code.service.ts   # QR Codes
+│       │   └── whatsapp/            # Bot, templates, fluxos
+│       │       ├── bot.service.ts   # Máquina de estado (11 estados)
+│       │       ├── message.service.ts
+│       │       ├── flow.service.ts
+│       │       └── templates.ts
+│       ├── prisma/                  # Banco de dados
+│       │   ├── schema.prisma        # Schema (15 modelos)
+│       │   ├── migrations/          # Migrations SQL
+│       │   └── seed.ts              # Dados de teste
+│       ├── middleware.ts           # JWT + RBAC + headers tenant
+│       └── app-desktop/             # Electron App Desktop
+│
+├── config/                          # Arquivos de configuração
+│   ├── tsconfig.json                # TypeScript config
+│   ├── jest.config.ts               # Jest config
+│   └── postcss.config.js            # PostCSS config
+│
+├── docs-generated/                  # Documentação
+│   ├── DEPLOY.md                    # Guia de deploy
+│   ├── WHATSAPP_SETUP.md            # Configuração WhatsApp
+│   ├── modulos/                     # Documentação de cada módulo
+│   └── ... (INDEX.md, APP.md, etc)
+│
+├── __tests__/                       # Testes Jest
+├── tsconfig.json                    # Extende config/tsconfig.json
+├── next.config.ts                   # Configuração Next.js
+├── package.json                     # Scripts: dev, build, db:migrate, db:seed
+├── CHECKLIST.md                     # Acompanhamento de progresso
+└── README.md                        # Este arquivo
+```
+
+### Aliases de Importação
+
+O projeto usa aliases para imports organizados:
+
+| Alias | Caminho |
+|-------|---------|
+| `@/*` | `src/*` |
+| `@/frontend/*` | `src/frontend/*` |
+| `@/backend/*` | `src/backend/*` |
+| `@/lib/*` | `src/backend/lib/*` |
+| `@/services/*` | `src/backend/services/*` |
+| `@/components/*` | `src/frontend/components/*` |
+saas-restaurante/
+│
 ├── app/                              # Next.js App Router
 │   ├── (auth)/                       # Login, registro, recuperar senha
 │   ├── (platform)/                   # Área logada do restaurante
@@ -243,7 +343,7 @@ O projeto foi dividido em 10 módulos implementados sequencialmente:
 
 ## 📦 App Desktop (Electron)
 
-O projeto inclui uma versão **aplicativo desktop instalável** em `app-desktop/`, que empacota o frontend Next.js em um shell Electron com funcionalidades nativas.
+O projeto inclui uma versão **aplicativo desktop instalável** em `src/backend/app-desktop/`, que empacota o frontend Next.js em um shell Electron com funcionalidades nativas.
 
 ### Arquitetura
 
@@ -273,10 +373,10 @@ O projeto inclui uma versão **aplicativo desktop instalável** em `app-desktop/
 ### Estrutura do Electron App
 
 ```
-app-desktop/
+src/backend/app-desktop/
 ├── electron/                        # Código-fonte TypeScript
-│   ├── main.ts                      # Janela principal, menus, IPC, carrega Next.js
-│   ├── preload.ts                   # Ponte segura contextBridge para o React
+│   ├── main.ts                      # Janela principal, menus, IPC
+│   ├── preload.ts                   # Ponte segura contextBridge
 │   ├── printer.ts                   # Impressão térmica de pedidos
 │   ├── updater.ts                   # Auto-update com GitHub Releases
 │   └── kds-cache.ts                 # Cache offline de pedidos (JSON)
@@ -285,105 +385,28 @@ app-desktop/
 │   └── build.ps1                    # Script de build automatizado
 ├── .github/workflows/
 │   └── release.yml                  # CI/CD multiplataforma
-├── electron-builder.yml             # Configuração de build dos instaladores
-├── tsconfig.json                    # TypeScript strict para Electron
+├── electron-builder.yml             # Configuração de build
+├── tsconfig.json                    # TypeScript strict
 └── package.json                     # Dependências do Electron
 ```
 
-### Funcionalidades Nativas
-
-| Funcionalidade | Como funciona |
-|----------------|---------------|
-| **KDS Offline** | Pedidos são salvos em `userData/kds-offline.json` quando sem internet. Sincronizam automaticamente quando a conexão volta. |
-| **Impressão Térmica** | Formata o pedido em texto monoespaçado (80mm) e envia para impressora ESC/POS via `webContents.print()`. |
-| **Auto-update** | `electron-updater` verifica GitHub Releases a cada 10s. Download em background. Instala na próxima reinicialização. |
-| **Notificações** | IPC envia eventos `new-order` para o frontend. O React pode usar notificações nativas do SO. |
-
 ### Desenvolvimento (modo dev)
 
-O Electron carrega o Next.js em http://localhost:3000 durante o desenvolvimento:
-
 ```bash
-# Terminal 1 — Iniciar Next.js (API + Frontend)
+# Terminal 1 — Iniciar Next.js
 npm run dev
 
-# Terminal 2 — Iniciar Electron (janela desktop)
-cd app-desktop
+# Terminal 2 — Iniciar Electron
+cd src/backend/app-desktop
 npm run dev
 ```
 
 ### Build de Produção
 
-O build gera instaladores para Windows, macOS e Linux:
-
 ```powershell
-# Gera instaladores na pasta app-desktop/release/
-.\app-desktop\scripts\build.ps1 dist
-```
-
-O que o script faz:
-1. Build do Next.js com `output: 'export'` (HTML estático)
-2. Copia a pasta `out/` para `app-desktop/src/out/`
-3. Compila TypeScript do Electron (`tsc`)
-4. Executa `electron-builder` gerando os instaladores
-
-### CI/CD (GitHub Actions)
-
-Quando uma tag `v*` é criada, o workflow em `.github/workflows/release.yml`:
-1. Builda o frontend Next.js
-2. Compila o Electron
-3. Gera instaladores em 3 plataformas (ubuntu, windows, macos)
-4. Publica no GitHub Releases
-
-### Instaladores Gerados
-
-| Plataforma | Formato | Arquivo |
-|------------|---------|---------|
-| Windows | NSIS (.exe) | `SaaS Restaurante-Setup-1.0.0.exe` |
-| macOS (Intel) | DMG | `SaaS Restaurante-1.0.0-x64.dmg` |
-| macOS (Apple Silicon) | DMG | `SaaS Restaurante-1.0.0-arm64.dmg` |
-| Linux | AppImage | `SaaS Restaurante-1.0.0.AppImage` |
-
-### Requisitos do Cliente
-
-| Componente | Mínimo | Recomendado |
-|------------|--------|-------------|
-| SO | Windows 10 / macOS 12 / Ubuntu 22.04 | Windows 11 / Ubuntu 24.04 |
-| RAM | 4 GB | 8 GB |
-| Armazenamento | 500 MB livres | 5 GB (SSD) |
-| Internet | 5 Mbps | 20 Mbps (fibra) |
-| Tela | 1366×768 | 1920×1080 (KDS fullscreen) |
-| Impressora | — | Elgin i9 / Bematech MP4200 (ESC/POS) |
-
-### API exposta para o Frontend (React)
-
-O React acessa as funcionalidades nativas via `window.electronAPI`:
-
-```typescript
-// App info
-await window.electronAPI.getAppInfo()
-// → { version, name, platform, isDev }
-
-// Impressão
-await window.electronAPI.printOrder(order)
-await window.electronAPI.getPrinters()
-// → [{ name, displayName, status }]
-
-// Auto-update
-await window.electronAPI.checkUpdate()
-await window.electronAPI.downloadUpdate()
-await window.electronAPI.installUpdate()
-window.electronAPI.onUpdateReady((version) => { ... })
-window.electronAPI.onUpdateProgress((percent) => { ... })
-
-// KDS Offline
-await window.electronAPI.saveOfflineOrder(order)
-await window.electronAPI.getOfflineOrders()
-await window.electronAPI.syncOfflineOrders()
-await window.electronAPI.clearOfflineOrders()
-
-// Notificações
-window.electronAPI.onNewOrder((order) => { ... })
+# Gera instaladores na pasta release/
+cd src/backend/app-desktop
+.\scripts\build.ps1 dist
 ```
 
 ---
@@ -394,8 +417,7 @@ window.electronAPI.onNewOrder((order) => { ... })
 
 - Node.js 20.x LTS ou superior
 - PostgreSQL 16+
-- npm ou yarn
-- (Opcional) Docker para Evolution API
+- npm
 
 ### Passo a passo
 
@@ -412,10 +434,10 @@ cp .env.example .env
 # Edite o .env com suas configurações (DATABASE_URL, JWT secrets, etc.)
 
 # 4. Rode as migrations do banco
-npx prisma migrate dev --name init
+npm run db:migrate
 
 # 5. Popule com dados de teste
-npx prisma db seed
+npm run db:seed
 
 # 6. Inicie o servidor de desenvolvimento
 npm run dev
@@ -430,6 +452,21 @@ Restaurante: restaurante-teste
 Email:       admin@restaurante.com
 Senha:       admin123
 ```
+
+### Scripts Disponíveis
+
+| Comando | Descrição |
+|---------|-----------|
+| `npm run dev` | Iniciar servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm run start` | Iniciar servidor de produção |
+| `npm run lint` | Verificar código com ESLint |
+| `npm run typecheck` | Verificar tipos TypeScript |
+| `npm run test` | Rodar testes Jest |
+| `npm run db:migrate` | Executar migrations |
+| `npm run db:seed` | Popular dados de teste |
+| `npm run db:studio` | Abrir Prisma Studio |
+| `npm run db:reset` | Resetar banco de dados |
 
 ---
 
@@ -457,7 +494,7 @@ Senha:       admin123
 4. Use o toggle para ativar/desativar produtos
 
 #### Bot WhatsApp (requer Evolution API)
-1. Configure a Evolution API (veja `docs/WHATSAPP_SETUP.md`)
+1. Configure a Evolution API (veja `docs-generated/oficial/WHATSAPP_SETUP.md`)
 2. Cliente envia mensagem para o número do restaurante
 3. Bot responde automaticamente: nome → endereço → cardápio → pedido
 
@@ -476,7 +513,9 @@ Senha:       admin123
 
 ## 🌐 API Routes
 
-### Autenticação
+Todas as rotas estão em `src/frontend/app/api/`:
+
+### Autenticação (`/api/auth/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | POST | `/api/auth/login` | Login (email + password + tenantSlug) |
@@ -485,7 +524,7 @@ Senha:       admin123
 | POST | `/api/auth/logout` | Limpar cookies |
 | GET | `/api/auth/me` | Dados do usuário logado |
 
-### Cardápio
+### Cardápio (`/api/categories/*`, `/api/products/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | GET/POST | `/api/categories` | Listar/criar categorias |
@@ -496,27 +535,27 @@ Senha:       admin123
 | POST | `/api/products/[id]/toggle` | Ativar/desativar |
 | POST | `/api/products/[id]/stock` | Atualizar estoque |
 
-### Pedidos
+### Pedidos (`/api/orders/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | POST | `/api/orders` | Criar pedido (público) |
 | PATCH | `/api/orders/[id]/status` | Atualizar status |
 
-### KDS
+### KDS (`/api/kds/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | GET | `/api/kds/stream?deviceCode=X` | SSE em tempo real |
 | POST | `/api/kds/devices` | Registrar dispositivo |
 | PATCH | `/api/kds/orders/[id]/status` | Atualizar status |
 
-### Pagamentos
+### Pagamentos (`/api/payment/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | POST | `/api/payment/stripe/create-checkout` | Checkout Stripe |
 | POST | `/api/payment/stripe/portal` | Customer Portal |
 | POST | `/api/payment/pix/create` | Gerar código PIX |
 
-### Webhooks
+### Webhooks (`/api/webhooks/*`)
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | POST | `/api/webhooks/whatsapp` | Mensagens WhatsApp |
@@ -573,16 +612,16 @@ EVOLUTION_INSTANCE_NAME=saas
 NEXT_PUBLIC_APP_URL=https://app.seusite.com
 ```
 
-Veja `docs/DEPLOY.md` para instruções detalhadas.
+Veja `docs-generated/oficial/DEPLOY.md` para instruções detalhadas.
 
 ---
 
 ## 🧪 Testes
 
 ```bash
-npm test              # Rodar testes Jest
-npm run typecheck     # TypeScript check
-npm run lint          # ESLint
+npm run test          # Rodar testes Jest (--config config/jest.config.ts)
+npm run typecheck     # TypeScript check (--project tsconfig.json)
+npm run lint          # ESLint (--dir src/)
 ```
 
 ---
@@ -596,7 +635,8 @@ npm run lint          # ESLint
 | Tags de backup | 14 (v0.1 a v2.0) |
 | TypeScript | 0 erros |
 | Prisma | Schema válido |
-| Electron App | ✅ Estrutura criada — `app-desktop/` |
+| Electron App | ✅ Estrutura criada — `src/backend/app-desktop/` |
+| Reorganização | ✅ Concluída - estrutura src/frontend + src/backend |
 
 ---
 
