@@ -50,12 +50,13 @@ saas-restaurante/
 │   └── qr-code.service.ts
 │
 ├── hooks/                          # Custom Hooks React
-├── types/                          # Tipos TypeScript
+├── types/                          # Tipos TypeScript (incl. electron.d.ts)
 ├── __tests__/                      # Testes Jest
 ├── prisma/                         # Schema, migrations e seed
 ├── public/                         # Assets estáticos
 ├── docs/                           # Documentação de deploy
 │
+├── app-desktop/                    # Electron App Desktop (ver seção "Como Rodar")
 ├── app/sw.ts                       # Service worker PWA
 ├── middleware.ts                   # Next.js Middleware (auth + tenant)
 ├── .env.example
@@ -214,6 +215,7 @@ saas-restaurante/
 | WhatsApp | Evolution API v2 (self-hosted) |
 | Real-time | PostgreSQL LISTEN/NOTIFY |
 | PWA | @serwist/next |
+| App Desktop | Electron 33 + electron-builder |
 | Deploy | Vercel / VPS Ubuntu 22.04 |
 
 ---
@@ -243,6 +245,90 @@ Módulo 9  →  CRM (clientes, fidelidade, pontos)
     ↓
 Módulo 10 →  Refinamentos (testes, docs, rate-limit)
 ```
+
+---
+
+## 🚀 Como Rodar o Projeto
+
+### 1. Web App (Next.js) — Desenvolvimento
+
+```bash
+# Clone
+git clone https://github.com/Tanattos18/saas-restaurante.git
+cd saas-restaurante
+
+# Instale dependências
+npm install
+
+# Configure variáveis de ambiente
+copy .env.example .env
+# Edite .env com DATABASE_URL, JWT secrets, etc.
+
+# Rode migrations e seed (precisa de PostgreSQL)
+npx prisma migrate dev --name init
+npx prisma db seed
+
+# Inicie servidor de desenvolvimento
+npm run dev
+```
+
+Acesse `http://localhost:3000` — credenciais de teste:
+```
+Restaurante: restaurante-teste
+Email:       admin@restaurante.com
+Senha:       admin123
+```
+
+### 2. PWA (Progressive Web App)
+
+O PWA já está configurado com `@serwist/next`. Após fazer deploy:
+- Abra o site no Chrome ou Edge
+- Clique no ícone **Instalar** na barra de endereço
+- O app abre em modo standalone (sem navegador)
+
+Comandos úteis:
+```bash
+npm run build        # Gera service worker (public/sw.js)
+npm run typecheck    # Verifica TypeScript
+npm run lint         # Verifica ESLint
+```
+
+### 3. App Desktop (Electron) — Desenvolvimento
+
+O Electron carrega o Next.js em http://localhost:3000 no modo dev.
+
+```bash
+# Terminal 1 — Iniciar Next.js (API + Frontend)
+cd saas-restaurante
+npm run dev
+
+# Terminal 2 — Iniciar Electron (janela desktop)
+cd app-desktop
+npm install          # Primeira vez apenas
+npm run dev
+```
+
+### 4. App Desktop (Electron) — Build Produção
+
+Gera instaladores para Windows (.exe), macOS (.dmg) e Linux (.AppImage):
+
+```powershell
+# PowerShell
+.\app-desktop\scripts\build.ps1 dist    # Gera instaladores
+.\app-desktop\scripts\build.ps1 release # Gera + publica no GitHub
+```
+
+### 5. Comandos Rápidos
+
+| Comando | O que faz |
+|---------|-----------|
+| `npm run dev` | Inicia Next.js em http://localhost:3000 |
+| `npm run build` | Build de produção + service worker PWA |
+| `npm run typecheck` | Verifica erros TypeScript |
+| `npm run lint` | Verifica ESLint |
+| `npm test` | Roda testes Jest |
+| `npx prisma studio` | Abre Prisma Studio (banco) |
+| `cd app-desktop && npm run dev` | Inicia Electron (precisa do Next.js rodando) |
 
 ---
 
