@@ -11,6 +11,7 @@
 - [Stack Tecnológica](#-stack-tecnológica)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Módulos](#-módulos)
+- [App Desktop (Electron)](#-app-desktop-electron)
 - [Como Instalar](#-como-instalar)
 - [Como Usar](#-como-usar)
 - [API Routes](#-api-routes)
@@ -37,6 +38,7 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 - **Assinaturas**: planos mensais via Stripe
 - **Dashboard**: métricas e gráficos do restaurante
 - **PWA**: instalável como aplicativo no navegador (desktop/mobile)
+- **App Desktop**: versão instalável para Windows/macOS/Linux com Electron
 
 ---
 
@@ -76,6 +78,14 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 - Níveis: Bronze, Prata, Ouro, Platina
 - Detecção de churn (clientes >30 dias sem pedir)
 
+### 🖥️ App Desktop (Electron)
+- Aplicativo instalável para Windows (NSIS), macOS (DMG) e Linux (AppImage)
+- KDS funciona offline com cache local em JSON
+- Impressão térmica direta via Electron IPC
+- Notificação sonora nativa do sistema operacional
+- Auto-update automático via GitHub Releases em background
+- Comunicação com a nuvem via HTTPS (API remota na Vercel)
+
 ### 📲 PWA (Progressive Web App)
 - Instalável como aplicativo no navegador (Chrome, Edge, Safari)
 - Cache offline via Service Worker (@serwist/next)
@@ -110,6 +120,7 @@ SaaS Restaurante é uma plataforma B2B que permite que restaurantes e lanchonete
 | **Gráficos** | Recharts | ^2.15 |
 | **Testes** | Jest + Testing Library | ^29 |
 | **PWA** | @serwist/next | ^9 |
+| **App Desktop** | Electron 33 + electron-builder | ^33 |
 
 ### Por que estas escolhas?
 
@@ -201,6 +212,7 @@ saas-restaurante/
 ├── docs/                             # DEPLOY.md, WHATSAPP_SETUP.md
 ├── modulos/                          # Documentação de cada módulo
 ├── _backup/                          # Backups físicos (backup.ps1)
+├── app-desktop/                      # Electron App Desktop (ver seção abaixo)
 │
 ├── CHECKLIST.md                      # Acompanhamento de progresso
 ├── INDEX.md                          # Roadmap geral
@@ -226,6 +238,153 @@ O projeto foi dividido em 10 módulos implementados sequencialmente:
 | 8 | **Stripe** | Assinaturas, planos, PIX, webhooks |
 | 9 | **CRM** | Clientes, fidelidade (pontos e níveis), churn |
 | 10 | **Refinamentos** | Sidebar, Header, testes, docs, health check |
+
+---
+
+## 📦 App Desktop (Electron)
+
+O projeto inclui uma versão **aplicativo desktop instalável** em `app-desktop/`, que empacota o frontend Next.js em um shell Electron com funcionalidades nativas.
+
+### Arquitetura
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                 DISPOSITIVO DO CLIENTE                    │
+│                                                          │
+│  ┌──────────────────────┐   ┌────────────────────────┐   │
+│  │   Electron App       │   │  KDS Offline           │   │
+│  │  ┌────────────────┐  │   │  (cache JSON local)    │   │
+│  │  │  Frontend React │  │   └────────────────────────┘   │
+│  │  │  (Next.js)      │  │   ┌────────────────────────┐   │
+│  │  └────────────────┘  │   │  Impressão Térmica     │   │
+│  │  ┌────────────────┐  │   │  (IPC + printer)       │   │
+│  │  │  Auto-update   │  │   └────────────────────────┘   │
+│  │  │  (GitHub)      │  │                               │
+│  │  └────────────────┘  │                               │
+│  └──────────┬───────────┘                               │
+│             │                                            │
+│             ▼ HTTPS                                      │
+│     ┌──────────────┐                                     │
+│     │  API Remota  │ ← → Nuvem (Vercel) → PostgreSQL    │
+│     └──────────────┘                                     │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Estrutura do Electron App
+
+```
+app-desktop/
+├── electron/                        # Código-fonte TypeScript
+│   ├── main.ts                      # Janela principal, menus, IPC, carrega Next.js
+│   ├── preload.ts                   # Ponte segura contextBridge para o React
+│   ├── printer.ts                   # Impressão térmica de pedidos
+│   ├── updater.ts                   # Auto-update com GitHub Releases
+│   └── kds-cache.ts                 # Cache offline de pedidos (JSON)
+├── resources/                       # Ícones do app
+├── scripts/
+│   └── build.ps1                    # Script de build automatizado
+├── .github/workflows/
+│   └── release.yml                  # CI/CD multiplataforma
+├── electron-builder.yml             # Configuração de build dos instaladores
+├── tsconfig.json                    # TypeScript strict para Electron
+└── package.json                     # Dependências do Electron
+```
+
+### Funcionalidades Nativas
+
+| Funcionalidade | Como funciona |
+|----------------|---------------|
+| **KDS Offline** | Pedidos são salvos em `userData/kds-offline.json` quando sem internet. Sincronizam automaticamente quando a conexão volta. |
+| **Impressão Térmica** | Formata o pedido em texto monoespaçado (80mm) e envia para impressora ESC/POS via `webContents.print()`. |
+| **Auto-update** | `electron-updater` verifica GitHub Releases a cada 10s. Download em background. Instala na próxima reinicialização. |
+| **Notificações** | IPC envia eventos `new-order` para o frontend. O React pode usar notificações nativas do SO. |
+
+### Desenvolvimento (modo dev)
+
+O Electron carrega o Next.js em http://localhost:3000 durante o desenvolvimento:
+
+```bash
+# Terminal 1 — Iniciar Next.js (API + Frontend)
+npm run dev
+
+# Terminal 2 — Iniciar Electron (janela desktop)
+cd app-desktop
+npm run dev
+```
+
+### Build de Produção
+
+O build gera instaladores para Windows, macOS e Linux:
+
+```powershell
+# Gera instaladores na pasta app-desktop/release/
+.\app-desktop\scripts\build.ps1 dist
+```
+
+O que o script faz:
+1. Build do Next.js com `output: 'export'` (HTML estático)
+2. Copia a pasta `out/` para `app-desktop/src/out/`
+3. Compila TypeScript do Electron (`tsc`)
+4. Executa `electron-builder` gerando os instaladores
+
+### CI/CD (GitHub Actions)
+
+Quando uma tag `v*` é criada, o workflow em `.github/workflows/release.yml`:
+1. Builda o frontend Next.js
+2. Compila o Electron
+3. Gera instaladores em 3 plataformas (ubuntu, windows, macos)
+4. Publica no GitHub Releases
+
+### Instaladores Gerados
+
+| Plataforma | Formato | Arquivo |
+|------------|---------|---------|
+| Windows | NSIS (.exe) | `SaaS Restaurante-Setup-1.0.0.exe` |
+| macOS (Intel) | DMG | `SaaS Restaurante-1.0.0-x64.dmg` |
+| macOS (Apple Silicon) | DMG | `SaaS Restaurante-1.0.0-arm64.dmg` |
+| Linux | AppImage | `SaaS Restaurante-1.0.0.AppImage` |
+
+### Requisitos do Cliente
+
+| Componente | Mínimo | Recomendado |
+|------------|--------|-------------|
+| SO | Windows 10 / macOS 12 / Ubuntu 22.04 | Windows 11 / Ubuntu 24.04 |
+| RAM | 4 GB | 8 GB |
+| Armazenamento | 500 MB livres | 5 GB (SSD) |
+| Internet | 5 Mbps | 20 Mbps (fibra) |
+| Tela | 1366×768 | 1920×1080 (KDS fullscreen) |
+| Impressora | — | Elgin i9 / Bematech MP4200 (ESC/POS) |
+
+### API exposta para o Frontend (React)
+
+O React acessa as funcionalidades nativas via `window.electronAPI`:
+
+```typescript
+// App info
+await window.electronAPI.getAppInfo()
+// → { version, name, platform, isDev }
+
+// Impressão
+await window.electronAPI.printOrder(order)
+await window.electronAPI.getPrinters()
+// → [{ name, displayName, status }]
+
+// Auto-update
+await window.electronAPI.checkUpdate()
+await window.electronAPI.downloadUpdate()
+await window.electronAPI.installUpdate()
+window.electronAPI.onUpdateReady((version) => { ... })
+window.electronAPI.onUpdateProgress((percent) => { ... })
+
+// KDS Offline
+await window.electronAPI.saveOfflineOrder(order)
+await window.electronAPI.getOfflineOrders()
+await window.electronAPI.syncOfflineOrders()
+await window.electronAPI.clearOfflineOrders()
+
+// Notificações
+window.electronAPI.onNewOrder((order) => { ... })
+```
 
 ---
 
@@ -433,10 +592,11 @@ npm run lint          # ESLint
 | Métrica | Valor |
 |---------|-------|
 | Módulos implementados | 10/10 |
-| Itens concluídos | 89/99 (90%) |
-| Tags de backup | 13 (v0.1 a v1.2) |
+| Itens concluídos | 98/103 (95%) |
+| Tags de backup | 14 (v0.1 a v2.0) |
 | TypeScript | 0 erros |
 | Prisma | Schema válido |
+| Electron App | ✅ Estrutura criada — `app-desktop/` |
 
 ---
 
