@@ -357,15 +357,45 @@ O usuário pode "instalar" o site como aplicativo no navegador (Chrome, Edge, Sa
 Funciona offline parcial (Service Worker).
 Atualiza automaticamente (sempre a versão mais recente do Next.js).
 
-### Para produção (fase 2 — médio prazo)
+### ✅ Fase 2 — Electron (Estrutura criada em 14/05/2026)
 
-**Electron + auto-update:**
+**Projeto em `app-desktop/`:**
 
 ```bash
-npx create-electron-app --template=typescript
-# Copiar build do Next.js para dentro
-# Configurar electron-builder para Windows/macOS/Linux
-# Configurar auto-updater com GitHub Releases
+cd app-desktop
+npm install
+npm run dev  # Inicia Electron + Next.js dev server
+```
+
+#### O que foi criado:
+
+| Arquivo | Função |
+|---------|--------|
+| `electron/main.ts` | Janela principal, menus, IPC handlers, carrega Next.js (dev: localhost:3000, prod: static export) |
+| `electron/preload.ts` | Ponte segura contextBridge: print, updater, offline, notifications |
+| `electron/printer.ts` | Impressão térmica — formata pedido, lista impressoras, página de teste |
+| `electron/updater.ts` | Auto-update com electron-updater + GitHub Releases |
+| `electron/kds-cache.ts` | Cache offline de pedidos em JSON (`userData/kds-offline.json`) |
+| `electron-builder.yml` | Build para Windows (NSIS), macOS (DMG), Linux (AppImage) |
+| `scripts/build.ps1` | Script de build: Next.js → static export → copiar → electron-builder |
+| `.github/workflows/release.yml` | CI/CD: build multiplataforma em cada tag v* |
+| `resources/icon.svg` | Ícone do app (verde 🍽) |
+
+#### Para buildar:
+
+```powershell
+.\app-desktop\scripts\build.ps1 dist       # Gera instaladores em release/
+.\app-desktop\scripts\build.ps1 release    # Gera + publica no GitHub Releases
+```
+
+#### Para desenvolvimento:
+
+```bash
+# Terminal 1: Iniciar Next.js
+cd .. && npm run dev
+
+# Terminal 2: Iniciar Electron
+cd app-desktop && npm run dev
 ```
 
 ### Para maturidade (fase 3 — longo prazo)
@@ -381,7 +411,7 @@ npx create-electron-app --template=typescript
 ## 📦 Estrutura Sugerida do Projeto App
 
 ```
-saas-restaurante-app/              # Novo repositório
+app-desktop/                       # Electron App (dentro do monorepo)
 ├── electron/                      # Código Electron
 │   ├── main.ts                    # Janela principal
 │   ├── preload.ts                 # Ponte IPC
@@ -420,3 +450,4 @@ saas-restaurante-app/              # Novo repositório
 > **Versão do projeto:** v1.0
 > **Autor:** SaaS Restaurante Team
 > **Status PWA:** ✅ Implementado (14/05/2026) — `@serwist/next` + service worker + manifest
+> **Status Electron:** ✅ Estrutura criada (14/05/2026) — `saas-restaurante-app/` com main, preload, printer, updater, kds-cache

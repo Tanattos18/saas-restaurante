@@ -165,6 +165,15 @@
 | 10.10 | Service worker com cache offline | 🟢 |
 | 10.11 | Manifest.json + ícones SVG | 🟢 |
 | 10.12 | Metadados apple-web-app e theme-color | 🟢 |
+| 10.13 | `saas-restaurante-app/` — estrutura Electron completa | 🟢 |
+| 10.14 | `electron/main.ts` — janela principal + IPC + menus | 🟢 |
+| 10.15 | `electron/preload.ts` — ponte segura contextBridge | 🟢 |
+| 10.16 | `electron/printer.ts` — impressão térmica de pedidos | 🟢 |
+| 10.17 | `electron/updater.ts` — auto-update GitHub Releases | 🟢 |
+| 10.18 | `electron/kds-cache.ts` — cache offline SQLite | 🟢 |
+| 10.19 | `electron-builder.yml` — build Windows/macOS/Linux | 🟢 |
+| 10.20 | `scripts/build.ps1` — script de build automatizado | 🟢 |
+| 10.21 | `.github/workflows/release.yml` — CI/CD multiplataforma | 🟢 |
 
 ---
 
@@ -181,7 +190,7 @@
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 5 | 83% |
-| Módulo 10 — Refinamentos | 12 | 11 | 92% |
+| Módulo 10 — Refinamentos | 21 | 20 | 95% |
 ## 🔄 Itens Pendentes (Backlog)
 
 | # | Item | Módulo | Prioridade |
@@ -191,7 +200,7 @@
 | P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
 | P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
 
-| **Total** | **99** | **89** | **90%** |
+| **Total** | **103** | **98** | **95%** |
 
 ---
 *Última atualização: 14/05/2026*

@@ -41,3 +41,9 @@ public/sw.js
 
 # backups
 _backup/
+
+# electron app
+app-desktop/node_modules/
+app-desktop/dist/
+app-desktop/release/
+app-desktop/src/out/
