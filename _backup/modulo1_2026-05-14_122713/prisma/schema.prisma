@@ -1,0 +1,508 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+  INACTIVE
+}
+
+enum SubscriptionStatus {
+  INACTIVE
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  STAFF
+  CASHIER
+  KITCHEN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+enum LoyaltyLevel {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum OrderChannel {
+  WHATSAPP
+  QR_CODE
+  IFOOD
+  RAPPI
+  UBER_EATS
+  COUNTER
+  PHONE
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+  DINE_IN
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  PREPARING
+  READY
+  ON_DELIVERY
+  DELIVERED
+  CANCELED
+}
+
+enum OrderItemStatus {
+  PENDING
+  PREPARING
+  READY
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  PIX
+  MERCADO_PAGO
+  STRIPE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum ChatState {
+  WELCOME
+  COLLECTING_NAME
+  COLLECTING_ADDRESS
+  SHOWING_MENU
+  SELECTING_CATEGORY
+  SELECTING_PRODUCT
+  BUILDING_ORDER
+  CONFIRMING_ORDER
+  WAITING_PAYMENT
+  ORDER_COMPLETE
+  TALK_TO_HUMAN
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  DOCUMENT
+  LOCATION
+  CONTACT
+  BUTTON
+  LIST
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum DeviceType {
+  DISPLAY
+  PRINTER
+  MOBILE
+}
+
+enum DeviceStatus {
+  ACTIVE
+  INACTIVE
+  OFFLINE
+}
+
+enum InventoryType {
+  IN
+  OUT
+  ADJUST
+}
+
+enum LoyaltyType {
+  EARN
+  REDEEM
+  EXPIRED
+  BONUS
+}
+
+model Tenant {
+  id                   String             @id @default(uuid())
+  slug                 String             @unique
+  name                 String
+  email                String
+  phone                String
+  cnpj                 String?
+  address              String
+  city                 String
+  state                String
+  plan                 Plan               @default(FREE)
+  status               TenantStatus       @default(ACTIVE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   SubscriptionStatus @default(INACTIVE)
+  trialEndsAt          DateTime?
+  settings             Json?
+  users                User[]
+  products             Product[]
+  categories           Category[]
+  orders               Order[]
+  customers            Customer[]
+  chatSessions         ChatSession[]
+  chatMessages         ChatMessage[]
+  inventory            InventoryItem[]
+  inventoryLogs        InventoryLog[]
+  kitchenDevices       KitchenDevice[]
+  payments             Payment[]
+  loyaltyTransactions  LoyaltyTransaction[]
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@index([slug])
+  @@index([status])
+}
+
+model User {
+  id         String     @id @default(uuid())
+  tenantId   String
+  email      String
+  password   String
+  name       String
+  phone      String?
+  role       UserRole   @default(STAFF)
+  status     UserStatus @default(ACTIVE)
+  lastLoginAt DateTime?
+  avatar     String?
+  tenant     Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+}
+
+model Customer {
+  id            String       @id @default(uuid())
+  tenantId      String
+  phone         String
+  name          String
+  address       String
+  neighborhood  String?
+  city          String?
+  state         String?
+  complement    String?
+  latitude      Float?
+  longitude     Float?
+  loyaltyPoints Int          @default(0)
+  loyaltyLevel  LoyaltyLevel @default(BRONZE)
+  totalOrders   Int          @default(0)
+  totalSpent    Decimal      @default(0) @db.Decimal(10, 2)
+  lastOrderAt   DateTime?
+  tenant        Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  orders        Order[]
+  chatSessions  ChatSession[]
+  chatMessages  ChatMessage[]
+  loyaltyTransactions LoyaltyTransaction[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@unique([tenantId, phone])
+  @@index([tenantId])
+  @@index([phone])
+}
+
+model Category {
+  id           String    @id @default(uuid())
+  tenantId     String
+  name         String
+  description  String?
+  icon         String?
+  position     Int       @default(0)
+  active       Boolean   @default(true)
+  showInQRCode Boolean   @default(true)
+  products     Product[]
+  tenant       Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([position])
+}
+
+model Product {
+  id              String       @id @default(uuid())
+  tenantId        String
+  categoryId      String
+  name            String
+  description     String?      @db.Text
+  price           Decimal      @db.Decimal(10, 2)
+  promoPrice      Decimal?     @db.Decimal(10, 2)
+  image           String?
+  active          Boolean      @default(true)
+  showInQRCode    Boolean      @default(true)
+  preparationTime Int          @default(0)
+  calories        Int?
+  isVegan         Boolean      @default(false)
+  isGlutenFree    Boolean      @default(false)
+  stock           Int?
+  minStock        Int          @default(5)
+  position        Int          @default(0)
+  category        Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  tenant          Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  orderItems      OrderItem[]
+  inventoryItems  InventoryItem[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([tenantId])
+  @@index([categoryId])
+  @@index([active])
+}
+
+model Order {
+  id                     String          @id @default(uuid())
+  tenantId               String
+  customerId             String?
+  orderNumber            Int
+  channel                OrderChannel    @default(WHATSAPP)
+  type                   OrderType       @default(DELIVERY)
+  status                 OrderStatus     @default(PENDING)
+  customerName           String
+  customerPhone          String
+  customerAddress        String?
+  subtotal               Decimal         @db.Decimal(10, 2)
+  deliveryFee            Decimal         @default(0) @db.Decimal(10, 2)
+  discount               Decimal         @default(0) @db.Decimal(10, 2)
+  total                  Decimal         @db.Decimal(10, 2)
+  paymentMethod          PaymentMethod?
+  paymentStatus          PaymentStatus   @default(PENDING)
+  pixCode                String?
+  pixExpiration          DateTime?
+  deliveryAddress        String?
+  deliveryNeighborhood   String?
+  deliveryCity           String?
+  deliveryState          String?
+  deliveryComplement     String?
+  deliveryLatitude       Float?
+  deliveryLongitude      Float?
+  deliveryDistanceKm     Decimal?        @db.Decimal(5, 2)
+  estimatedDeliveryTime  DateTime?
+  notes                  String?         @db.Text
+  kitchenNotes           String?         @db.Text
+  scheduledFor           DateTime?
+  acceptedAt             DateTime?
+  preparingAt            DateTime?
+  readyAt                DateTime?
+  deliveredAt            DateTime?
+  canceledAt             DateTime?
+  cancellationReason     String?
+  kitchenDisplayId       String?
+  printed                Boolean         @default(false)
+  tenant                 Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer               Customer?       @relation(fields: [customerId], references: [id])
+  items                  OrderItem[]
+  payments               Payment[]
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+
+  @@unique([tenantId, orderNumber])
+  @@index([tenantId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([customerId])
+}
+
+model OrderItem {
+  id         String          @id @default(uuid())
+  orderId    String
+  productId  String
+  quantity   Int             @default(1)
+  unitPrice  Decimal         @db.Decimal(10, 2)
+  totalPrice Decimal         @db.Decimal(10, 2)
+  notes      String?
+  status     OrderItemStatus @default(PENDING)
+  variations Json?
+  addons     Json?
+  startedAt  DateTime?
+  finishedAt DateTime?
+  order      Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product         @relation(fields: [productId], references: [id])
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model ChatSession {
+  id            String    @id @default(uuid())
+  tenantId      String
+  customerId    String
+  phone         String
+  state         ChatState @default(WELCOME)
+  context       Json?
+  lastMessageAt DateTime  @default(now())
+  expiresAt     DateTime?
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  messages      ChatMessage[]
+
+  @@unique([tenantId, phone])
+  @@index([tenantId])
+  @@index([state])
+}
+
+model ChatMessage {
+  id          String           @id @default(uuid())
+  tenantId    String
+  customerId  String
+  sessionId   String
+  phone       String
+  direction   MessageDirection
+  type        MessageType      @default(TEXT)
+  content     String           @db.Text
+  metadata    Json?
+  whatsappId  String?
+  status      MessageStatus    @default(SENT)
+  deliveredAt DateTime?
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+  tenant      Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer    Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  session     ChatSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+model KitchenDevice {
+  id              String       @id @default(uuid())
+  tenantId        String
+  name            String
+  deviceCode      String       @unique
+  type            DeviceType   @default(DISPLAY)
+  status          DeviceStatus @default(ACTIVE)
+  currentOrderIds String[]
+  lastPingAt      DateTime     @default(now())
+  settings        Json?
+  tenant          Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([tenantId])
+  @@index([deviceCode])
+}
+
+model InventoryItem {
+  id             String    @id @default(uuid())
+  tenantId       String
+  productId      String?
+  name           String
+  unit           String
+  currentStock   Decimal   @db.Decimal(10, 3)
+  minStock       Decimal   @db.Decimal(10, 3)
+  maxStock       Decimal   @db.Decimal(10, 3)
+  cost           Decimal   @db.Decimal(10, 2)
+  supplier       String?
+  lastPurchaseAt DateTime?
+  tenant         Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  product        Product?  @relation(fields: [productId], references: [id])
+  logs           InventoryLog[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+}
+
+model InventoryLog {
+  id               String        @id @default(uuid())
+  tenantId         String
+  inventoryItemId  String
+  productId        String?
+  orderId          String?
+  type             InventoryType
+  quantity         Decimal       @db.Decimal(10, 3)
+  previousStock    Decimal       @db.Decimal(10, 3)
+  newStock         Decimal       @db.Decimal(10, 3)
+  reason           String?
+  notes            String?
+  tenant           Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  inventoryItem    InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+  createdAt        DateTime      @default(now())
+
+  @@index([tenantId])
+  @@index([createdAt])
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  orderId       String
+  tenantId      String
+  method        PaymentMethod
+  amount        Decimal       @db.Decimal(10, 2)
+  status        PaymentStatus
+  transactionId String?
+  pixCode       String?       @db.Text
+  pixQrCode     String?
+  paidAt        DateTime?
+  refundAt      DateTime?
+  refundReason  String?
+  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+
+  @@index([orderId])
+  @@index([tenantId])
+}
+
+model LoyaltyTransaction {
+  id          String      @id @default(uuid())
+  tenantId    String
+  customerId  String
+  orderId     String?
+  type        LoyaltyType
+  points      Int
+  balanceAfter Int
+  description String
+  expiresAt   DateTime?
+  redeemed    Boolean     @default(false)
+  redeemedAt  DateTime?
+  tenant      Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer    Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+
+  @@index([tenantId])
+  @@index([customerId])
+}
