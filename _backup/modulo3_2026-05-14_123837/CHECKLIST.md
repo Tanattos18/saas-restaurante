@@ -42,16 +42,16 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 3.1 | `lib/validations/product.schema.ts` — categorySchema + productSchema | 🟢 |
-| 3.2 | `services/category.service.ts` — CRUD + reorder + bloqueio | 🟢 |
-| 3.3 | `services/product.service.ts` — CRUD + stock + toggle + alertas | 🟢 |
-| 3.4 | API routes de categorias (GET, POST, PATCH, DELETE, reorder) | 🟢 |
-| 3.5 | API routes de produtos (GET, POST, PATCH, DELETE, toggle, stock) | 🟢 |
-| 3.6 | `components/platform/menu/ProductList.tsx` — tabela com filtros | 🟢 |
-| 3.7 | `components/platform/menu/ProductForm.tsx` — form create/edit | 🟢 |
-| 3.8 | `components/platform/menu/CategoryManager.tsx` — drag-and-drop | 🔴 *pendente* |
-| 3.9 | `components/platform/menu/StockAlert.tsx` — alerta estoque mínimo | 🟢 |
-| 3.10 | Páginas: menu list, new, edit | 🟢 |
+| 3.1 | `lib/validations/product.schema.ts` — categorySchema + productSchema | 🔴 |
+| 3.2 | `services/category.service.ts` — CRUD + reorder + bloqueio | 🔴 |
+| 3.3 | `services/product.service.ts` — CRUD + stock + toggle + alertas | 🔴 |
+| 3.4 | API routes de categorias (GET, POST, PATCH, DELETE, reorder) | 🔴 |
+| 3.5 | API routes de produtos (GET, POST, PATCH, DELETE, toggle, stock) | 🔴 |
+| 3.6 | `components/platform/menu/ProductList.tsx` — tabela com filtros | 🔴 |
+| 3.7 | `components/platform/menu/ProductForm.tsx` — form create/edit | 🔴 |
+| 3.8 | `components/platform/menu/CategoryManager.tsx` — drag-and-drop | 🔴 |
+| 3.9 | `components/platform/menu/StockAlert.tsx` — alerta estoque mínimo | 🔴 |
+| 3.10 | Páginas: menu list, new, edit | 🔴 |
 
 ---
 
@@ -168,7 +168,7 @@
 |------|-------------|------------|-----------|
 | Módulo 1 — Base | 10 | 8 | 80% |
 | Módulo 2 — Auth | 10 | 10 | 100% |
-| Módulo 3 — Cardápio | 10 | 9 | 90% |
+| Módulo 3 — Cardápio | 10 | 0 | 0% |
 | Módulo 4 — WhatsApp | 7 | 0 | 0% |
 | Módulo 5 — KDS | 9 | 0 | 0% |
 | Módulo 6 — QR Code | 9 | 0 | 0% |
@@ -176,7 +176,7 @@
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **27** | **31%** |
+| **Total** | **88** | **18** | **20%** |
 
 ---
 *Última atualização: 14/05/2026*
