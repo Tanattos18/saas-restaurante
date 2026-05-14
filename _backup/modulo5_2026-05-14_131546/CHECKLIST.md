@@ -73,15 +73,15 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 5.1 | `lib/pg-notify.ts` — LISTEN/NOTIFY com node-postgres | 🟢 |
-| 5.2 | `prisma/migrations/add_kds_trigger.sql` — trigger pg_notify | 🟢 |
-| 5.3 | `app/api/kds/stream/route.ts` — SSE com pg_notify | 🟢 |
-| 5.4 | `services/kds.service.ts` — getActiveOrders, updateStatus, registerDevice | 🟢 |
-| 5.5 | `app/api/kds/orders/[id]/status/route.ts` — PATCH status | 🟢 |
-| 5.6 | `components/platform/kds/KitchenBoard.tsx` — 3 colunas | 🟢 |
-| 5.7 | `components/platform/kds/OrderTicket.tsx` — card do pedido | 🟢 |
-| 5.8 | `components/platform/kds/KitchenTimer.tsx` — timer colorido | 🟢 |
-| 5.9 | Página KDS fullscreen + registro de dispositivo | 🟢 |
+| 5.1 | `lib/pg-notify.ts` — LISTEN/NOTIFY com node-postgres | 🔴 |
+| 5.2 | `prisma/migrations/add_kds_trigger.sql` — trigger pg_notify | 🔴 |
+| 5.3 | `app/api/kds/stream/route.ts` — SSE com pg_notify | 🔴 |
+| 5.4 | `services/kds.service.ts` — getActiveOrders, updateStatus, registerDevice | 🔴 |
+| 5.5 | `app/api/kds/orders/[id]/status/route.ts` — PATCH status | 🔴 |
+| 5.6 | `components/platform/kds/KitchenBoard.tsx` — 3 colunas + drag | 🔴 |
+| 5.7 | `components/platform/kds/OrderTicket.tsx` — card do pedido | 🔴 |
+| 5.8 | `components/platform/kds/KitchenTimer.tsx` — timer colorido | 🔴 |
+| 5.9 | Página KDS fullscreen + registro de dispositivo | 🔴 |
 
 ---
 
@@ -170,13 +170,13 @@
 | Módulo 2 — Auth | 10 | 10 | 100% |
 | Módulo 3 — Cardápio | 10 | 9 | 90% |
 | Módulo 4 — WhatsApp | 7 | 7 | 100% |
-| Módulo 5 — KDS | 9 | 9 | 100% |
+| Módulo 5 — KDS | 9 | 0 | 0% |
 | Módulo 6 — QR Code | 9 | 0 | 0% |
 | Módulo 7 — Dashboard | 11 | 0 | 0% |
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **43** | **49%** |
+| **Total** | **88** | **34** | **39%** |
 
 ---
 *Última atualização: 14/05/2026*
