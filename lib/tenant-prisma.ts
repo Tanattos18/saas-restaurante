@@ -1,4 +1,4 @@
-﻿import prisma from './prisma'
+import prisma from './prisma'
 
 export function createTenantPrisma(tenantId: string) {
   if (!tenantId) throw new Error('tenantId é obrigatório')
@@ -26,9 +26,9 @@ export function createTenantPrisma(tenantId: string) {
           args.where = { ...args.where, tenantId }
           return query(args)
         },
-        async create({ args, query }) {
+      async create({ args, query }) {
           if (typeof args.data === 'object' && !Array.isArray(args.data)) {
-            args.data = { ...args.data, tenantId }
+            ;(args.data as Record<string, unknown>).tenantId = tenantId
           }
           return query(args)
         },

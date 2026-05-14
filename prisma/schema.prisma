@@ -1,4 +1,4 @@
-﻿generator client {
+generator client {
   provider = "prisma-client-js"
 }
 
@@ -21,6 +21,7 @@ enum TenantStatus {
 }
 
 enum SubscriptionStatus {
+  INACTIVE
   TRIAL
   ACTIVE
   PAST_DUE
@@ -182,6 +183,7 @@ model Tenant {
   chatSessions         ChatSession[]
   chatMessages         ChatMessage[]
   inventory            InventoryItem[]
+  inventoryLogs        InventoryLog[]
   kitchenDevices       KitchenDevice[]
   payments             Payment[]
   loyaltyTransactions  LoyaltyTransaction[]
@@ -232,6 +234,7 @@ model Customer {
   orders        Order[]
   chatSessions  ChatSession[]
   chatMessages  ChatMessage[]
+  loyaltyTransactions LoyaltyTransaction[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
@@ -279,7 +282,7 @@ model Product {
   category        Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   tenant          Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   orderItems      OrderItem[]
-  inventoryLogs   InventoryLog[]
+  inventoryItems  InventoryItem[]
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
