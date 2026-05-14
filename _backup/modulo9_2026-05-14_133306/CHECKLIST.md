@@ -138,12 +138,12 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 9.1 | `services/loyalty.service.ts` — earn, redeem, balance, expire | 🟢 |
-| 9.2 | `services/customer.service.ts` — CRUD + topCustomers + churnRisk | 🟢 |
-| 9.3 | Página de clientes (tabela, filtros, badges) | 🟢 |
-| 9.4 | Página de detalhe do cliente (pedidos, pontos) | 🟢 |
-| 9.5 | Página de fidelidade (config, relatório, expiração) | 🟢 |
-| 9.6 | Integração com bot: earnPoints ao finalizar pedido | 🟡 *pendente* |
+| 9.1 | `services/loyalty.service.ts` — earn, redeem, balance, expire | 🔴 |
+| 9.2 | `services/customer.service.ts` — CRUD + topCustomers + churnRisk | 🔴 |
+| 9.3 | Página de clientes (tabela, filtros, badges) | 🔴 |
+| 9.4 | Página de detalhe do cliente (pedidos, pontos) | 🔴 |
+| 9.5 | Página de fidelidade (config, relatório, expiração) | 🔴 |
+| 9.6 | Integração com bot: earnPoints ao finalizar pedido | 🔴 |
 
 ---
 
@@ -174,9 +174,9 @@
 | Módulo 6 — QR Code | 9 | 9 | 100% |
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
-| Módulo 9 — CRM | 6 | 5 | 83% |
+| Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **76** | **86%** |
+| **Total** | **88** | **71** | **81%** |
 
 ---
 *Última atualização: 14/05/2026*
