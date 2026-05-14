@@ -1,6 +1,6 @@
-﻿import { loyaltyService } from '@/services/loyalty.service'
+﻿import { loyaltyService } from '@/backend/services/loyalty.service'
 
-jest.mock('@/lib/tenant-prisma', () => ({
+jest.mock('@/backend/lib/tenant-prisma', () => ({
   createTenantPrisma: () => ({
     customer: {
       findUnique: jest.fn().mockResolvedValue({ id: 'c1', loyaltyPoints: 500, totalOrders: 800 }),

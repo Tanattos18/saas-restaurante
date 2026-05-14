@@ -1,23 +1,100 @@
-# ✅ CHECKLIST — SaaS Restaurante
+# 📋 CHECKLIST DE FUNCIONALIDADES — SaaS Restaurante v1.0
 
-**Status:** 🔴 Não iniciado | 🟡 Em andamento | 🟢 Concluído
+**Data:** 14 de maio de 2026  
+**Status Geral:** 🟡 60% Implementado | 40% Faltando  
+**Prioridade:** Implementar funcionalidades críticas antes de produção
+
+> **Legenda:** 🟢 Completo | 🟡 Parcial | 🔴 Faltando | ⚠️ Crítico
 
 ---
 
-## Módulo 1 — Base do Projeto
+## 🟢 MÓDULO 1: BASE DO PROJETO (100% ✅)
 
 | # | Item | Status |
 |---|------|--------|
-| 1.1 | `prisma/schema.prisma` — schema completo com 15 modelos + 18 enums | 🟢 |
-| 1.2 | `lib/prisma.ts` — singleton Prisma (sem headers) | 🟢 |
-| 1.3 | `lib/tenant-prisma.ts` — factory `createTenantPrisma(tenantId)` com `$extends` | 🟢 |
-| 1.4 | `.env.example` — todas as variáveis de ambiente | 🟢 |
-| 1.5 | `package.json` — dependências (Next.js, Prisma, jose, bcryptjs, Zod, Stripe, shadcn, Tailwind v4) | 🟢 |
-| 1.6 | `prisma/seed.ts` — seed com 1 tenant + admin + 3 categorias + 5 produtos | 🟢 |
-| 1.7 | `tsconfig.json`, `next.config.ts`, `postcss.config.js`, `app/globals.css` | 🟢 |
-| 1.8 | `app/layout.tsx`, `app/page.tsx` (redirect → /login) | 🟢 |
-| 1.9 | Rodar `npx prisma migrate dev --name init` (pendente: precisa de PostgreSQL) | 🟡 |
-| 1.10 | Rodar `npx prisma db seed` (pendente: precisa da migrate) | 🟡 |
+| 1.1 | `prisma/schema.prisma` — 15 modelos + 18 enums | 🟢 |
+| 1.2 | `lib/prisma.ts` — singleton Prisma seguro | 🟢 |
+| 1.3 | `lib/tenant-prisma.ts` — factory com auto-injeção tenantId | 🟢 |
+| 1.4 | `.env.example` com variáveis necessárias | 🟢 |
+| 1.5 | `package.json` com todas as dependências | 🟢 |
+| 1.6 | `prisma/seed.ts` — seed com dados de teste | 🟢 |
+| 1.7 | Configurações: `tsconfig.json`, `next.config.ts`, `postcss.config.js` | 🟢 |
+| 1.8 | Pages raiz: `app/layout.tsx`, `app/page.tsx` (redirect /login) | 🟢 |
+
+**Status:** ✅ **COMPLETO**
+
+---
+
+## 🟡 MÓDULO 2: AUTENTICAÇÃO (75% ⚠️)
+
+### ✅ Implementado
+| # | Item | Status |
+|---|------|--------|
+| 2.1 | JWT com access (15min) + refresh (7d) tokens | 🟢 |
+| 2.2 | Login com validação email+password+tenantSlug | 🟢 |
+| 2.3 | Registro de novo tenant com transaction | 🟢 |
+| 2.4 | Middleware RBAC por role (KITCHEN, OWNER, MANAGER, STAFF, CASHIER) | 🟢 |
+| 2.5 | Refresh token automático | 🟢 |
+| 2.6 | Logout com limpeza de cookies | 🟢 |
+| 2.7 | Schemas Zod para validação | 🟢 |
+| 2.8 | Routes: /login, /register, /api/auth/* | 🟢 |
+
+### ❌ Faltando (Nice-to-have)
+| # | Item | Status |
+|---|------|--------|
+| 2.9 | Recuperação de senha (forgot-password) | 🔴 |
+| 2.10 | Two-factor authentication (2FA/TOTP) | 🔴 |
+| 2.11 | Social login (Google, GitHub) | 🔴 |
+| 2.12 | Sessão multi-dispositivo (logout remoto) | 🔴 |
+
+**Status:** ⚠️ **CORE IMPLEMENTADO**
+
+---
+
+## 🟢 MÓDULO 3: CRUD CARDÁPIO (95% ✅)
+
+| # | Item | Status |
+|---|------|--------|
+| 3.1 | CRUD categorias (create, read, update, delete, reorder) | 🟢 |
+| 3.2 | Drag-and-drop reordenar categorias | 🟢 |
+| 3.3 | CRUD produtos (create, read, update, delete, toggle, stock) | 🟢 |
+| 3.4 | PromoPrice validado (sempre < price) | 🟢 |
+| 3.5 | Controle de estoque + alerta de mínimo | 🟢 |
+| 3.6 | InventoryLog para auditoria | 🟢 |
+| 3.7 | Filtros: busca, categoria, ativos/inativos | 🟢 |
+| 3.8 | API routes completas | 🟢 |
+| 3.9 | Componentes: ProductList, ProductForm, CategoryManager, StockAlert | 🟢 |
+| 3.10 | Pages: /menu, /menu/new, /menu/[id] | 🟢 |
+
+**Status:** ✅ **COMPLETO (core)**
+
+---
+
+## 🔴 MÓDULO 4: BOT WHATSAPP (40% ⚠️) ⚠️ CRÍTICO
+
+### ✅ Implementado
+| # | Item | Status |
+|---|------|--------|
+| 4.1 | Integração Evolution API v2 | 🟢 |
+| 4.2 | Webhook `/api/webhooks/whatsapp` | 🟢 |
+| 4.3 | Modelos ChatSession, ChatMessage | 🟢 |
+| 4.4 | Templates de mensagens básicas | 🟢 |
+| 4.5 | `lib/whatsapp.ts` — helpers de envio | 🟢 |
+
+### ❌ Faltando (CRÍTICO)
+| # | Item | Status |
+|---|------|--------|
+| 4.6 | Máquina de estados completa (11 estados) | 🔴 ⚠️ |
+| 4.7 | Fluxo de conversação (WELCOME → ORDER_COMPLETE) | 🔴 ⚠️ |
+| 4.8 | Detecção de 3 erros → transferência para atendente | 🔴 |
+| 4.9 | Comandos globais: "cancelar", "menu" | 🔴 |
+| 4.10 | Integração com orderService.create() | 🔴 |
+| 4.11 | Integração com loyaltyService.earnPoints() | 🔴 |
+| 4.12 | Notificação ao cliente quando pedido pronto | 🔴 |
+| 4.13 | Suporte a botões interativos (sendButtons) | 🔴 |
+| 4.14 | Suporte a listas interativas (sendList) | 🔴 |
+
+**Status:** 🔴 **ESTRUTURA PRONTA, LÓGICA FALTANDO** ⚠️ **SEM ISSO SISTEMA NÃO FUNCIONA**
 
 ---
 
@@ -132,7 +209,250 @@
 | 8.5 | `app/api/payment/stripe/portal/route.ts` | 🟢 |
 | 8.6 | `app/api/payment/pix/create/route.ts` — geração PIX | 🟢 |
 | 8.7 | Página de assinatura (plano atual, upgrade, downgrade) | 🟢 |
-| 8.8 | Middleware de plano (plan no JWT + header + limite orders) | 🟢 |
+---
+
+## 🟡 MÓDULO 5: KDS (70% ⚠️)
+
+| # | Item | Status |
+|---|------|--------|
+| 5.1 | PostgreSQL LISTEN/NOTIFY real-time | 🟢 |
+| 5.2 | Trigger SQL automático | 🟢 |
+| 5.3 | API SSE `/api/kds/stream` | 🟢 |
+| 5.4 | Service `kds.service.ts` | 🟢 |
+| 5.5 | Componente KitchenBoard (3 colunas) | 🟢 |
+| 5.6 | Componente OrderTicket | 🟢 |
+| 5.7 | Timer colorido (verde/amarelo/vermelho) | 🟢 |
+| 5.8 | ❌ **Drag-and-drop entre colunas** | 🔴 |
+| 5.9 | ❌ **Som de notificação ao novo pedido** | 🔴 |
+| 5.10 | ❌ **Modo fullscreen** | 🔴 |
+| 5.11 | ❌ **Impressão térmica** | 🔴 |
+| 5.12 | ❌ **Cache offline com sincronização** | 🔴 |
+
+**Status:** ⚠️ **CORE PRONTO, UX FALTANDO**
+
+---
+
+## 🟢 MÓDULO 6: QR CODE (85% ✅)
+
+| # | Item | Status |
+|---|------|--------|
+| 6.1 | Geração de QR Code | 🟢 |
+| 6.2 | Cardápio público mobile-first | 🟢 |
+| 6.3 | Filtros por categoria | 🟢 |
+| 6.4 | Indicadores (vegan, sem glúten, promoção) | 🟢 |
+| 6.5 | Carrinho de compras | 🟢 |
+| 6.6 | Checkout público | 🟢 |
+| 6.7 | Pagamento via PIX | 🟢 |
+| 6.8 | API routes completas | 🟢 |
+| 6.9 | ❌ **Exportar PDF para impressão** | 🔴 |
+| 6.10 | ❌ **Validar flag showInQRCode** | 🔴 |
+
+**Status:** ✅ **COMPLETO (core)**
+
+---
+
+## 🟡 MÓDULO 7: DASHBOARD (60% ⚠️)
+
+| # | Item | Status |
+|---|------|--------|
+| 7.1 | Componentes de dashboard | 🟢 |
+| 7.2 | Service `analytics.service.ts` | 🟢 |
+| 7.3 | Service `order.service.ts` | 🟢 |
+| 7.4 | Kanban de pedidos | 🟢 |
+| 7.5 | ❌ **Métricas completas** | 🔴 |
+| 7.6 | ❌ **Gráficos com dados** | 🔴 |
+| 7.7 | ❌ **Filtros de pedidos** | 🔴 |
+| 7.8 | ❌ **Ações de pedido** | 🔴 |
+| 7.9 | ❌ **Timeline com timestamps** | 🔴 |
+
+**Status:** ⚠️ **ESTRUTURA PRONTA, DADOS FALTANDO**
+
+---
+
+## 🔴 MÓDULO 8: STRIPE (50% ⚠️) ⚠️ CRÍTICO
+
+| # | Item | Status |
+|---|------|--------|
+| 8.1 | Integração básica | 🟢 |
+| 8.2 | Service `stripe.service.ts` | 🟢 |
+| 8.3 | Webhook route | 🟢 |
+| 8.4 | ❌ **Checkout Session funcionando** | 🔴 ⚠️ |
+| 8.5 | ❌ **Customer Portal** | 🔴 ⚠️ |
+| 8.6 | ❌ **Webhooks de eventos** | 🔴 ⚠️ |
+| 8.7 | ❌ **Middleware de plano** | 🔴 |
+| 8.8 | ❌ **Página de assinatura** | 🔴 |
+| 8.9 | ❌ **Trial de 14 dias** | 🔴 |
+| 8.10 | ❌ **Emails de notificação** | 🔴 |
+
+**Status:** 🔴 **INTEGRAÇÃO PRONTA, WORKFLOWS FALTANDO** ⚠️ **SEM ISSO NÃO CONSEGUE COBRAR**
+
+---
+
+## 🟡 MÓDULO 9: FIDELIDADE (60% ⚠️)
+
+| # | Item | Status |
+|---|------|--------|
+| 9.1 | Modelo Customer com fidelidade | 🟢 |
+| 9.2 | Service `loyalty.service.ts` | 🟢 |
+| 9.3 | Earn points (R$1 = 1 ponto) | 🟢 |
+| 9.4 | Redeem points (100 = R$5) | 🟢 |
+| 9.5 | Expiração de pontos (365 dias) | 🟢 |
+| 9.6 | Histórico de transações | 🟢 |
+| 9.7 | Service `customer.service.ts` | 🟢 |
+| 9.8 | ❌ **Páginas de gestão de clientes** | 🔴 |
+| 9.9 | ❌ **Dashboard de fidelidade** | 🔴 |
+| 9.10 | ❌ **Integração com bot WhatsApp** | 🔴 |
+| 9.11 | ❌ **Integração com cardápio público** | 🔴 |
+| 9.12 | ❌ **Churn analysis** | 🔴 |
+
+**Status:** ⚠️ **CORE IMPLEMENTADO, UI FALTANDO**
+
+---
+
+## 🔴 MÓDULO 10: REFINAMENTOS (10% ❌) ⚠️ CRÍTICO
+
+| # | Item | Status |
+|---|------|--------|
+| 10.1 | Health check endpoint | 🟢 |
+| 10.2 | Sidebar com navegação | 🟢 |
+| 10.3 | Header com informações | 🟢 |
+| 10.4 | ❌ **Testes (jest)** | 🔴 ⚠️ |
+| 10.5 | ❌ **Documentação de deploy** | 🔴 ⚠️ |
+| 10.6 | ❌ **Documentação de variáveis de ambiente** | 🔴 ⚠️ |
+| 10.7 | ❌ **Rate limiting** | 🔴 |
+| 10.8 | ❌ **Email notifications** | 🔴 |
+| 10.9 | ❌ **Logging e monitoring** | 🔴 |
+| 10.10 | ❌ **Segurança (CORS, CSP, CSRF)** | 🔴 |
+
+**Status:** 🔴 **NÃO INICIADO** ⚠️ **OBRIGATÓRIO PARA PRODUÇÃO**
+
+---
+
+## 🔴 MÓDULO 11: APP DESKTOP ELECTRON (30% ⚠️)
+
+| # | Item | Status |
+|---|------|--------|
+| 11.1 | Estrutura da pasta `app-desktop/` | 🟢 |
+| 11.2 | Tipos TypeScript `types/electron.d.ts` | 🟢 |
+| 11.3 | Componente `UpdateNotification.tsx` | 🟢 |
+| 11.4 | ❌ **electron/main.ts** | 🔴 |
+| 11.5 | ❌ **electron/preload.ts** | 🔴 |
+| 11.6 | ❌ **electron/printer.ts** | 🔴 |
+| 11.7 | ❌ **electron/updater.ts** | 🔴 |
+| 11.8 | ❌ **electron/kds-cache.ts** | 🔴 |
+| 11.9 | ❌ **electron-builder.yml** | 🔴 |
+| 11.10 | ❌ **scripts/build.ps1** | 🔴 |
+| 11.11 | ❌ **.github/workflows/release.yml** | 🔴 |
+
+**Status:** ⚠️ **ESTRUTURA PRONTA, IMPLEMENTAÇÃO FALTANDO**
+
+---
+
+## 📊 RESUMO GERAL
+
+| Módulo | Status | % Completo |
+|--------|--------|----------|
+| 1. Base | 🟢 Completo | 100% |
+| 2. Autenticação | 🟡 Parcial | 75% |
+| 3. Cardápio | 🟢 Completo | 95% |
+| 4. WhatsApp | 🔴 Crítico | 40% |
+| 5. KDS | 🟡 Parcial | 70% |
+| 6. QR Code | 🟢 Completo | 85% |
+| 7. Dashboard | 🟡 Parcial | 60% |
+| 8. Stripe | 🔴 Crítico | 50% |
+| 9. Fidelidade | 🟡 Parcial | 60% |
+| 10. Refinamentos | 🔴 Crítico | 10% |
+| 11. Electron | 🔴 Crítico | 30% |
+| **TOTAL** | **🟡** | **~58%** |
+
+---
+
+## 🚨 BLOQUEADORES CRÍTICOS PARA PRODUÇÃO
+
+**SEM ESTES, NÃO PODE LANÇAR:**
+
+1. **🔴 Bot WhatsApp Completo** (Módulo 4)
+   - [ ] Máquina de estados funcionando
+   - [ ] Fluxo de pedido completo
+   - [ ] Sem isso, cliente não consegue fazer pedido
+
+2. **🔴 Stripe Checkout** (Módulo 8)
+   - [ ] Checkout Session
+   - [ ] Webhooks de eventos
+   - [ ] Sem isso, não consegue cobrar clientes
+
+3. **🔴 Testes** (Módulo 10)
+   - [ ] Cobertura >80%
+   - [ ] Testes críticos implementados
+   - [ ] Sem isso, risco alto de bugs em produção
+
+4. **🔴 Deploy Documentation** (Módulo 10)
+   - [ ] Como fazer deploy?
+   - [ ] Variáveis de ambiente
+   - [ ] Checklist pré-produção
+   - [ ] Sem isso, não consegue deployar
+
+5. **🔴 Segurança** (Módulo 10)
+   - [ ] CORS, CSP, CSRF
+   - [ ] Rate limiting
+   - [ ] Validação de input
+   - [ ] Sem isso, aplicação é vulnerável
+
+---
+
+## ⏱️ TIMELINE ESTIMADA
+
+### Fase 1: Bloqueadores (2-3 semanas)
+- [ ] Bot WhatsApp completo
+- [ ] Stripe checkout funcionando
+- [ ] Testes (>80% cobertura)
+- [ ] Deploy documentation
+
+### Fase 2: Features (2-3 semanas)
+- [ ] KDS melhorado (drag-drop, som, fullscreen)
+- [ ] Dashboard com métricas
+- [ ] Email notifications
+- [ ] Segurança completa
+
+### Fase 3: Polimento (1-2 semanas)
+- [ ] Electron app desktop
+- [ ] UI/UX refinements
+- [ ] Performance optimization
+
+### Fase 4: Produção (Contínuo)
+- [ ] Staging deployment
+- [ ] Teste e2e
+- [ ] Load testing
+- [ ] Production deployment
+
+---
+
+## 📝 RECOMENDAÇÕES
+
+### PRIORIDADE 1: Bot WhatsApp (1 semana)
+- É a funcionalidade principal
+- Sem ela, sistema não funciona
+- Tudo já está pronto, só falta a máquina de estados
+
+### PRIORIDADE 2: Stripe (3-5 dias)
+- Necessário para monetização
+- Checkout + webhooks + page de assinatura
+
+### PRIORIDADE 3: Testes (1-2 semanas)
+- Crítico para confiabilidade
+- Mínimo 80% de cobertura
+
+### PRIORIDADE 4: KDS Melhorado (1 semana)
+- Drag-and-drop, som, fullscreen
+- Importante para operação da cozinha
+
+---
+
+> **Análise realizada:** 14/05/2026
+> **Status Geral:** 🟡 60% implementado, 40% faltando
+> **Recomendação:** NÃO publicar em produção antes de completar bloqueadores críticos
+> **Próximos passos:** Priorizar Bot WhatsApp + Stripe
+
 
 ---
 

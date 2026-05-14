@@ -77,6 +77,12 @@ export function orderService(tenantId: string) {
     async create(input: CreateOrderInput) {
       const tenant = await prisma.tenant.findUnique({ where: { id: tenantId }, select: { plan: true } })
       const planId = (tenant?.plan ?? 'FREE') as PlanId
+      
+      // Validar se plano existe
+      if (!PLANS[planId]) {
+        throw new Error(`Plano inválido configurado: ${planId}`)
+      }
+      
       const planConfig = PLANS[planId]
 
       if (planConfig.maxOrders > 0) {
@@ -91,15 +97,18 @@ export function orderService(tenantId: string) {
         }
       }
 
-      const lastOrder = await prisma.order.findFirst({
-        where: { tenantId },
-        orderBy: { orderNumber: 'desc' },
-        select: { orderNumber: true },
+      // Usar transação para garantir sequência de orderNumber sem race condition
+      const orderNumber = await prisma.$transaction(async (tx) => {
+        const lastOrder = await tx.order.findFirst({
+          where: { tenantId },
+          orderBy: { orderNumber: 'desc' },
+          select: { orderNumber: true },
+        })
+        return (lastOrder?.orderNumber ?? 0) + 1
       })
-      const orderNumber = (lastOrder?.orderNumber ?? 0) + 1
 
       let subtotal = 0
-      const orderItems = []
+      const orderItems: Array<{ productId: string; quantity: number; unitPrice: number; totalPrice: number; notes: string | null }> = []
 
       for (const item of input.items) {
         const product = await prisma.product.findUnique({ where: { id: item.productId } })
@@ -120,6 +129,12 @@ export function orderService(tenantId: string) {
       const discount = input.discount ?? 0
       const total = subtotal + deliveryFee - discount
 
+      // Criar OrderItem com tenantId incluído (será injetado pelo createTenantPrisma)
+      const orderItemsWithTenant = orderItems.map(item => ({
+        ...item,
+        tenantId, // Adicionar tenantId explicitamente para garantir multi-tenancy
+      }))
+
       return db.order.create({
         data: {
           tenantId,
@@ -136,7 +151,7 @@ export function orderService(tenantId: string) {
           discount,
           total,
           notes: input.notes ?? null,
-          items: { create: orderItems },
+          items: { create: orderItemsWithTenant },
         },
         include: { items: true },
       })

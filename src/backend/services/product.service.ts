@@ -1,4 +1,5 @@
 ﻿import { createTenantPrisma } from '@/lib/tenant-prisma'
+import { Prisma } from '@prisma/client'
 import type { ProductInput, StockUpdateInput } from '@/lib/validations/product.schema'
 
 export function productService(tenantId: string) {
@@ -66,18 +67,31 @@ export function productService(tenantId: string) {
       const newStock = existing.stock + input.quantity
       if (newStock < 0) throw new Error('Estoque não pode ficar negativo')
 
+      // Registrar mudança em log
+      await db.inventoryLog.create({
+        data: {
+          tenantId,
+          inventoryItemId: id, // Será o próprio produto como item de inventário
+          productId: id,
+          type: input.quantity > 0 ? 'IN' : 'OUT',
+          quantity: Math.abs(input.quantity),
+          previousStock: new Prisma.Decimal(existing.stock),
+          newStock: new Prisma.Decimal(newStock),
+          reason: input.reason ?? 'Ajuste manual',
+        },
+      })
+
       return db.product.update({ where: { id }, data: { stock: newStock } })
     },
 
     async getOutOfStock() {
-      return db.product.findMany({
-        where: {
-          stock: { not: null, lte: db.product.fields.minStock },
-          active: true,
-        },
+      const allProducts = await db.product.findMany({
+        where: { active: true },
         include: { category: { select: { name: true } } },
-        orderBy: { stock: 'asc' },
       })
+      
+      return allProducts.filter(p => p.stock !== null && p.stock <= p.minStock)
+        .sort((a, b) => (a.stock ?? 0) - (b.stock ?? 0))
     },
   }
 }

@@ -100,23 +100,32 @@ export function loyaltyService(tenantId: string) {
       })
 
       for (const tx of expired) {
+        const customer = await db.customer.findUnique({ where: { id: tx.customerId } })
+        if (!customer) continue
+
+        // Calcular novo saldo após expiração
+        const newBalance = Math.max(0, customer.loyaltyPoints - tx.points)
+
+        // Marcar como expirado
         await db.loyaltyTransaction.update({
           where: { id: tx.id },
-          data: { redeemed: true },
+          data: { redeemed: true, redeemedAt: new Date() },
         })
 
+        // Atualizar pontos do cliente
         await db.customer.update({
           where: { id: tx.customerId },
-          data: { loyaltyPoints: { increment: -tx.points } },
+          data: { loyaltyPoints: newBalance },
         })
 
+        // Criar registro de expiração
         await db.loyaltyTransaction.create({
           data: {
             tenantId,
             customerId: tx.customerId,
             type: 'EXPIRED',
             points: -tx.points,
-            balanceAfter: 0,
+            balanceAfter: newBalance,
             description: 'Pontos expirados (365 dias)',
           },
         })

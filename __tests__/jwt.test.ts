@@ -1,4 +1,4 @@
-﻿import { signAccessToken, signRefreshToken, verifyToken } from '@/lib/jwt'
+﻿import { signAccessToken, signRefreshToken, verifyToken } from '@/backend/lib/jwt'
 
 describe('JWT', () => {
   const payload = { userId: 'user-1', tenantId: 'tenant-1', role: 'OWNER', tenantSlug: 'teste' }

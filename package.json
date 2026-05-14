@@ -6,16 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "test": "jest",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio",
-    "db:reset": "prisma migrate reset"
+    "lint": "next lint --dir src/",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test": "jest --config config/jest.config.ts",
+    "db:migrate": "prisma migrate dev --schema src/backend/prisma/schema.prisma",
+    "db:seed": "prisma db seed --schema src/backend/prisma/schema.prisma",
+    "db:studio": "prisma studio --schema src/backend/prisma/schema.prisma",
+    "db:reset": "prisma migrate reset --schema src/backend/prisma/schema.prisma"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx src/backend/prisma/seed.ts",
+    "schema": "src/backend/prisma/schema.prisma"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

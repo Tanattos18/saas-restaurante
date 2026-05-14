@@ -8,13 +8,27 @@ export interface JwtPayload extends JWTPayload {
   plan?: string
 }
 
-const getAccessSecret = () => new TextEncoder().encode(
-  process.env.JWT_ACCESS_SECRET ?? 'fallback-access-secret-nao- use-em-producao'
-)
+const getAccessSecret = () => {
+  const secret = process.env.JWT_ACCESS_SECRET
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_ACCESS_SECRET não configurado em produção')
+    }
+    console.warn('⚠️ JWT_ACCESS_SECRET não definido, usando fallback para desenvolvimento')
+  }
+  return new TextEncoder().encode(secret ?? 'fallback-access-secret-development-only')
+}
 
-const getRefreshSecret = () => new TextEncoder().encode(
-  process.env.JWT_REFRESH_SECRET ?? 'fallback-refresh-secret-nao- use-em-producao'
-)
+const getRefreshSecret = () => {
+  const secret = process.env.JWT_REFRESH_SECRET
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_REFRESH_SECRET não configurado em produção')
+    }
+    console.warn('⚠️ JWT_REFRESH_SECRET não definido, usando fallback para desenvolvimento')
+  }
+  return new TextEncoder().encode(secret ?? 'fallback-refresh-secret-development-only')
+}
 
 export async function signAccessToken(payload: Omit<JwtPayload, keyof JWTPayload>): Promise<string> {
   return new SignJWT({ ...payload } as unknown as JWTPayload)

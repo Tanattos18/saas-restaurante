@@ -5,8 +5,11 @@ const config: Config = {
   testEnvironment: 'node',
   roots: ['<rootDir>/__tests__'],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/backend/(.*)$': '<rootDir>/src/backend/$1',
+    '^@/frontend/(.*)$': '<rootDir>/src/frontend/$1',
   },
+  testMatch: ['**/__tests__/**/*.test.ts?(x)'],
 }
 
 export default config

@@ -1,42 +1,24 @@
 {
+  "extends": "./config/tsconfig.json",
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "target": "ES2017"
+      "@/*": ["src/*"],
+      "@/frontend/*": ["src/frontend/*"],
+      "@/backend/*": ["src/backend/*"],
+      "@/types": ["src/frontend/types"],
+      "@/lib": ["src/backend/lib"],
+      "@/lib/*": ["src/backend/lib/*"],
+      "@/services": ["src/backend/services"],
+      "@/services/*": ["src/backend/services/*"],
+      "@/components/*": ["src/frontend/components/*"],
+      "@/prisma": ["src/backend/prisma"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "__tests__"
   ]
 }
