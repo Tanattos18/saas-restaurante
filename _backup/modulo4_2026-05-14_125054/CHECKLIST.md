@@ -59,13 +59,13 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 4.1 | `lib/whatsapp.ts` — sendText, sendButtons, sendList, parseWebhook, formatPhone | 🟢 |
-| 4.2 | `services/whatsapp/templates.ts` — templates de mensagem | 🟢 |
-| 4.3 | `services/whatsapp/bot.service.ts` — máquina de estado COMPLETA | 🟢 |
-| 4.4 | `services/whatsapp/message.service.ts` — envio/recebimento | 🟢 |
-| 4.5 | `services/whatsapp/flow.service.ts` — fluxos conversacionais | 🟢 |
-| 4.6 | `app/api/webhooks/whatsapp/route.ts` — webhook Evolution API | 🟢 |
-| 4.7 | Tratamento: sessão expira 24h, 3 erros → humano, "cancelar"/"menu" global | 🟢 |
+| 4.1 | `lib/whatsapp.ts` — sendText, sendButtons, sendList, parseWebhook, formatPhone | 🔴 |
+| 4.2 | `services/whatsapp/templates.ts` — templates de mensagem | 🔴 |
+| 4.3 | `services/whatsapp/bot.service.ts` — máquina de estado COMPLETA | 🔴 |
+| 4.4 | `services/whatsapp/message.service.ts` — envio/recebimento | 🔴 |
+| 4.5 | `services/whatsapp/flow.service.ts` — fluxos conversacionais | 🔴 |
+| 4.6 | `app/api/webhooks/whatsapp/route.ts` — webhook Evolution API | 🔴 |
+| 4.7 | Tratamento: sessão expira 24h, 3 erros → humano, "cancelar"/"menu" global | 🔴 |
 
 ---
 
@@ -169,14 +169,14 @@
 | Módulo 1 — Base | 10 | 8 | 80% |
 | Módulo 2 — Auth | 10 | 10 | 100% |
 | Módulo 3 — Cardápio | 10 | 9 | 90% |
-| Módulo 4 — WhatsApp | 7 | 7 | 100% |
+| Módulo 4 — WhatsApp | 7 | 0 | 0% |
 | Módulo 5 — KDS | 9 | 0 | 0% |
 | Módulo 6 — QR Code | 9 | 0 | 0% |
 | Módulo 7 — Dashboard | 11 | 0 | 0% |
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **88** | **34** | **39%** |
+| **Total** | **88** | **27** | **31%** |
 
 ---
 *Última atualização: 14/05/2026*
