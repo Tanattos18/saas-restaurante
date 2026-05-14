@@ -8,14 +8,16 @@
 
 | # | Item | Status |
 |---|------|--------|
-| 1.1 | `prisma/schema.prisma` — schema completo com 11+ modelos | 🔴 |
-| 1.2 | `lib/prisma.ts` — singleton Prisma (sem headers) | 🔴 |
-| 1.3 | `lib/tenant-prisma.ts` — factory `createTenantPrisma(tenantId)` com `$extends` | 🔴 |
-| 1.4 | `.env.example` — todas as variáveis de ambiente | 🔴 |
-| 1.5 | `package.json` — dependências (Next.js, Prisma, jose, bcryptjs, Zod, Stripe, shadcn, Tailwind) | 🔴 |
-| 1.6 | `prisma/seed.ts` — seed com 1 tenant + admin + 3 categorias + 5 produtos | 🔴 |
-| 1.7 | Rodar `npx prisma migrate dev --name init` | 🔴 |
-| 1.8 | Rodar `npx prisma db seed` | 🔴 |
+| 1.1 | `prisma/schema.prisma` — schema completo com 15 modelos + 18 enums | 🟢 |
+| 1.2 | `lib/prisma.ts` — singleton Prisma (sem headers) | 🟢 |
+| 1.3 | `lib/tenant-prisma.ts` — factory `createTenantPrisma(tenantId)` com `$extends` | 🟢 |
+| 1.4 | `.env.example` — todas as variáveis de ambiente | 🟢 |
+| 1.5 | `package.json` — dependências (Next.js, Prisma, jose, bcryptjs, Zod, Stripe, shadcn, Tailwind v4) | 🟢 |
+| 1.6 | `prisma/seed.ts` — seed com 1 tenant + admin + 3 categorias + 5 produtos | 🟢 |
+| 1.7 | `tsconfig.json`, `next.config.ts`, `postcss.config.js`, `app/globals.css` | 🟢 |
+| 1.8 | `app/layout.tsx`, `app/page.tsx` (redirect → /login) | 🟢 |
+| 1.9 | Rodar `npx prisma migrate dev --name init` (pendente: precisa de PostgreSQL) | 🟡 |
+| 1.10 | Rodar `npx prisma db seed` (pendente: precisa da migrate) | 🟡 |
 
 ---
 
@@ -164,7 +166,7 @@
 
 | Fase | Total Itens | Concluídos | Progresso |
 |------|-------------|------------|-----------|
-| Módulo 1 — Base | 8 | 0 | 0% |
+| Módulo 1 — Base | 10 | 8 | 80% |
 | Módulo 2 — Auth | 10 | 0 | 0% |
 | Módulo 3 — Cardápio | 10 | 0 | 0% |
 | Módulo 4 — WhatsApp | 7 | 0 | 0% |
@@ -174,7 +176,7 @@
 | Módulo 8 — Stripe | 8 | 0 | 0% |
 | Módulo 9 — CRM | 6 | 0 | 0% |
 | Módulo 10 — Refinamentos | 8 | 0 | 0% |
-| **Total** | **86** | **0** | **0%** |
+| **Total** | **88** | **8** | **9%** |
 
 ---
 *Última atualização: 14/05/2026*
