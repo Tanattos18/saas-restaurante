@@ -50,9 +50,43 @@ export function KitchenBoard({ deviceCode }: Props) {
   useEffect(() => {
     const eventSource = new EventSource(`/api/kds/stream?deviceCode=${deviceCode}`)
     const knownIds = new Set<string>()
+    let wasOffline = false
 
-    eventSource.onopen = () => setConnected(true)
-    eventSource.onerror = () => setConnected(false)
+    async function saveOrdersOffline(currentOrders: Order[]) {
+      if (window.electronAPI && currentOrders.length > 0) {
+        for (const order of currentOrders) {
+          await window.electronAPI.saveOfflineOrder(order)
+        }
+      }
+    }
+
+    async function loadOfflineOrders() {
+      if (!window.electronAPI) return
+      const offline = await window.electronAPI.getOfflineOrders() as Order[]
+      if (offline.length > 0) {
+        setOrders(offline)
+        await window.electronAPI.syncOfflineOrders()
+      }
+    }
+
+    eventSource.onopen = async () => {
+      setConnected(true)
+      if (wasOffline) {
+        await loadOfflineOrders()
+        wasOffline = false
+      }
+    }
+
+    eventSource.onerror = async () => {
+      setConnected(false)
+      if (!wasOffline) {
+        wasOffline = true
+        setOrders((prev) => {
+          saveOrdersOffline(prev)
+          return prev
+        })
+      }
+    }
 
     eventSource.onmessage = (event) => {
       try {
@@ -86,9 +120,14 @@ export function KitchenBoard({ deviceCode }: Props) {
     <div className="min-h-screen bg-gray-900 text-white p-4">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">👨‍🍳 Cozinha</h1>
-        <div className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm ${connected ? 'bg-green-600' : 'bg-red-600'}`}>
-          <span className="h-2 w-2 rounded-full bg-white" />
-          {connected ? 'Online' : 'Offline'}
+        <div className="flex items-center gap-2">
+          {!connected && window.electronAPI && (
+            <span className="rounded-full bg-blue-600 px-3 py-1 text-xs">📦 Cache Local</span>
+          )}
+          <div className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm ${connected ? 'bg-green-600' : 'bg-red-600'}`}>
+            <span className="h-2 w-2 rounded-full bg-white" />
+            {connected ? 'Online' : 'Offline'}
+          </div>
         </div>
       </div>
 

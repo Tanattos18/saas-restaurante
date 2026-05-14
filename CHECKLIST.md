@@ -174,6 +174,11 @@
 | 10.19 | `electron-builder.yml` — build Windows/macOS/Linux | 🟢 |
 | 10.20 | `scripts/build.ps1` — script de build automatizado | 🟢 |
 | 10.21 | `.github/workflows/release.yml` — CI/CD multiplataforma | 🟢 |
+| 10.22 | `types/electron.d.ts` — declarações TypeScript do electronAPI | 🟢 |
+| 10.23 | `OrderTicket.tsx` — botão de impressão térmica (Electron) | 🟢 |
+| 10.24 | `KitchenBoard.tsx` — cache offline via electronAPI | 🟢 |
+| 10.25 | `UpdateNotification.tsx` — notificação de atualização | 🟢 |
+| 10.26 | `(platform)/layout.tsx` — componente UpdateNotification adicionado | 🟢 |
 
 ---
 
@@ -190,7 +195,7 @@
 | Módulo 7 — Dashboard | 11 | 11 | 100% |
 | Módulo 8 — Stripe | 8 | 8 | 100% |
 | Módulo 9 — CRM | 6 | 5 | 83% |
-| Módulo 10 — Refinamentos | 21 | 20 | 95% |
+| Módulo 10 — Refinamentos | 26 | 25 | 96% |
 ## 🔄 Itens Pendentes (Backlog)
 
 | # | Item | Módulo | Prioridade |
@@ -200,7 +205,7 @@
 | P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
 | P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
 
-| **Total** | **103** | **98** | **95%** |
+| **Total** | **108** | **103** | **95%** |
 
 ---
 *Última atualização: 14/05/2026*

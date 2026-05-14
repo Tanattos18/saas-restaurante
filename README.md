@@ -592,7 +592,7 @@ npm run lint          # ESLint
 | Métrica | Valor |
 |---------|-------|
 | Módulos implementados | 10/10 |
-| Itens concluídos | 98/103 (95%) |
+| Itens concluídos | 103/108 (95%) |
 | Tags de backup | 14 (v0.1 a v2.0) |
 | TypeScript | 0 erros |
 | Prisma | Schema válido |

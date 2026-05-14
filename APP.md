@@ -367,7 +367,7 @@ npm install
 npm run dev  # Inicia Electron + Next.js dev server
 ```
 
-#### O que foi criado:
+#### O que foi criado (estrutura + integração React):
 
 | Arquivo | Função |
 |---------|--------|
@@ -376,6 +376,10 @@ npm run dev  # Inicia Electron + Next.js dev server
 | `electron/printer.ts` | Impressão térmica — formata pedido, lista impressoras, página de teste |
 | `electron/updater.ts` | Auto-update com electron-updater + GitHub Releases |
 | `electron/kds-cache.ts` | Cache offline de pedidos em JSON (`userData/kds-offline.json`) |
+| `types/electron.d.ts` | Declarações TypeScript do `window.electronAPI` para o frontend |
+| `components/platform/UpdateNotification.tsx` | Notificação de update disponível (baixar/instalar) |
+| `components/platform/kds/OrderTicket.tsx` | Botão de impressão térmica (só aparece no Electron) |
+| `components/platform/kds/KitchenBoard.tsx` | Salva pedidos no cache offline quando desconecta |
 | `electron-builder.yml` | Build para Windows (NSIS), macOS (DMG), Linux (AppImage) |
 | `scripts/build.ps1` | Script de build: Next.js → static export → copiar → electron-builder |
 | `.github/workflows/release.yml` | CI/CD: build multiplataforma em cada tag v* |
@@ -450,4 +454,4 @@ app-desktop/                       # Electron App (dentro do monorepo)
 > **Versão do projeto:** v1.0
 > **Autor:** SaaS Restaurante Team
 > **Status PWA:** ✅ Implementado (14/05/2026) — `@serwist/next` + service worker + manifest
-> **Status Electron:** ✅ Estrutura criada (14/05/2026) — `saas-restaurante-app/` com main, preload, printer, updater, kds-cache
+> **Status Electron:** ✅ Estrutura criada + integração React (14/05/2026) — tipos, impressão, KDS offline, notificação de update

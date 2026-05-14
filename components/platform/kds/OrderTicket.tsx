@@ -1,5 +1,6 @@
 ﻿'use client'
 
+import { useState } from 'react'
 import { KitchenTimer } from './KitchenTimer'
 
 interface OrderItem {
@@ -45,7 +46,22 @@ const statusActions: Record<string, { label: string; nextStatus: string; color: 
 }
 
 export function OrderTicket({ order, onStatusChange }: Props) {
+  const [printing, setPrinting] = useState(false)
   const action = statusActions[order.status]
+
+  async function handlePrint() {
+    if (!window.electronAPI) return
+    setPrinting(true)
+    await window.electronAPI.printOrder({
+      orderNumber: order.orderNumber,
+      channel: order.channel,
+      customerName: order.customer?.name ?? order.customerName,
+      items: order.items,
+      kitchenNotes: order.kitchenNotes,
+      createdAt: order.createdAt,
+    })
+    setPrinting(false)
+  }
 
   return (
     <div className="rounded-lg bg-gray-800 p-4 shadow-lg border border-gray-700">
@@ -54,7 +70,19 @@ export function OrderTicket({ order, onStatusChange }: Props) {
           <span className="text-2xl font-bold text-white">#{order.orderNumber}</span>
           <span className="text-xl">{channelIcons[order.channel] ?? '📋'}</span>
         </div>
-        <KitchenTimer createdAt={order.createdAt} />
+        <div className="flex items-center gap-2">
+          {window.electronAPI && (
+            <button
+              onClick={handlePrint}
+              disabled={printing}
+              className="rounded bg-gray-700 px-2 py-1 text-xs text-gray-300 hover:bg-gray-600 disabled:opacity-50"
+              title="Imprimir pedido"
+            >
+              {printing ? '🖨...' : '🖨'}
+            </button>
+          )}
+          <KitchenTimer createdAt={order.createdAt} />
+        </div>
       </div>
 
       <div className="text-sm text-gray-400 mb-2">
