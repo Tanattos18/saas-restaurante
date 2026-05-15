@@ -312,4 +312,28 @@ Acesse: `http://localhost:3000/login`
 
 ---
 
+---
+
+## 🆕 Correções (15/05/2026 — 2ª rodada)
+
+### 1. Middleware — APIs Públicas Liberadas
+**Problema:** `/api/menu` e `/api/orders` bloqueados para clientes não autenticados.
+**Correção:** Adicionados à lista `publicApiPrefixes` no middleware.
+
+### 2. ProductList — Decimal do Prisma
+**Problema:** `TypeError: product.price.toFixed is not a function` porque Prisma retorna Decimal como string.
+**Correção:** `Number(product.price).toFixed(2)` em todo o ProductList.
+
+### 3. QR Code — URL com localhost
+**Problema:** `.env` com `NEXT_PUBLIC_APP_URL="http://localhost:3000"` sobrescrevia o host real.
+**Correção:** Prioridade invertida — host real primeiro, env var como fallback.
+**Arquivo:** `app/api/qr-code/tables/route.ts`
+
+### 4. Páginas Faltantes Criadas
+Criadas 6 páginas que estavam com 404:
+- `/inventory`, `/financial`, `/financial/reports`
+- `/settings`, `/settings/team`, `/settings/whatsapp`
+
+---
+
 > **Próximas atualizações:** Testes unitários, rate limiting, refinamentos finais para produção

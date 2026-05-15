@@ -874,7 +874,51 @@ O TypeScript compila AMBAS, causando erros quando apenas uma versão é atualiza
 
 ---
 
-> **Última atualização:** 15/05/2026
+### 3. **Middleware Bloqueava APIs Públicas (menu e orders)**
+
+**Localização:** `src/backend/middleware.ts`
+
+**Problema:** As rotas `/api/menu/*` e `/api/orders` não estavam na lista de prefixos públicos do middleware. Clientes escaneando QR Code recebiam erro 401 ao tentar carregar o cardápio ou fazer pedido.
+
+**Causa:** O middleware só permitia acesso sem autenticação a `/api/auth` e `/api/webhooks`.
+
+**Solução:** Adicionado `/api/menu` e `/api/orders` aos `publicApiPrefixes` no middleware.
+
+**Impacto:** 🔴 Crítico — Impedia completamente o uso do cardápio público e pedidos via QR Code
+
+**Status:** ✅ **CORRIGIDO**
+
+---
+
+### 4. **Decimal do Prisma não convertido para Number no ProductList**
+
+**Localização:** `src/frontend/components/platform/menu/ProductList.tsx`
+
+**Problema:** O Prisma retorna campos `Decimal` como string. Tentar chamar `.toFixed()` em uma string causa `TypeError: product.price.toFixed is not a function`.
+
+**Solução:** Substituir `product.price.toFixed(2)` por `Number(product.price).toFixed(2)` em todas as ocorrências.
+
+**Impacto:** 🔴 Crítico — Impedia a página de cardápio de renderizar no painel
+
+**Status:** ✅ **CORRIGIDO**
+
+---
+
+### 5. **QR Code usava localhost fixo em vez do IP real**
+
+**Localização:** `app/api/qr-code/tables/route.ts`
+
+**Problema:** O `.env` tinha `NEXT_PUBLIC_APP_URL="http://localhost:3000"`, e o código dava prioridade a essa variável. O QR Code gerava URLs com `localhost`, inacessíveis do celular.
+
+**Solução:** Invertida a prioridade — usar o header `Host` da requisição primeiro, e só usar a env var se estiver preenchida.
+
+**Impacto:** 🟡 Alto — QR Code só funcionava no próprio PC
+
+**Status:** ✅ **CORRIGIDO**
+
+---
+
+> **Última atualização:** 15/05/2026 (2ª rodada)
 > **Analisado por:** opencode
 > **Versão do projeto:** 1.0.0-NEW-ANALYSIS
-> **Erros corrigidos (15/05):** PostCSS config + Duplicação de páginas app/ — Ambas as correções aplicadas e sincronizadas
+> **Erros corrigidos (15/05):** PostCSS config, Duplicação páginas, Middleware público, Decimal ProductList, QR Code localhost

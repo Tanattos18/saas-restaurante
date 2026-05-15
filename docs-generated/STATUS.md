@@ -32,6 +32,8 @@
 | 10 | MODULO-10-REFINAMENTOS.md | ✅ Completo |
 | 11 | MODULO-11-DESIGN.md | ✅ Atualizado (redesign visual 15/05) |
 | 12 | MODULO-12-VISUAL.md | ✅ Criado (refinamentos visuais) |
+| — | ERROS_ENCONTRADOS.md | ✅ Atualizado (5 novos erros 15/05) |
+| — | ATUALIZACOES.md | ✅ Atualizado (correções 2ª rodada) |
 
 ---
 
