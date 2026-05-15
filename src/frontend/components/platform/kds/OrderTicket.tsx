@@ -82,7 +82,7 @@ export function OrderTicket({ order, onStatusChange }: Props) {
               {printing ? '🖨...' : '🖨'}
             </button>
           )}
-          <KitchenTimer createdAt={order.createdAt} />
+          <KitchenTimer createdAt={order.createdAt} status={order.status} />
         </div>
       </div>
 

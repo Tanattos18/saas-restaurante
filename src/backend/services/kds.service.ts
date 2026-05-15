@@ -1,5 +1,6 @@
 ﻿import prisma from '@/backend/lib/prisma'
 import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
+import { notify } from '@/backend/lib/pg-notify'
 import crypto from 'crypto'
 
 export function kdsService(tenantId: string) {
@@ -26,10 +27,12 @@ export function kdsService(tenantId: string) {
         CANCELED: { canceledAt: now },
       }
 
-      return db.order.update({
+      const updated = await db.order.update({
         where: { id: orderId },
         data: { status: status as never, ...(timestamps[status] ?? {}) },
       })
+      notify(`kds_${tenantId}`, JSON.stringify({ type: 'UPDATE', orderId, status })).catch(() => {})
+      return updated
     },
 
     async registerDevice(name: string, type: string) {

@@ -34,6 +34,80 @@ interface CartItem {
 
 type Props = { params: Promise<{ tenantSlug: string; tableNumber: string }> }
 
+const STATUS_LABELS: Record<string, string> = {
+  PENDING: 'Aguardando confirmação',
+  ACCEPTED: 'Pedido aceito',
+  PREPARING: 'Preparando',
+  READY: 'Pronto!',
+  ON_DELIVERY: 'Saiu para entrega',
+  DELIVERED: 'Entregue',
+  CANCELED: 'Cancelado',
+}
+
+const STATUS_ICONS: Record<string, string> = {
+  PENDING: '⏳',
+  ACCEPTED: '✅',
+  PREPARING: '👨‍🍳',
+  READY: '🍽️',
+  ON_DELIVERY: '🛵',
+  DELIVERED: '✅',
+  CANCELED: '❌',
+}
+
+function OrderTracking({ orderNumber, tenantSlug }: { orderNumber: number; tenantSlug: string }) {
+  const [status, setStatus] = useState('PENDING')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    function checkStatus() {
+      fetch(`/api/orders/check-status?orderNumber=${orderNumber}&tenantSlug=${tenantSlug}`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.success) {
+            setStatus(d.data.status)
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false))
+    }
+    checkStatus()
+    const interval = setInterval(checkStatus, 8000)
+    return () => clearInterval(interval)
+  }, [orderNumber, tenantSlug])
+
+  const isFinished = status === 'DELIVERED' || status === 'CANCELED'
+
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4 bg-background">
+      <div className="text-center max-w-sm">
+        <div className="text-6xl mb-6">{STATUS_ICONS[status] || '⏳'}</div>
+        <h1 className="text-2xl font-bold mb-2">Pedido #{orderNumber}</h1>
+        <div className={`inline-block rounded-full px-4 py-1.5 text-sm font-medium mt-2 ${
+          status === 'CANCELED' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+          status === 'READY' || status === 'DELIVERED' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
+          'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+        }`}>
+          {STATUS_LABELS[status] || status}
+        </div>
+        <p className="text-sm text-muted-foreground mt-6">
+          {status === 'PENDING' && 'Aguardando o restaurante aceitar seu pedido...'}
+          {status === 'ACCEPTED' && 'Seu pedido foi aceito! Em breve começaremos o preparo.'}
+          {status === 'PREPARING' && 'Seu pedido está sendo preparado com carinho.'}
+          {status === 'READY' && 'Seu pedido está pronto! 🎉'}
+          {status === 'DELIVERED' && 'Pedido entregue. Bom apetite! 🎉'}
+          {status === 'CANCELED' && 'Pedido cancelado.'}
+        </p>
+        {!isFinished && !loading && (
+          <div className="flex items-center justify-center gap-2 mt-6 text-xs text-muted-foreground">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-soft" />
+            Atualizando automaticamente...
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function TableOrderingPage({ params }: Props) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCheckout, setShowCheckout] = useState(false)
@@ -73,15 +147,7 @@ export default function TableOrderingPage({ params }: Props) {
   }, [])
 
   if (orderNumber) {
-    return (
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="text-center">
-          <p className="text-4xl mb-4">✅</p>
-          <h1 className="text-2xl font-bold mb-2">Pedido #{orderNumber} recebido!</h1>
-          <p className="text-muted-foreground">Aguarde. Seu pedido está sendo preparado.</p>
-        </div>
-      </div>
-    )
+    return <OrderTracking orderNumber={orderNumber} tenantSlug={tenantSlug} />
   }
 
   return (

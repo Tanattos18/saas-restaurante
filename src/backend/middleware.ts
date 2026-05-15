@@ -16,6 +16,7 @@ const publicApiPrefixes = [
   '/api/webhooks',
   '/api/menu',
   '/api/orders',
+  '/api/orders/check-status',
 ]
 
 export async function middleware(request: NextRequest) {

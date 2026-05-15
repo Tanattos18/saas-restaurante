@@ -1,5 +1,6 @@
 ﻿import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
 import prisma from '@/backend/lib/prisma'
+import { notify } from '@/backend/lib/pg-notify'
 import { PLANS, type PlanId } from '@/backend/lib/stripe'
 
 interface CreateOrderInput {
@@ -167,7 +168,7 @@ export function orderService(tenantId: string) {
         CANCELED: { canceledAt: now },
       }
 
-      return db.order.update({
+      const updated = await db.order.update({
         where: { id },
         data: {
           status: status as never,
@@ -175,6 +176,8 @@ export function orderService(tenantId: string) {
           ...(notes ? { kitchenNotes: notes } : {}),
         },
       })
+      notify(`kds_${tenantId}`, JSON.stringify({ type: 'UPDATE', orderId: id, status })).catch(() => {})
+      return updated
     },
 
     async cancel(id: string, reason: string) {

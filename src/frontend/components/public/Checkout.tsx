@@ -88,17 +88,20 @@ export function Checkout({ items, tenantSlug, tableNumber, onClose, onComplete }
 
           <div>
             <label className="block text-sm font-medium mb-2">Pagamento</label>
-            <div className="flex gap-2">
-              {([['PIX', '💳 PIX'], ['CASH', '💵 Dinheiro'], ['CARD', '💳 Cartão']] as const).map(([value, label]) => (
+            <div className="grid grid-cols-3 gap-2">
+              {([['PIX', '💳', 'PIX'], ['CASH', '💵', 'Dinheiro'], ['CARD', '💳', 'Cartão']] as const).map(([value, icon, label]) => (
                 <button
                   key={value}
                   type="button"
                   onClick={() => setPayment(value)}
-                  className={`flex-1 rounded-md border px-3 py-2 text-sm font-medium ${
-                    payment === value ? 'border-primary bg-primary/10' : 'border-input hover:bg-muted'
+                  className={`flex flex-col items-center gap-1.5 rounded-xl border-2 px-3 py-4 text-sm font-medium transition-all duration-200 ${
+                    payment === value
+                      ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 shadow-sm'
+                      : 'border-input bg-card text-muted-foreground hover:border-muted-foreground/30 hover:bg-muted/50'
                   }`}
                 >
-                  {label}
+                  <span className="text-xl">{icon}</span>
+                  <span>{label}</span>
                 </button>
               ))}
             </div>

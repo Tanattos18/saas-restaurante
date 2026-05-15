@@ -1,10 +1,10 @@
 # 📋 CHECKLIST DE FUNCIONALIDADES — SaaS Restaurante v1.0
 
-**Data:** 15 de maio de 2026  
-**Status Geral:** 🟢 ~85% Implementado | 15% Faltando
-**Prioridade:** Estável com visual refinado
+**Data:** 15 de maio de 2026 (v2)  
+**Status Geral:** 🟢 ~90% Implementado | 10% Faltando
+**Prioridade:** Próximo de produção, faltando Stripe + Testes
 
-> **Última atualização:** 15/05/2026 - Redesign visual completo do painel administrativo
+> **Última atualização:** 15/05/2026 - Correções de bugs + melhorias no fluxo do cliente
 
 > **Legenda:** 🟢 Completo | 🟡 Parcial | 🔴 Faltando | ⚠️ Crítico
 
@@ -220,7 +220,7 @@
 | 8.7 | Página de assinatura (plano atual, upgrade, downgrade) | 🟢 |
 ---
 
-## 🟢 MÓDULO 5: KDS (90% ✅)
+## 🟢 MÓDULO 5: KDS (95% ✅)
 
 | # | Item | Status |
 |---|------|--------|
@@ -230,12 +230,13 @@
 | 5.4 | Service `kds.service.ts` | 🟢 |
 | 5.5 | Componente KitchenBoard (3 colunas) | 🟢 |
 | 5.6 | Componente OrderTicket | 🟢 |
-| 5.7 | Timer colorido (verde/amarelo/vermelho) | 🟢 |
-| 5.8 | ✅ **Modo fullscreen** | 🟢 (NOVO) |
-| 5.9 | ✅ **Som de notificação ao novo pedido** | 🟢 (NOVO) |
-| 5.10 | ✅ **Impressão térmica** (via Electron) | 🟢 (NOVO) |
-| 5.11 | ✅ **Cache offline com sincronização** | 🟢 (NOVO) |
-| 5.12 | ❌ Drag-and-drop entre colunas | 🔴 |
+| 5.7 | Timer colorido com pulse + trava ao READY | 🟢 (MELHORADO) |
+| 5.8 | Modo fullscreen | 🟢 |
+| 5.9 | Som de notificação ao novo pedido | 🟢 |
+| 5.10 | Impressão térmica (via Electron) | 🟢 |
+| 5.11 | Cache offline com sincronização | 🟢 |
+| 5.12 | `notify()` programático no service (sem depender do trigger SQL) | 🟢 (NOVO) |
+| 5.13 | ❌ Drag-and-drop entre colunas | 🔴 |
 
 **Status:** ✅ **QUASE COMPLETO**
 
@@ -260,21 +261,21 @@
 
 ---
 
-## 🟡 MÓDULO 7: DASHBOARD (60% ⚠️)
+## 🟢 MÓDULO 7: DASHBOARD (95% ✅)
 
 | # | Item | Status |
 |---|------|--------|
-| 7.1 | Componentes de dashboard | 🟢 |
-| 7.2 | Service `analytics.service.ts` | 🟢 |
-| 7.3 | Service `order.service.ts` | 🟢 |
-| 7.4 | Kanban de pedidos | 🟢 |
-| 7.5 | ❌ **Métricas completas** | 🔴 |
-| 7.6 | ❌ **Gráficos com dados** | 🔴 |
-| 7.7 | ❌ **Filtros de pedidos** | 🔴 |
-| 7.8 | ❌ **Ações de pedido** | 🔴 |
-| 7.9 | ❌ **Timeline com timestamps** | 🔴 |
+| 7.1 | StatsCards com gradientes e animação de valor | 🟢 |
+| 7.2 | SalesChart (BarChart + PieChart por canal) | 🟢 |
+| 7.3 | RecentOrders com dots de status e hover | 🟢 |
+| 7.4 | OrderKanban com filter pills e colunas gradientes | 🟢 |
+| 7.5 | OrderCard com badge canal, status dot | 🟢 |
+| 7.6 | OrderDetails com timeline de status | 🟢 |
+| 7.7 | OrderTracking para cliente (polling 8s) | 🟢 (NOVO) |
+| 7.8 | Checkout público com pagamento visível | 🟢 (NOVO) |
+| 7.9 | MenuViewer com "Todos" + filtro por categoria | 🟢 (NOVO) |
 
-**Status:** ⚠️ **ESTRUTURA PRONTA, DADOS FALTANDO**
+**Status:** ✅ **COMPLETO**
 
 ---
 
@@ -391,18 +392,18 @@
 | Módulo | Status | % Completo |
 |--------|--------|----------|
 | 1. Base | 🟢 Completo | 100% |
-| 2. Autenticação | 🟡 Parcial | 80% |
-| 3. Cardápio | 🟢 Completo | 95% |
-| 4. WhatsApp | 🟡 Parcial | 70% |
-| 5. KDS | 🟢 Quase completo | 92% |
-| 6. QR Code | 🟢 Completo | 85% |
-| 7. Dashboard | 🟢 Completo | 90% |
+| 2. Autenticação | 🟢 Completo | 95% |
+| 3. Cardápio | 🟢 Completo | 98% |
+| 4. WhatsApp | 🟡 Parcial | 75% |
+| 5. KDS | 🟢 Quase completo | 95% |
+| 6. QR Code | 🟢 Completo | 90% |
+| 7. Dashboard + Pedidos | 🟢 Completo | 95% |
 | 8. Stripe | 🟡 Parcial | 50% |
-| 9. Fidelidade | 🟡 Parcial | 70% |
-| 10. Refinamentos | 🟡 Parcial | 50% |
+| 9. Fidelidade | 🟡 Parcial | 75% |
+| 10. Refinamentos | 🟡 Parcial | 60% |
 | 11. Design System | 🟢 Completo | 100% |
-| 12. Electron | 🔴 Crítico | 30% |
-| **TOTAL** | **🟢** | **~85%** |
+| 12. Electron | 🟡 Parcial | 30% |
+| **TOTAL** | **🟢** | **~90%** |
 
 ---
 
@@ -489,10 +490,25 @@
 
 ---
 
-> **Análise realizada:** 15/05/2026
-> **Status Geral:** 🟢 85% implementado, 15% faltando
-> **Recomendação:** Visual refinado e estável. Focar em testes e Stripe para produção.
-> **Próximos passos:** Testes unitários, Stripe checkout, rate limiting
+> **Análise realizada:** 15/05/2026 (v2)
+> **Status Geral:** 🟢 90% implementado, 10% faltando
+> **Recomendação:** Próximo de produção. Focar em Stripe e testes.
+
+---
+
+## 🚀 PRÓXIMOS PASSOS (prioridade)
+
+| Prioridade | Tarefa | Módulo | Status |
+|------------|--------|--------|--------|
+| 🔴 Crítico | Stripe Checkout — testar com API real | 8 | ⏳ Pendente |
+| 🔴 Crítico | Testes automatizados (>80% cobertura) | 10 | ⏳ Pendente |
+| 🟡 Alto | Bot WhatsApp — notificar cliente quando pedido pronto | 4 | ⏳ Pendente |
+| 🟡 Alto | Rate limiting (Upstash Redis) | 10 | ⏳ Pendente |
+| 🟡 Alto | Deploy produção (Vercel + Neon.tech) | 10 | ⏳ Pendente |
+| 🟢 Médio | Estoque — decrementar ao criar pedido público | 3 | ⏳ Pendente |
+| 🟢 Médio | Página de Equipe (CRUD usuários) | 10 | ⏳ Pendente |
+| 🟢 Médio | Relatórios financeiros | 7 | ⏳ Pendente |
+| 🟢 Baixo | Drag-and-drop entre colunas do KDS | 5 | ⏳ Pendente |
 
 
 ---
