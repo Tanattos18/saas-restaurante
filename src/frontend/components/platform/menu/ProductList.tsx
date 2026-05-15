@@ -122,11 +122,11 @@ export function ProductList({ tenantSlug }: Props) {
                     <td className="px-4 py-3.5 text-right">
                       {product.promoPrice ? (
                         <div className="flex items-center justify-end gap-1.5">
-                          <span className="text-xs text-muted-foreground line-through">R$ {product.price.toFixed(2)}</span>
-                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">R$ {product.promoPrice.toFixed(2)}</span>
+                          <span className="text-xs text-muted-foreground line-through">R$ {Number(product.price).toFixed(2)}</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">R$ {Number(product.promoPrice).toFixed(2)}</span>
                         </div>
                       ) : (
-                        <span className="font-medium">R$ {product.price.toFixed(2)}</span>
+                        <span className="font-medium">R$ {Number(product.price).toFixed(2)}</span>
                       )}
                     </td>
                     <td className="px-4 py-3.5 text-right">
