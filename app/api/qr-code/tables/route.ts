@@ -12,7 +12,8 @@ export async function GET(request: Request) {
 
     const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? 'localhost:3000'
     const proto = request.headers.get('x-forwarded-proto') ?? 'http'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? `${proto}://${host}`
+    const envUrl = process.env.NEXT_PUBLIC_APP_URL
+    const baseUrl = envUrl ? envUrl : `${proto}://${host}`
 
     if (!tablesParam) {
       return NextResponse.json({ success: false, error: 'Parâmetro tables é obrigatório (ex: tables=1,2,3)' }, { status: 400 })
