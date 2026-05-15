@@ -505,10 +505,20 @@
 | 🟡 Alto | Bot WhatsApp — notificar cliente quando pedido pronto | 4 | ⏳ Pendente |
 | 🟡 Alto | Rate limiting (Upstash Redis) | 10 | ⏳ Pendente |
 | 🟡 Alto | Deploy produção (Vercel + Neon.tech) | 10 | ⏳ Pendente |
-| 🟢 Médio | Estoque — decrementar ao criar pedido público | 3 | ⏳ Pendente |
-| 🟢 Médio | Página de Equipe (CRUD usuários) | 10 | ⏳ Pendente |
-| 🟢 Médio | Relatórios financeiros | 7 | ⏳ Pendente |
 | 🟢 Baixo | Drag-and-drop entre colunas do KDS | 5 | ⏳ Pendente |
+
+## 📋 PÁGINAS DO PAINEL — Pendências
+
+| # | Página | Prioridade | Status | O que falta |
+|---|--------|------------|--------|-------------|
+| 1 | **Estoque** (`/inventory`) | 🔴 Alta | Placeholder | CRUD ingredientes, movimentações, fornecedores, alertas |
+| 2 | **Financeiro** (`/financial`) | 🔴 Alta | Placeholder | Fluxo de caixa, saldo diário, entrada/saída |
+| 3 | **Equipe** (`/settings/team`) | 🔴 Alta | Placeholder | CRUD usuários, convites, permissões |
+| 4 | **WhatsApp** (`/settings/whatsapp`) | 🟡 Média | Placeholder | Conectar número, QR code, status da conexão |
+| 5 | **Relatórios** (`/financial/reports`) | 🟡 Média | Placeholder | Gráficos vendas, produtos mais vendidos, períodos |
+| 6 | **Clientes** — ações | 🟢 Baixa | Parcial | Editar, bloquear, histórico completo |
+| 7 | **Fidelidade** — métricas | 🟢 Baixa | Parcial | Dashboard de pontos, resgates, expiração |
+| 8 | **Detalhe do Pedido** — ações | 🟢 Baixa | Parcial | Ações contextuais mais ricas |
 
 
 ---
