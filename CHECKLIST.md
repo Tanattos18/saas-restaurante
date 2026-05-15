@@ -1,8 +1,10 @@
 # 📋 CHECKLIST DE FUNCIONALIDADES — SaaS Restaurante v1.0
 
 **Data:** 14 de maio de 2026  
-**Status Geral:** 🟡 60% Implementado | 40% Faltando  
-**Prioridade:** Implementar funcionalidades críticas antes de produção
+**Status Geral:** 🟢 ~70% Implementado | 30% Faltando
+**Prioridade:** Estável para desenvolvimento e testes
+
+> **Última atualização:** 14/05/2026 - Melhorias no Design System, KDS, e Integração Fidelidade
 
 > **Legenda:** 🟢 Completo | 🟡 Parcial | 🔴 Faltando | ⚠️ Crítico
 
@@ -70,7 +72,7 @@
 
 ---
 
-## 🔴 MÓDULO 4: BOT WHATSAPP (40% ⚠️) ⚠️ CRÍTICO
+## 🟡 MÓDULO 4: BOT WHATSAPP (70% ⚠️) ⚠️ CRÍTICO
 
 ### ✅ Implementado
 | # | Item | Status |
@@ -78,6 +80,13 @@
 | 4.1 | Integração Evolution API v2 | 🟢 |
 | 4.2 | Webhook `/api/webhooks/whatsapp` | 🟢 |
 | 4.3 | Modelos ChatSession, ChatMessage | 🟢 |
+| 4.4 | Máquina de estados completa (11 estados) | 🟢 |
+| 4.5 | Fluxo de conversação (WELCOME → ORDER_COMPLETE) | 🟢 |
+| 4.6 | Detecção de 3 erros → transferência para atendente | 🟢 |
+| 4.7 | Comandos globais: "cancelar", "menu" | 🟢 |
+| 4.8 | Integração com orderService.create() | 🟢 |
+| 4.9 | **Integração com loyaltyService.earnPoints()** | 🟢 (NOVO) |
+| 4.10 | Suporte a botões interativos | 🟢 |
 | 4.4 | Templates de mensagens básicas | 🟢 |
 | 4.5 | `lib/whatsapp.ts` — helpers de envio | 🟢 |
 
@@ -211,7 +220,7 @@
 | 8.7 | Página de assinatura (plano atual, upgrade, downgrade) | 🟢 |
 ---
 
-## 🟡 MÓDULO 5: KDS (70% ⚠️)
+## 🟢 MÓDULO 5: KDS (90% ✅)
 
 | # | Item | Status |
 |---|------|--------|
@@ -222,13 +231,13 @@
 | 5.5 | Componente KitchenBoard (3 colunas) | 🟢 |
 | 5.6 | Componente OrderTicket | 🟢 |
 | 5.7 | Timer colorido (verde/amarelo/vermelho) | 🟢 |
-| 5.8 | ❌ **Drag-and-drop entre colunas** | 🔴 |
-| 5.9 | ❌ **Som de notificação ao novo pedido** | 🔴 |
-| 5.10 | ❌ **Modo fullscreen** | 🔴 |
-| 5.11 | ❌ **Impressão térmica** | 🔴 |
-| 5.12 | ❌ **Cache offline com sincronização** | 🔴 |
+| 5.8 | ✅ **Modo fullscreen** | 🟢 (NOVO) |
+| 5.9 | ✅ **Som de notificação ao novo pedido** | 🟢 (NOVO) |
+| 5.10 | ✅ **Impressão térmica** (via Electron) | 🟢 (NOVO) |
+| 5.11 | ✅ **Cache offline com sincronização** | 🟢 (NOVO) |
+| 5.12 | ❌ Drag-and-drop entre colunas | 🔴 |
 
-**Status:** ⚠️ **CORE PRONTO, UX FALTANDO**
+**Status:** ✅ **QUASE COMPLETO**
 
 ---
 
@@ -328,7 +337,26 @@
 
 ---
 
-## 🔴 MÓDULO 11: APP DESKTOP ELECTRON (30% ⚠️)
+## 🟢 MÓDULO 11: DESIGN SYSTEM (90% ✅) (NOVO)
+
+| # | Item | Status |
+|---|------|--------|
+| 11.1 | Estrutura em `app/components/` | 🟢 |
+| 11.2 | Sidebar responsiva com ícones SVG | 🟢 |
+| 11.3 | Header com avatar e dropdown | 🟢 |
+| 11.4 | StatsCards com ícones e cores | 🟢 |
+| 11.5 | Icones SVG (Icons.tsx) | 🟢 |
+| 11.6 | UI components (Button, Card, Input, etc) | 🟢 |
+| 11.7 | ✅ **Página Inventory** (estoque) | 🟢 (NOVO) |
+| 11.8 | ✅ **Página Financial** (financeiro) | 🟢 (NOVO) |
+| 11.9 | ✅ **Página Settings** (configurações) | 🟢 (NOVO) |
+| 11.10 | globals.css com design system (Tailwind) | 🟢 |
+
+**Status:** ✅ **COMPLETO**
+
+---
+
+## 🔴 MÓDULO 12: APP DESKTOP ELECTRON (30% ⚠️)
 
 | # | Item | Status |
 |---|------|--------|
@@ -355,15 +383,16 @@
 | 1. Base | 🟢 Completo | 100% |
 | 2. Autenticação | 🟡 Parcial | 75% |
 | 3. Cardápio | 🟢 Completo | 95% |
-| 4. WhatsApp | 🔴 Crítico | 40% |
-| 5. KDS | 🟡 Parcial | 70% |
+| 4. WhatsApp | 🟡 Parcial | 70% (+30% hoje) |
+| 5. KDS | 🟢 Quase completo | 90% (+20% hoje) |
 | 6. QR Code | 🟢 Completo | 85% |
 | 7. Dashboard | 🟡 Parcial | 60% |
-| 8. Stripe | 🔴 Crítico | 50% |
-| 9. Fidelidade | 🟡 Parcial | 60% |
+| 8. Stripe | 🟡 Parcial | 50% |
+| 9. Fidelidade | 🟡 Parcial | 70% (+10%) |
 | 10. Refinamentos | 🔴 Crítico | 10% |
-| 11. Electron | 🔴 Crítico | 30% |
-| **TOTAL** | **🟡** | **~58%** |
+| 11. Design System | 🟢 Completo | 90% (NOVO) |
+| 12. Electron | 🔴 Crítico | 30% |
+| **TOTAL** | **🟡** | **~68%** (+10%) |
 
 ---
 
@@ -371,15 +400,17 @@
 
 **SEM ESTES, NÃO PODE LANÇAR:**
 
-1. **🔴 Bot WhatsApp Completo** (Módulo 4)
-   - [ ] Máquina de estados funcionando
-   - [ ] Fluxo de pedido completo
-   - [ ] Sem isso, cliente não consegue fazer pedido
+1. **🟡 Bot WhatsApp Completo** (Módulo 4) - 70%
+   - [x] Máquina de estados funcionando
+   - [x] Fluxo de pedido completo
+   - [x] Integração com fidelidade (ganhar pontos)
+   - ⚠️ Faltando: notificação quando pedido pronto
 
-2. **🔴 Stripe Checkout** (Módulo 8)
-   - [ ] Checkout Session
-   - [ ] Webhooks de eventos
-   - [ ] Sem isso, não consegue cobrar clientes
+2. **🟡 Stripe Checkout** (Módulo 8) - 50%
+   - [x] Service completo
+   - [x] Checkout Session
+   - [x] Customer Portal
+   - ⚠️ Faltando: testar com API real
 
 3. **🔴 Testes** (Módulo 10)
    - [ ] Cobertura >80%

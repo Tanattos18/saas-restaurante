@@ -67,35 +67,44 @@ Set-Content -Path "pasta\arquivo.ts" -Value $content -Encoding UTF8
 
 ```
 saas-restaurante/
-├── app/                    # Next.js App Router
-│   ├── (auth)/             # Login, register, forgot-password
-│   ├── (platform)/         # Área logada (dashboard, menu, kds...)
-│   ├── (public)/           # Cardápio público (menu, table)
-│   └── api/                # API REST (Route Handlers)
-├── components/             # React components
-│   ├── ui/                 # shadcn/ui
-│   ├── platform/           # Componentes da área logada
-│   └── public/             # Componentes do cardápio público
-├── lib/                    # Utilitários (prisma, jwt, auth, whatsapp, pg-notify, sounds)
-├── app/
-│   └── sw.ts               # Service worker PWA (Serwist)
-├── services/               # Lógica de negócio (cada domínio em um arquivo)
-├── hooks/                  # Custom hooks React
-├── types/                  # Tipos TypeScript
-├── prisma/                 # Schema, migrations, seed
-├── modulos/                # Documentação de cada módulo
-├── _backup/                # Backups físicos
-├── public/
-│   ├── manifest.json       # Manifest PWA
-│   └── icons/              # Ícones PWA (SVG)
-├── APP.md                  # Plano de app instalado (Electron/Tauri/PWA)
-├── docs/                   # Documentação de deploy
-├── __tests__/              # Testes Jest
-├── .env.example            # Template de variáveis de ambiente
-├── middleware.ts           # Next.js Middleware (auth + RBAC)
-├── CHECKLIST.md            # Acompanhamento de progresso
-├── INDEX.md                # Roadmap geral
-└── MANUAL-DE-TRABALHO.md   # Este arquivo
+├── src/
+│   ├── frontend/
+│   │   ├── app/                    # Next.js App Router
+│   │   │   ├── (auth)/             # Login, register, forgot-password
+│   │   │   ├── (platform)/         # Área logada (dashboard, menu, kds...)
+│   │   │   │   └── [tenantSlug]/   # Subdomínio dinâmico do tenant
+│   │   │   │       ├── dashboard/  # Dashboard
+│   │   │   │       ├── menu/       # Produtos
+│   │   │   │       ├── categories/ # Categorias (NOVO! estilo iFood)
+│   │   │   │       ├── orders/     # Pedidos
+│   │   │   │       ├── kds/        # Kitchen Display
+│   │   │   │       └── ...
+│   │   │   ├── (public)/           # Cardápio público (menu, table)
+│   │   │   └── api/                # API REST
+│   │   ├── components/            # Componentes React
+│   │   │   ├── platform/          # Área logada
+│   │   │   │   ├── categories/    # Categorias (NOVO!)
+│   │   │   │   ├── menu/          # Produtos
+│   │   │   │   └── ...
+│   │   │   └── public/            # Cardápio público
+│   │   └── lib/                   # Frontend libs
+│   │
+│   └── backend/
+│       ├── lib/                   # Utilitários (prisma, jwt, auth...)
+│       └── services/              # Lógica de negócio
+│
+├── app/                            # Alternativo/legacy
+├── app-desktop/                    # Electron App
+├── app/sw.ts                       # Service worker PWA
+├── prisma/                         # Schema, migrations
+├── docs-generated/                 # Documentação
+├── _backup/                        # Backups físicos
+├── public/                         # Assets (manifest, icons)
+├── .env.example
+├── middleware.ts
+├── CHECKLIST.md
+├── INDEX.md
+└── MANUAL-DE-TRABALHO.md
 ```
 
 ---
@@ -380,6 +389,38 @@ $content = Get-Content "arquivo" -Raw
 | P2 | Integrar fidelidade com bot (earnPoints ao finalizar pedido) | 9 | Média |
 | P3 | Rate limiting com Upstash Redis (login, webhook, PIX) | 10 | Média |
 | P4 | Testes Jest mais completos (order, bot) | 10 | Baixa |
+
+---
+
+## 13. Funcionalidades Recentes Implementadas
+
+### Categorias Estilo iFood (14/05/2026)
+
+**O que foi implementado:**
+- Grid de cards com ícones emoji coloridos
+- Toggle para ativar/desativar categorias
+- Busca por nome
+- Formulário com seletor de emojis
+- Banner gradiente laranja no cabeçalho
+
+**Arquivos criados:**
+- `components/platform/categories/CategoryList.tsx`
+- `components/platform/categories/CategoryForm.tsx`
+- `app/(platform)/[tenantSlug]/categories/page.tsx`
+- `app/(platform)/[tenantSlug]/categories/new/page.tsx`
+- `app/(platform)/[tenantSlug]/categories/[id]/page.tsx`
+
+### Botão "Usar Conta de Teste" (14/05/2026)
+
+**O que foi implementado:**
+- Botão na página de login que preenche automaticamente:
+  - Restaurante: `restaurante-teste`
+  - Email: `admin@restaurante.com`
+  - Senha: `admin123`
+
+**Arquivos modificados:**
+- `app/(auth)/login/page.tsx`
+- `src/frontend/app/(auth)/login/page.tsx`
 
 ---
 

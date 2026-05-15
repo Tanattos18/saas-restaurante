@@ -9,58 +9,84 @@
 ```
 saas-restaurante/
 │
-├── app/                            # Next.js 15 App Router
-│   ├── (auth)/                     # Autenticação (layout sem sidebar)
-│   ├── (platform)/                 # Área logada do restaurante
-│   │   └── [tenantSlug]/           # Subdomínio dinâmico do tenant
-│   ├── (public)/                   # Cardápio público via QR Code
-│   └── api/                        # API REST (Next.js Route Handlers)
+├── src/
+│   ├── frontend/
+│   │   ├── app/                    # Next.js 15 App Router
+│   │   │   ├── (auth)/             # Autenticação (login, register, forgot-password)
+│   │   │   ├── (platform)/         # Área logada do restaurante
+│   │   │   │   └── [tenantSlug]/   # Subdomínio dinâmico do tenant
+│   │   │   │       ├── dashboard/  # Dashboard com métricas
+│   │   │   │       ├── menu/       # Gestão de cardápio (produtos)
+│   │   │   │       ├── categories/ # Gestão de categorias
+│   │   │   │       ├── orders/     # Pedidos (kanban)
+│   │   │   │       ├── kds/       # Kitchen Display System
+│   │   │   │       ├── qr-code/   # Geração de QR Codes
+│   │   │   │       ├── customers/ # CRM de clientes
+│   │   │   │       ├── loyalty/   # Programa de fidelidade
+│   │   │   │       └── settings/  # Configurações (assinatura)
+│   │   │   ├── (public)/           # Cardápio público via QR Code
+│   │   │   │   ├── menu/[tenantSlug]/       # Cardápio digital
+│   │   │   │   └── table/[tenantSlug]/[n]/  # Pedido na mesa
+│   │   │   └── api/                # API REST (Route Handlers)
+│   │   │       ├── auth/          # Login, register, refresh, logout, me
+│   │   │       ├── categories/    # CRUD categorias
+│   │   │       ├── products/      # CRUD produtos
+│   │   │       ├── orders/        # Pedidos
+│   │   │       ├── kds/           # KDS (stream, devices, status)
+│   │   │       ├── qr-code/       # Geração QR Codes
+│   │   │       ├── payment/       # Stripe e PIX
+│   │   │       └── webhooks/      # Stripe e WhatsApp
+│   │   │
+│   │   ├── components/
+│   │   │   ├── ui/                # shadcn/ui (botão, card, input...)
+│   │   │   ├── platform/          # Componentes da área logada
+│   │   │   │   ├── dashboard/     # StatsCards, Charts, RecentOrders
+│   │   │   │   ├── menu/          # ProductList, ProductForm, StockAlert
+│   │   │   │   ├── categories/    # CategoryList, CategoryForm (estilo iFood)
+│   │   │   │   ├── orders/        # OrderKanban, OrderCard, OrderDetails
+│   │   │   │   ├── kds/           # KitchenBoard, OrderTicket, Timer
+│   │   │   │   └── layout/        # Sidebar, Header
+│   │   │   └── public/            # Componentes do cardápio público
+│   │   │       ├── MenuViewer, ProductCard, Cart, Checkout
+│   │   │
+│   │   └── lib/                   # libs do frontend
+│   │       ├── auth.ts            # getAuthContext client-side
+│   │       └── ...
+│   │
+│   ├── backend/
+│   │   ├── lib/                   # Bibliotecas e utilitários
+│   │   │   ├── prisma.ts          # Singleton Prisma
+│   │   │   ├── tenant-prisma.ts   # Factory com auto-filtro tenant
+│   │   │   ├── jwt.ts             # Tokens JWT (jose)
+│   │   │   ├── auth.ts            # Helpers de autenticação
+│   │   │   ├── whatsapp.ts        # Cliente Evolution API v2
+│   │   │   ├── stripe.ts          # Integração Stripe
+│   │   │   ├── pg-notify.ts       # PostgreSQL LISTEN/NOTIFY
+│   │   │   ├── sounds.ts          # Web Audio API (notificação KDS)
+│   │   │   ├── validations/       # Schemas Zod
+│   │   │   └── utils.ts           # Utilitários gerais
+│   │   │
+│   │   └── services/              # Lógica de negócio
+│   │       ├── whatsapp/          # Bot + templates + fluxo
+│   │       ├── category.service.ts
+│   │       ├── product.service.ts
+│   │       ├── order.service.ts
+│   │       ├── customer.service.ts
+│   │       ├── kds.service.ts
+│   │       ├── stripe.service.ts
+│   │       ├── loyalty.service.ts
+│   │       ├── analytics.service.ts
+│   │       └── qr-code.service.ts
 │
-├── components/                     # Componentes React
-│   ├── ui/                         # shadcn/ui (botão, card, input...)
-│   ├── platform/                   # Componentes da área logada
-│   └── public/                     # Componentes do cardápio público
-│
-├── lib/                            # Bibliotecas e utilitários
-│   ├── validations/                # Schemas Zod
-│   ├── prisma.ts                   # Singleton Prisma
-│   ├── tenant-prisma.ts            # Factory com auto-filtro tenant
-│   ├── jwt.ts                      # Tokens JWT
-│   ├── auth.ts                     # Helpers de autenticação
-│   ├── whatsapp.ts                 # Cliente Evolution API v2
-│   ├── stripe.ts                   # Integração Stripe
-│   ├── pg-notify.ts                # PostgreSQL LISTEN/NOTIFY
-│   ├── sounds.ts                   # Web Audio API (notificação KDS)
-│   └── utils.ts                    # Utilitários gerais
-│
-├── services/                       # Lógica de negócio
-│   ├── whatsapp/                   # Bot + templates + fluxo
-│   ├── auth.service.ts
-│   ├── tenant.service.ts
-│   ├── product.service.ts
-│   ├── category.service.ts
-│   ├── order.service.ts
-│   ├── customer.service.ts
-│   ├── kds.service.ts
-│   ├── payment.service.ts
-│   ├── stripe.service.ts
-│   ├── loyalty.service.ts
-│   ├── inventory.service.ts
-│   ├── analytics.service.ts
-│   └── qr-code.service.ts
-│
-├── hooks/                          # Custom Hooks React
-├── types/                          # Tipos TypeScript (incl. electron.d.ts)
-├── __tests__/                      # Testes Jest
+├── app/                            # Também existe (legacy/alternative)
+├── app-desktop/                    # Electron App Desktop
+├── app/sw.ts                       # Service worker PWA (Serwist)
 ├── prisma/                         # Schema, migrations e seed
-├── public/                         # Assets estáticos
-├── docs/                           # Documentação de deploy
-│
-├── app-desktop/                    # Electron App Desktop (ver seção "Como Rodar")
-├── app/sw.ts                       # Service worker PWA
+├── public/                         # Assets estáticos (manifest.json, icons)
+├── docs-generated/                 # Documentação do projeto
 ├── middleware.ts                   # Next.js Middleware (auth + tenant)
 ├── .env.example
-├── next.config.js
+├── next.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── package.json
@@ -272,12 +298,35 @@ npx prisma db seed
 npm run dev
 ```
 
-Acesse `http://localhost:3000` — credenciais de teste:
+Acesse `http://localhost:3000/login` — credenciais de teste:
 ```
 Restaurante: restaurante-teste
 Email:       admin@restaurante.com
 Senha:       admin123
 ```
+
+Na página de login, clique em **"🎯 Usar conta de teste"** para preencher automaticamente.
+
+### Páginas do Painel Admin (após login)
+
+| Rota | Descrição |
+|------|-----------|
+| `/{tenantSlug}/dashboard` | Dashboard com métricas e gráficos |
+| `/{tenantSlug}/menu` | Gestão de produtos do cardápio |
+| `/{tenantSlug}/categories` | Gestão de categorias (estilo iFood) |
+| `/{tenantSlug}/orders` | Kanban de pedidos |
+| `/{tenantSlug}/kds` | Kitchen Display System (tela da cozinha) |
+| `/{tenantSlug}/qr-code` | Geração de QR Codes para mesas |
+| `/{tenantSlug}/customers` | CRM de clientes |
+| `/{tenantSlug}/loyalty` | Programa de fidelidade |
+| `/{tenantSlug}/settings/subscription` | Planos e assinatura Stripe |
+
+### Cardápio Público
+
+| Rota | Descrição |
+|------|-----------|
+| `/{tenantSlug}` ou `/menu/{tenantSlug}` | Cardápio digital público |
+| `/table/{tenantSlug}/{numero}` | Pedido direto na mesa |
 
 ### 2. PWA (Progressive Web App)
 

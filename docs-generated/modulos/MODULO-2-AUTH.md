@@ -6,6 +6,22 @@ Implementar o sistema completo de autenticação multi-tenant com JWT, middlewar
 
 ---
 
+## Como Testar
+
+### Credenciais de Teste
+O sistema inclui um botão **"🎯 Usar conta de teste"** na página de login que preenche automaticamente:
+- **Restaurante:** `restaurante-teste`
+- **Email:** `admin@restaurante.com`
+- **Senha:** `admin123`
+
+### Usuário Criado pelo Seed
+O seed cria automaticamente:
+- Tenant: `restaurante-teste`
+- Usuário Owner: `admin@restaurante.com` / `admin123`
+- Categorias e produtos de exemplo
+
+---
+
 ## Arquivos Criados
 
 ### 1. `lib/jwt.ts`

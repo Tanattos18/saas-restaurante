@@ -11,7 +11,8 @@
       "@/lib/*": ["src/backend/lib/*"],
       "@/services": ["src/backend/services"],
       "@/services/*": ["src/backend/services/*"],
-      "@/components/*": ["src/frontend/components/*"],
+      "@/components/*": ["app/components/*"],
+      "@/hooks/*": ["app/hooks/*"],
       "@/prisma": ["src/backend/prisma"]
     }
   },
@@ -20,5 +21,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "_backup"
   ]
 }

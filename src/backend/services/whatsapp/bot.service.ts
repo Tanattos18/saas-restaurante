@@ -2,6 +2,7 @@
 import { sendMessage } from './message.service'
 import * as templates from './templates'
 import { sendMenu, sendCategories, sendProductsByCategory, createEmptyContext } from './flow.service'
+import { loyaltyService } from '@/services/loyalty.service'
 import type { FlowContext } from './flow.service'
 import type { ChatState, MessageType, Prisma } from '@prisma/client'
 
@@ -277,7 +278,7 @@ export class BotService {
       const lastOrder = await prisma.order.findFirst({ where: { tenantId }, orderBy: { orderNumber: 'desc' }, select: { orderNumber: true } })
       const nextNumber = (lastOrder?.orderNumber ?? 0) + 1
 
-      await prisma.order.create({
+const order = await prisma.order.create({
         data: {
           tenantId, customerId: customer.id, orderNumber: nextNumber, channel: 'WHATSAPP', type: 'DELIVERY', status: 'PENDING',
           customerName: customer.name, customerPhone: phone, customerAddress: customer.address,
@@ -285,6 +286,13 @@ export class BotService {
           items: { create: context.cart.map((item) => ({ productId: item.productId, quantity: item.quantity, unitPrice: item.price, totalPrice: item.price * item.quantity, notes: item.notes || null })) },
         },
       })
+
+      const loyalty = loyaltyService(tenantId)
+      const earnedPoints = Math.floor(total)
+      if (earnedPoints > 0) {
+        await loyalty.earnPoints(customer.id, order.id, total)
+        await sendMessage({ tenantId, instanceName: '', phone, text: `⭐ Você ganhou ${earnedPoints} pontos com este pedido!` })
+      }
 
       for (const item of context.cart) {
         const product = await prisma.product.findUnique({ where: { id: item.productId } })
