@@ -23,6 +23,7 @@ export function StockAlert() {
         )
         setProducts(low)
       })
+      .catch(() => {})
   }, [])
 
   if (products.length === 0) return null

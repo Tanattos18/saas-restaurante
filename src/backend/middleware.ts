@@ -14,6 +14,8 @@ const publicPaths = [
 const publicApiPrefixes = [
   '/api/auth',
   '/api/webhooks',
+  '/api/menu',
+  '/api/orders',
 ]
 
 export async function middleware(request: NextRequest) {
