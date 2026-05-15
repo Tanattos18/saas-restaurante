@@ -336,4 +336,42 @@ Criadas 6 páginas que estavam com 404:
 
 ---
 
-> **Próximas atualizações:** Testes unitários, rate limiting, refinamentos finais para produção
+## 🆕 Páginas do Painel Implementadas (15/05/2026 — 3ª rodada)
+
+### 1. Estoque (`/inventory`)
+**Arquivos criados:** `services/inventory.service.ts`, `app/api/inventory/*`, `app/(platform)/[tenantSlug]/inventory/page.tsx`
+- CRUD completo de itens de estoque
+- Modal de movimentação (entrada, saída, ajuste com motivo)
+- Histórico de movimentações com saldo anterior/novo
+- Alerta de itens abaixo do estoque mínimo
+- Busca por nome
+
+### 2. Financeiro (`/financial`)
+**Arquivos criados:** `services/financial.service.ts`, `app/api/financial/route.ts`, página substituída
+- Resumo com receita, pedidos, ticket médio, taxas
+- Filtro por período (hoje, semana, mês)
+- Gráfico de receita diária (7 dias)
+- Receita por forma de pagamento com barra de progresso
+- Tabela de transações com paginação
+
+### 3. Relatórios (`/financial/reports`)
+**Arquivos criados:** `app/api/reports/route.ts`, página substituída
+- Gráfico de linha com receita diária
+- Pedidos por horário com destaque nos picos
+- Ranking de produtos mais vendidos
+- Donut chart de pedidos por canal
+- Alerta de pedidos pendentes
+
+### 4. Equipe (`/settings/team`)
+**Arquivos criados:** `services/user.service.ts`, `app/api/team/*`, página substituída
+- Lista com avatar, nome, email, cargo
+- Badge de cargo colorido por role
+- Modal de convite (nome, email, senha, cargo)
+- Modal de edição (nome, cargo, telefone)
+- Ativar/desativar membro
+- Remover membro (proteção OWNER)
+
+---
+
+> **Status final:** 🔴 0 placeholders restantes no painel ✅
+> **Próximas atualizações:** WhatsApp settings, testar Stripe, testes automatizados

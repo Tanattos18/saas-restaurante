@@ -1,6 +1,6 @@
 # 📚 Status da Documentação
 
-**Última atualização:** 15/05/2026
+**Última atualização:** 15/05/2026 (v3)
 
 ---
 
@@ -33,7 +33,8 @@
 | 11 | MODULO-11-DESIGN.md | ✅ Atualizado (redesign visual 15/05) |
 | 12 | MODULO-12-VISUAL.md | ✅ Criado (refinamentos visuais) |
 | — | ERROS_ENCONTRADOS.md | ✅ Atualizado (5 novos erros 15/05) |
-| — | ATUALIZACOES.md | ✅ Atualizado (correções 2ª rodada) |
+| — | ATUALIZACOES.md | ✅ Atualizado (páginas novas: estoque, financeiro, relatórios, equipe) |
+| — | CHECKLIST.md | ✅ Atualizado (status 90%) |
 
 ---
 

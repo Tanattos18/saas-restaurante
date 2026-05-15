@@ -509,16 +509,16 @@
 
 ## 📋 PÁGINAS DO PAINEL — Pendências
 
-| # | Página | Prioridade | Status | O que falta |
-|---|--------|------------|--------|-------------|
-| 1 | **Estoque** (`/inventory`) | 🔴 Alta | Placeholder | CRUD ingredientes, movimentações, fornecedores, alertas |
-| 2 | **Financeiro** (`/financial`) | 🔴 Alta | Placeholder | Fluxo de caixa, saldo diário, entrada/saída |
-| 3 | **Equipe** (`/settings/team`) | 🔴 Alta | Placeholder | CRUD usuários, convites, permissões |
-| 4 | **WhatsApp** (`/settings/whatsapp`) | 🟡 Média | Placeholder | Conectar número, QR code, status da conexão |
-| 5 | **Relatórios** (`/financial/reports`) | 🟡 Média | Placeholder | Gráficos vendas, produtos mais vendidos, períodos |
-| 6 | **Clientes** — ações | 🟢 Baixa | Parcial | Editar, bloquear, histórico completo |
-| 7 | **Fidelidade** — métricas | 🟢 Baixa | Parcial | Dashboard de pontos, resgates, expiração |
-| 8 | **Detalhe do Pedido** — ações | 🟢 Baixa | Parcial | Ações contextuais mais ricas |
+| # | Página | Status | Situação |
+|---|--------|--------|----------|
+| 1 | **Estoque** (`/inventory`) | 🟢 Completo | CRUD, movimentações, histórico, alertas |
+| 2 | **Financeiro** (`/financial`) | 🟢 Completo | Resumo, receita por período, transações |
+| 3 | **Relatórios** (`/financial/reports`) | 🟢 Completo | Gráficos, produtos, canais, horários |
+| 4 | **Equipe** (`/settings/team`) | 🟢 Completo | CRUD usuários, convites, cargos, ativar/desativar |
+| 5 | **WhatsApp** (`/settings/whatsapp`) | 🟡 Placeholder | Conectar número, QR code, status |
+| 6 | **Clientes** — ações | 🟢 Parcial | Editar, bloquear, histórico |
+| 7 | **Fidelidade** — métricas | 🟢 Parcial | Dashboard de pontos, resgates |
+| 8 | **Detalhe do Pedido** — ações | 🟢 Parcial | Ações contextuais |
 
 
 ---
