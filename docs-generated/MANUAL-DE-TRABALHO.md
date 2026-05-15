@@ -422,7 +422,24 @@ $content = Get-Content "arquivo" -Raw
 - `app/(auth)/login/page.tsx`
 - `src/frontend/app/(auth)/login/page.tsx`
 
+### Redesign Visual do Painel (15/05/2026)
+
+**O que foi implementado:**
+- Design system completo: paleta Slate + Emerald, dark mode
+- StatsCards com gradientes, ícones SVG, animação de valor
+- SalesChart com PieChart + BarChart e legenda por canal
+- Sidebar com 11 ícones SVG, indicador ativo, badges animados
+- Header com avatar (iniciais), dropdown animado, loading skeleton
+- KitchenBoard (KDS) com glass effect e colunas gradientes
+- OrderKanban com filter pills toggle e colunas coloridas
+- ProductList com input de busca, toggle suave, badge Promo
+- CategoryList grid responsivo com hover e animações
+- Animações CSS: fade-in, fade-in-up, scale-in, pulse-soft
+- Corrigido PostCSS config na raiz + Tailwind CDN fallback
+
+**Arquivos modificados:** 25+ arquivos entre componentes, páginas e configuração
+
 ---
 
-> **Última atualização:** 14/05/2026
+> **Última atualização:** 15/05/2026
 > **Node.js:** v24.14.1 | **npm:** 11.11.0 | **Prisma:** 6.19.3

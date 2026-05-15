@@ -1,5 +1,5 @@
-﻿import prisma from '@/lib/prisma'
-import { stripe, PLANS, type PlanId } from '@/lib/stripe'
+﻿import prisma from '@/backend/lib/prisma'
+import { stripe, PLANS, type PlanId } from '@/backend/lib/stripe'
 
 export class StripeService {
   async createCustomer(tenantId: string): Promise<string> {

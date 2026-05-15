@@ -1,4 +1,4 @@
-﻿import { sendText } from '@/lib/whatsapp'
+﻿import { sendText } from '@/backend/lib/whatsapp'
 
 interface SendMessageParams {
   tenantId: string

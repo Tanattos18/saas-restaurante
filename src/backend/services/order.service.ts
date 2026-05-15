@@ -1,6 +1,6 @@
-﻿import { createTenantPrisma } from '@/lib/tenant-prisma'
-import prisma from '@/lib/prisma'
-import { PLANS, type PlanId } from '@/lib/stripe'
+﻿import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
+import prisma from '@/backend/lib/prisma'
+import { PLANS, type PlanId } from '@/backend/lib/stripe'
 
 interface CreateOrderInput {
   customerId?: string

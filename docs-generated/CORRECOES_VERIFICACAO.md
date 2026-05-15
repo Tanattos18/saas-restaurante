@@ -4,6 +4,32 @@
 
 ---
 
+## 🔄 Atualização 15/05/2026 — Redesign Visual
+
+### Correções Aplicadas
+
+| # | Problema | Solução | Status |
+|---|----------|---------|--------|
+| 1 | PostCSS config fora da raiz | Criado `postcss.config.mjs` na raiz + Tailwind CDN no layout | ✅ |
+| 2 | Duas cópias de páginas (app/ e src/frontend/app/) | Sincronizados todos os arquivos duplicados | ✅ |
+| 3 | StatsCards sem estilo | Redesign com gradientes, ícones e animações | ✅ |
+| 4 | SalesChart sem legenda visual | Adicionado PieChart + legenda por canal | ✅ |
+| 5 | Sidebar com emojis | Substituído por 11 ícones SVG profissionais | ✅ |
+| 6 | Header sem avatar | Adicionado avatar com iniciais e dropdown animado | ✅ |
+| 7 | KDS visual básico | Adicionado glass effect, colunas gradientes, pulse | ✅ |
+| 8 | OrderKanban sem filtros | Adicionado filter pills com toggle visual | ✅ |
+| 9 | ProductList sem busca visual | Adicionado ícone de busca, toggle suave | ✅ |
+| 10 | CategoryList sem animações | Adicionado stagger, hover, transitions | ✅ |
+
+### Validação
+- [x] `npm run typecheck` — ✅ 0 erros (apenas __mocks__/jose.ts preexistente)
+- [x] `npm run lint` — ✅ Apenas warnings preexistentes (0 erros)
+- [x] Tailwind CDN — ✅ CSS carregado via CDN + inline styles
+- [x] Layout responsivo — ✅ Sidebar collapsível, grids adaptativos
+- [x] Tema escuro — ✅ Variáveis CSS para .dark
+
+---
+
 ## 📋 Checklist de Validação
 
 ### ✅ Análise Automática

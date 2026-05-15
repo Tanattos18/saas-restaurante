@@ -1,5 +1,5 @@
 ﻿import QRCode from 'qrcode'
-import prisma from '@/lib/prisma'
+import prisma from '@/backend/lib/prisma'
 
 export class QRCodeService {
   async generateTableQR(tenantSlug: string, tableNumber: number, baseUrl: string): Promise<string> {

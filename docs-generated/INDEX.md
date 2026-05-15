@@ -84,6 +84,7 @@ saas-restaurante/
 ├── prisma/                         # Schema, migrations e seed
 ├── public/                         # Assets estáticos (manifest.json, icons)
 ├── docs-generated/                 # Documentação do projeto
+├── postcss.config.mjs              # PostCSS + Tailwind v4 (raiz)
 ├── middleware.ts                   # Next.js Middleware (auth + tenant)
 ├── .env.example
 ├── next.config.ts
@@ -94,7 +95,7 @@ saas-restaurante/
 
 ---
 
-## 🗺️ Roadmap — 10 Módulos de Implementação
+## 🗺️ Roadmap — 12 Módulos de Implementação
 
 ### Módulo 1 — Base do Projeto
 **Arquivos:** `prisma/schema.prisma`, `lib/prisma.ts`, `lib/tenant-prisma.ts`, `.env.example`, `package.json`, `prisma/seed.ts`
@@ -226,6 +227,31 @@ saas-restaurante/
 
 ---
 
+### Módulo 11 — Design System
+**Arquivos:** `components/ui/*.tsx`, `components/platform/*.tsx`, globals.css
+
+- Componentes base: Button, Card, Input, Badge, Modal, Toast, Icons
+- Sidebar com ícones SVG, Header com avatar
+- Ver `docs-generated/modulos/MODULO-11-DESIGN.md` para detalhes.
+
+### Módulo 12 — Refinamentos Visuais ✅ (15/05/2026)
+**Arquivos:** `postcss.config.mjs`, `app/layout.tsx`, `components/platform/dashboard/*.tsx`, `components/platform/Sidebar.tsx`, `components/platform/HeaderWrapper.tsx`, `components/platform/kds/*.tsx`, `components/platform/orders/*.tsx`, `components/platform/menu/*.tsx`, `components/platform/categories/*.tsx`
+
+Redesign visual completo do painel:
+- Paleta Slate + Emerald, dark mode
+- StatsCards com gradientes e animações
+- SalesChart com PieChart + legenda
+- Sidebar com 11 ícones SVG
+- Header com avatar e dropdown
+- KitchenBoard com glass effect
+- OrderKanban com filter pills
+- ProductList/CategoryList refinados
+- PostCSS config na raiz + Tailwind CDN
+
+> Ver `docs-generated/modulos/MODULO-12-VISUAL.md` para detalhes.
+
+---
+
 ## 🧱 Stack Tecnológica
 
 | Categoria | Tecnologia |
@@ -270,6 +296,8 @@ Módulo 8  →  Stripe (assinaturas, planos, PIX)
 Módulo 9  →  CRM (clientes, fidelidade, pontos)
     ↓
 Módulo 10 →  Refinamentos (testes, docs, rate-limit)
+Módulo 11 →  Design System (componentes UI, ícones)
+Módulo 12 →  Refinamentos Visuais (redesign completo do painel ✅)
 ```
 
 ---

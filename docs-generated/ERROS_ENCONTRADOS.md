@@ -767,10 +767,11 @@ npm run test
 
 ## ✅ RESULTADO FINAL
 
-- **Total de erros críticos encontrados:** 8
-- **Total de avisos:** 2
-- **Todos corrigidos:** ✅ SIM
-- **Projeto pronto para produção:** ✅ SIM (sujeito a testes de integração)
+- **Total de erros críticos encontrados (14/05/2026):** 8
+- **Total de novos erros encontrados (15/05/2026):** 2
+- **Total de erros corrigidos:** 8
+- **Total de erros pendentes:** 2
+- **Projeto pronto para produção:** ⚠️ Pendente correção dos novos erros
 
 **Próximos passos recomendados:**
 1. Rodar suite de testes
@@ -781,6 +782,99 @@ npm run test
 
 ---
 
-> **Última atualização:** 14/05/2026  
-> **Analisado por:** GitHub Copilot  
-> **Versão do projeto:** 1.0.0-ANÁLISE
+---
+
+## 🆕 ERROS ENCONTRADOS EM 15/05/2026
+
+### 1. **Erro no `__mocks__/jose.ts` - Tipo Potencialmente Undefined**
+
+**Localização:** `__mocks__/jose.ts` - Função `jwtVerify()` (linha 53)
+
+**Problema:**
+```typescript
+// ⚠️ AVISO - parts[1] pode ser undefined se token for inválido
+const payload = JSON.parse(base64UrlDecode(parts[1]).toString())
+```
+
+**Causa:** Embora haja verificação `if (parts.length !== 3)`, o TypeScript ainda detecta que `parts[1]` pode ser `string | undefined` após o split.
+
+**Solução Recomendada:**
+```typescript
+// ✅ CORRETO - Adicionar verificação adicional
+const payload = parts[1] ? JSON.parse(base64UrlDecode(parts[1]).toString()) : null
+```
+
+**Impacto:** 🟡 Alto - Erro de compilação TypeScript (`npm run typecheck` falha)
+
+**Status:** 🔴 **PENDENTE DE CORREÇÃO**
+
+---
+
+### 3. **PostCSS Config Fora da Raiz — Tailwind Não Processado**
+
+**Localização:** Raiz do projeto
+
+**Problema:** O arquivo `postcss.config.js` estava apenas em `config/postcss.config.js`. O Next.js procura por `postcss.config.*` na raiz do projeto. Como não encontrava, o Tailwind v4 nunca era processado, resultando em HTML sem nenhum estilo CSS.
+
+**Causa:** Durante a reorganização do projeto (migração para `src/`), o PostCSS config foi movido para `config/` junto com outros arquivos de configuração (jest.config.ts, tsconfig.json base). O Next.js não segue caminhos customizados para PostCSS — ele sempre procura na raiz.
+
+**Solução Implementada:**
+1. Criado `postcss.config.mjs` na raiz do projeto:
+```js
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
+```
+2. Adicionado Tailwind CDN como fallback imediato no `layout.tsx`:
+```html
+<script src="https://cdn.tailwindcss.com" />
+```
+3. Inline styles com CSS custom properties e animações no `<style>` do layout
+4. Customizado `tailwind.config` via script no head para alinhar com o tema do projeto
+
+**Impacto:** 🔴 Crítico — Impediu totalmente a renderização de estilos no frontend
+
+**Status:** ✅ **CORRIGIDO**
+
+---
+
+### 4. **App com Duas Cópias de Páginas (app/ e src/frontend/app/)**
+
+**Localização:** `app/` e `src/frontend/app/`
+
+**Problema:** O projeto possui duas cópias completas das mesmas páginas Next.js:
+- `app/(platform)/[tenantSlug]/dashboard/page.tsx` (versão antiga)
+- `src/frontend/app/(platform)/[tenantSlug]/dashboard/page.tsx` (versão nova)
+
+O TypeScript compila AMBAS, causando erros quando apenas uma versão é atualizada.
+
+**Causa:** A reorganização criou `src/frontend/app/` como novo diretório principal, mas o diretório `app/` original nunca foi removido. Ambos existem com arquivos reais (não symlinks).
+
+**Impacto:** 🟡 Médio — Erros de tipo quando as versões divergem
+
+**Status:** ✅ **CORRIGIDO** (páginas sincronizadas)
+
+---
+
+### 2. **Observação: API de Orders pública não decrementa estoque**
+
+**Localização:** `src/frontend/app/api/orders/route.ts` - Função `POST()`
+
+**Problema:** Quando um pedido é criado via checkout público (QR Code ou cardápio digital), o estoque dos produtos não é decrementado.
+
+**Causa:** Diferente do `order.service.ts` que decrementa estoque, a rota pública de orders não implementa essa lógica.
+
+**Recomendação:** Adicionar decremento de estoque ao criar pedido público.
+
+**Impacto:** 🟡 Alto - Produtos com estoque podem ser pedidos mesmo quando estão sem estoque
+
+**Status:** 🔴 **PENDENTE DE CORREÇÃO**
+
+---
+
+> **Última atualização:** 15/05/2026
+> **Analisado por:** opencode
+> **Versão do projeto:** 1.0.0-NEW-ANALYSIS
+> **Erros corrigidos (15/05):** PostCSS config + Duplicação de páginas app/ — Ambas as correções aplicadas e sincronizadas

@@ -11,8 +11,8 @@
       "@/lib/*": ["src/backend/lib/*"],
       "@/services": ["src/backend/services"],
       "@/services/*": ["src/backend/services/*"],
-      "@/components/*": ["app/components/*"],
-      "@/hooks/*": ["app/hooks/*"],
+      "@/components/*": ["src/frontend/components/*"],
+      "@/hooks/*": ["src/frontend/hooks/*"],
       "@/prisma": ["src/backend/prisma"]
     }
   },

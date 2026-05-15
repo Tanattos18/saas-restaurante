@@ -1,5 +1,5 @@
-﻿import prisma from '@/lib/prisma'
-import { createTenantPrisma } from '@/lib/tenant-prisma'
+﻿import prisma from '@/backend/lib/prisma'
+import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
 import crypto from 'crypto'
 
 export function kdsService(tenantId: string) {

@@ -43,17 +43,41 @@ export default function KDSPage({ params }: Props) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-white mb-4">👨‍🍳 Tela da Cozinha</h1>
-        <p className="text-gray-400 mb-6">Registre este dispositivo para receber pedidos</p>
-        {error && <p className="text-red-400 mb-4">{error}</p>}
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 p-4">
+      <div className="text-center max-w-sm">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/20">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-white mb-2">Tela da Cozinha</h1>
+        <p className="text-slate-400 text-sm mb-8">Registre este dispositivo para começar a receber pedidos em tempo real</p>
+        {error && (
+          <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/30 p-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
         <button
           onClick={registerDevice}
           disabled={loading}
-          className="rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 px-6 py-3 text-white font-semibold transition-all duration-200 disabled:opacity-50 shadow-lg shadow-emerald-500/25"
         >
-          {loading ? 'Registrando...' : 'Registrar Dispositivo'}
+          {loading ? (
+            <>
+              <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              Registrando...
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Registrar Dispositivo
+            </>
+          )}
         </button>
       </div>
     </div>

@@ -5,18 +5,12 @@ type Props = { params: Promise<{ tenantSlug: string }> }
 export default async function CategoriesPage({ params }: Props) {
   const { tenantSlug } = await params
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-6 text-white">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-3xl">🏷️</span>
-          <div>
-            <h1 className="text-2xl font-bold">Categorias</h1>
-            <p className="text-orange-100 text-sm">Organize seu cardápio por categorias</p>
-          </div>
-        </div>
+    <div className="space-y-6 animate-fade-in">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Categorias</h1>
+        <p className="text-sm text-muted-foreground mt-1">Organize seu cardápio por categorias</p>
       </div>
-      
-      <div className="bg-white rounded-xl border p-4 sm:p-6">
+      <div className="rounded-xl border bg-card p-5 shadow-sm">
         <CategoryList tenantSlug={tenantSlug} />
       </div>
     </div>

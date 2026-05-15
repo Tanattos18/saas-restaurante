@@ -1,6 +1,6 @@
 # 📚 Status da Documentação
 
-**Última atualização:** 14/05/2026
+**Última atualização:** 15/05/2026
 
 ---
 
@@ -30,6 +30,8 @@
 | 8 | MODULO-8-STRIPE.md | ✅ Completo |
 | 9 | MODULO-9-CRM.md | ✅ Completo |
 | 10 | MODULO-10-REFINAMENTOS.md | ✅ Completo |
+| 11 | MODULO-11-DESIGN.md | ✅ Atualizado (redesign visual 15/05) |
+| 12 | MODULO-12-VISUAL.md | ✅ Criado (refinamentos visuais) |
 
 ---
 

@@ -1,5 +1,5 @@
-﻿import { createTenantPrisma } from '@/lib/tenant-prisma'
-import prisma from '@/lib/prisma'
+﻿import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
+import prisma from '@/backend/lib/prisma'
 
 export function loyaltyService(tenantId: string) {
   const db = createTenantPrisma(tenantId)

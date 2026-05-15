@@ -1,8 +1,8 @@
-﻿import prisma from '@/lib/prisma'
+﻿import prisma from '@/backend/lib/prisma'
 import { sendMessage } from './message.service'
 import * as templates from './templates'
 import { sendMenu, sendCategories, sendProductsByCategory, createEmptyContext } from './flow.service'
-import { loyaltyService } from '@/services/loyalty.service'
+import { loyaltyService } from '@/backend/services/loyalty.service'
 import type { FlowContext } from './flow.service'
 import type { ChatState, MessageType, Prisma } from '@prisma/client'
 

@@ -20,14 +20,14 @@ Dashboard com métricas em tempo real e gestão de pedidos em formato kanban.
 - PATCH /api/orders/[id]/status — atualiza status
 
 ### Dashboard (/[tenantSlug]/dashboard)
-- StatsCards: 4 cards (pedidos, receita, ticket médio, pendentes)
-- SalesChart: gráfico de pedidos por hora + pedidos por canal (Recharts)
-- RecentOrders: lista dos últimos 10 pedidos
+- StatsCards: 4 cards com gradientes, ícones SVG e animação de valor (redesign 15/05)
+- SalesChart: gráfico de barras por hora + PieChart por canal com legenda e percentual
+- RecentOrders: lista com dots de status, ícone de canal, horário e link para detalhe
 
 ### Pedidos (/[tenantSlug]/orders)
-- OrderKanban: colunas Pendente | Aceito | Preparando | Pronto | Entregue
-- Filtro por canal (WhatsApp, QR Code, Balcão, Telefone)
-- OrderCard: card com número, cliente, itens, valor, canal
+- OrderKanban: colunas com header gradiente, filter pills estilizados, status dots
+- Filtro por canal (Todos, WhatsApp, QR Code, Balcão, Telefone)
+- OrderCard: badge de canal, status dot, contagem de itens, hover elevado
 
 ### Detalhe do Pedido (/[tenantSlug]/orders/[id])
 - OrderDetails: timeline, itens, valores, observações

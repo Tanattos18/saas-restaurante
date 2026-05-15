@@ -6,13 +6,15 @@ type Props = { params: Promise<{ tenantSlug: string }> }
 export default async function MenuPage({ params }: Props) {
   const { tenantSlug } = await params
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold">Cardápio</h1>
-        <p className="text-sm text-muted-foreground">Gerencie os produtos do seu restaurante</p>
+        <h1 className="text-2xl font-bold tracking-tight">Cardápio</h1>
+        <p className="text-sm text-muted-foreground mt-1">Gerencie os produtos do seu restaurante</p>
       </div>
       <StockAlert />
-      <ProductList tenantSlug={tenantSlug} />
+      <div className="rounded-xl border bg-card p-5 shadow-sm">
+        <ProductList tenantSlug={tenantSlug} />
+      </div>
     </div>
   )
 }

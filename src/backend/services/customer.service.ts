@@ -1,4 +1,4 @@
-﻿import { createTenantPrisma } from '@/lib/tenant-prisma'
+﻿import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
 
 export function customerService(tenantId: string) {
   const db = createTenantPrisma(tenantId)

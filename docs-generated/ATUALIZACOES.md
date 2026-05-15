@@ -1,6 +1,6 @@
 # 📝 Atualizações e Mudanças Recentes
 
-**Última atualização:** 14/05/2026
+**Última atualização:** 15/05/2026
 
 ---
 
@@ -135,7 +135,62 @@ O projeto está **~95% implementado**. Todos os 10 módulos principais possuem f
 
 ---
 
-## 📁 Estrutura de Pastas Atualizada
+## 🆕 Alterações Recentes (15/05/2026)
+
+### 1. Redesign Visual Completo do Painel
+**Escopo:** Todos os componentes da área logada foram refinados visualmente.
+
+#### Design System Atualizado
+- **Paleta de cores:** Slate + Emerald (verde #059669) como cor primária, substituindo o cinza neutro
+- **Tema escuro:** Variáveis CSS customizadas para dark mode completo
+- **Animações:** `fade-in`, `fade-in-up`, `scale-in`, `pulse-soft` em toda a interface
+- **Scrollbar customizada:** Mais sutil, integrada ao design
+
+#### Componentes Refatorados
+
+| Componente | Melhorias |
+|------------|-----------|
+| **StatsCards** | Gradientes, ícones SVG, animação de valor numérico, entrada em cascata, indicador pulse nos pendentes |
+| **SalesChart** | Gráfico de barras com gradiente, PieChart por canal com legenda, tooltips estilizados |
+| **RecentOrders** | Dots de status, ícone de canal, horário, link para detalhe, hover com elevação |
+| **Sidebar** | SVG icons (lucide-style), indicador ativo com barra verde, badge de notificação animado |
+| **HeaderWrapper** | Avatar com iniciais, dropdown animado, badge de plano estilizado, loading skeleton |
+| **OrderKanban** | Filter pills com toggle visual, colunas com header gradiente, empty state |
+| **OrderCard** | Badge de canal, status dot, contagem de itens, hover elevado |
+| **KitchenBoard** | Header com glass effect, status pulse, colunas gradientes, empty state |
+| **OrderTicket** | Ícones SVG, destaque para observações, botão de ação contextual |
+| **KitchenTimer** | Pulsing animation para tempos críticos (>25min) |
+| **ProductList** | Input com ícone de busca, toggle estilizado, badge "Promo", hover na linha |
+| **CategoryList** | Grid responsivo, busca com ícone, toggle suave, transições |
+| **StockAlert** | Design refinado com ícone de alerta, cores amarelo/âmbar |
+
+#### Páginas Atualizadas
+- `app/(platform)/[tenantSlug]/dashboard/page.tsx` — Cabeçalho com data, status online, layout refinado
+- `app/(platform)/[tenantSlug]/orders/page.tsx` — Layout consistente com animação
+- `app/(platform)/[tenantSlug]/categories/page.tsx` — Design simplificado (removido banner laranja)
+- `app/(platform)/[tenantSlug]/menu/page.tsx` — Cards com sombra
+- `app/(platform)/[tenantSlug]/kds/page.tsx` — Tela de registro com gradiente e ícone
+
+#### Correção de Pipeline CSS
+- Adicionado `postcss.config.mjs` na raiz do projeto (estava apenas em `config/`)
+- Adicionado Tailwind CDN como fallback no `layout.tsx` para garantir renderização imediata
+- Custom properties CSS para cores, animações e scrollbar inline no layout
+
+### 2. Novos Arquivos Criados
+- `postcss.config.mjs` — Configuração PostCSS para Tailwind v4 na raiz do projeto
+
+### 3. Arquivos Substituídos (sync entre app/ e src/frontend/app/)
+Sincronizadas as páginas duplicadas entre `app/` e `src/frontend/app/`:
+- `layout.tsx` (root)
+- `(platform)/layout.tsx`
+- `(platform)/[tenantSlug]/dashboard/page.tsx`
+- `(platform)/[tenantSlug]/orders/page.tsx`
+- `(platform)/[tenantSlug]/categories/page.tsx`
+- `(platform)/[tenantSlug]/menu/page.tsx`
+- `(platform)/[tenantSlug]/kds/page.tsx`
+- `globals.css`
+
+---
 
 O projeto possui duas estruturas de app:
 1. `src/frontend/app/` — Estrutura principal (usada atualmente)
@@ -257,4 +312,4 @@ Acesse: `http://localhost:3000/login`
 
 ---
 
-> **Próximas atualizações:** Melhorias no KDS, expansão do bot WhatsApp, testes unitários
+> **Próximas atualizações:** Testes unitários, rate limiting, refinamentos finais para produção

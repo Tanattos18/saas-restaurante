@@ -1,4 +1,4 @@
-﻿import prisma from '@/lib/prisma'
+﻿import prisma from '@/backend/lib/prisma'
 import { sendMessage } from './message.service'
 import * as templates from './templates'
 

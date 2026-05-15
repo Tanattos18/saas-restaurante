@@ -9,14 +9,16 @@ export default async function OrdersPage({ params }: Props) {
   if (!auth) return null
   const { tenantSlug } = await params
 
-  const orders = orderService(auth.tenantId)
-  const { orders: allOrders } = await orders.list({ pageSize: 50 })
+  const ordersService = orderService(auth.tenantId)
+  const { orders: allOrders } = await ordersService.list({ pageSize: 50 })
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Pedidos</h1>
-        <p className="text-sm text-muted-foreground">Gerencie os pedidos do seu restaurante</p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Pedidos</h1>
+          <p className="text-sm text-muted-foreground mt-1">Gerencie os pedidos do seu restaurante</p>
+        </div>
       </div>
       <OrderKanban orders={allOrders as never} tenantSlug={tenantSlug} />
     </div>

@@ -5,40 +5,40 @@ Criar um design system coeso, melhorar a experiência do usuário e padronizar a
 
 ---
 
-## Melhorias de UX/UI Planejadas
+## Melhorias de UX/UI Implementadas ✅ (15/05/2026)
 
 ### 1. Design System Base
-- [ ] Criar componentes UI reutilizáveis (Button, Card, Input, Modal, etc.)
-- [ ] Definir paleta de cores oficial do projeto
-- [ ] Tipografia padronizada (fontes, tamanhos, pesos)
-- [ ] Sistema de espaçamento consistente
-- [ ] Sombras e bordas padronizadas
+- [x] Componentes UI reutilizáveis (Button, Card, Input, Modal, Badge, Toast, Icons)
+- [x] Paleta de cores oficial: Emerald (#059669) como primary, Slate como neutro
+- [x] Tipografia padronizada (system-ui, antialiased)
+- [x] Sistema de espaçamento Tailwind (p-4, p-5, p-6, gap-4, gap-5, gap-6)
+- [x] Sombras e bordas padronizadas (shadow-sm, rounded-xl, border-border)
 
 ### 2. Componentes Melhorados
-- [ ] Sidebar com ícones profissionais (não emoji)
-- [ ] Header com avatar do usuário e dropdown
-- [ ] Cards com hover states e animações
-- [ ] Modais de confirmação padronizados
-- [ ] Toasts/notificações consistentes
-- [ ] Skeleton loading states
+- [x] Sidebar com 11 ícones SVG profissionais (não emoji) + indicador ativo
+- [x] Header com avatar de iniciais, dropdown animado, badge de plano
+- [x] Cards com hover states (shadow-md, -translate-y-0.5) e animações
+- [x] Modais de confirmação padronizados (Modal.tsx)
+- [x] Toasts/notificações consistentes (Toast.tsx + UpdateNotification)
+- [x] Skeleton loading states (HeaderWrapper, ProductList, CategoryList)
 
-### 3. Páginas para Melhorar
-- [ ] **Dashboard** - Cards maiores, gráficos mais visuais, métricas destacadas
-- [ ] **Pedidos (Kanban)** - Colores diferenciadas, drag-and-drop, filtros melhores
-- [ ] **KDS** - Timer mais visuais, cores por tempo, som configurável
-- [ ] **Produtos** - Grid/list toggle, busca melhor, filtros rápidos
-- [ ] **Categorias** - Já estilo iFood ✓
+### 3. Páginas Melhoradas
+- [x] **Dashboard** — StatsCards com gradientes e animação de valor, gráficos Recharts com PieChart + legenda, RecentOrders com dots e hover
+- [x] **Pedidos (Kanban)** — Filter pills, colunas com header gradiente, cards com badge de canal
+- [x] **KDS** — Timer com pulse em urgência (>25min), notificação sonora, glass effect
+- [x] **Produtos** — Input de busca com ícone, toggle suave, badge Promo, hover na linha
+- [x] **Categorias** — Grid responsivo com toggle, hover, busca integrada
 
 ### 4. Animações e Interações
-- [ ] Transições suaves entre páginas
-- [ ] Animações de loading (spinners, skeletons)
-- [ ] Feedback visual em ações (sucesso/erro)
-- [ ] Hover effects em botões e cards
+- [x] Animações CSS: fade-in, fade-in-up, scale-in, pulse-soft, slide-in-right
+- [x] Loading spinners (border-emerald-500 com animate-spin)
+- [x] Feedback visual em ações (hover, active, transition-all duration-200)
+- [x] Hover effects em botões e cards com elevação suave
 
 ### 5. Responsividade
-- [ ] Layoutmobile optimizado
-- [ ] Sidebar collapsible em tablet
-- [ ] Tables responsivos (scroll horizontal)
+- [x] Sidebar collapsível em mobile com backdrop + animação
+- [x] Grid adaptativo (grid-cols-1/2/3/4 conforme breakpoint)
+- [x] Overflow-x-auto em tabelas e kanban
 
 ---
 
@@ -151,6 +151,6 @@ Atualizar páginas existentes para usar novos componentes
 
 ---
 
-## Status: ⏳ Não Iniciado
+## Status: ✅ COMPLETO (15/05/2026)
 
-**Próximo passo:** Iniciar implementação dos componentes base
+**Próximo passo:** Manter consistência visual em novos componentes

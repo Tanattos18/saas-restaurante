@@ -1,5 +1,5 @@
-﻿import { createTenantPrisma } from '@/lib/tenant-prisma'
-import type { CategoryInput } from '@/lib/validations/product.schema'
+﻿import { createTenantPrisma } from '@/backend/lib/tenant-prisma'
+import type { CategoryInput } from '@/backend/lib/validations/product.schema'
 
 export function categoryService(tenantId: string) {
   const db = createTenantPrisma(tenantId)
