@@ -61,11 +61,19 @@ export function orderService(tenantId: string) {
         db.order.count({ where: where as never }),
       ])
 
-      return { orders, total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
+      const serialized = orders.map((o) => ({
+        ...o,
+        subtotal: Number(o.subtotal),
+        deliveryFee: Number(o.deliveryFee),
+        discount: Number(o.discount),
+        total: Number(o.total),
+        items: o.items.map((i) => ({ ...i, unitPrice: Number(i.unitPrice), totalPrice: Number(i.totalPrice) })),
+      }))
+      return { orders: serialized, total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
     },
 
     async getById(id: string) {
-      return db.order.findUnique({
+      const order = await db.order.findUnique({
         where: { id },
         include: {
           items: { include: { product: { select: { name: true, image: true } } } },
@@ -73,6 +81,15 @@ export function orderService(tenantId: string) {
           payments: true,
         },
       })
+      if (!order) return null
+      return {
+        ...order,
+        subtotal: Number(order.subtotal),
+        deliveryFee: Number(order.deliveryFee),
+        discount: Number(order.discount),
+        total: Number(order.total),
+        items: order.items.map((i) => ({ ...i, unitPrice: Number(i.unitPrice), totalPrice: Number(i.totalPrice) })),
+      }
     },
 
     async create(input: CreateOrderInput) {

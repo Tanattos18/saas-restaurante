@@ -54,7 +54,20 @@ export function financialService(tenantId: string) {
         db.order.count({ where: { createdAt: dateRange } }),
       ])
 
-      return { orders, total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
+      const serialized = orders.map((o) => ({
+        ...o,
+        subtotal: Number(o.subtotal),
+        deliveryFee: Number(o.deliveryFee),
+        discount: Number(o.discount),
+        total: Number(o.total),
+        items: o.items.map((i) => ({
+          ...i,
+          unitPrice: Number(i.unitPrice),
+          totalPrice: Number(i.totalPrice),
+        })),
+      }))
+
+      return { orders: serialized, total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
     },
 
     async getDailyRevenue(days: number = 7) {
