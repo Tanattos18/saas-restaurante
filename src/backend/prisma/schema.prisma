@@ -259,6 +259,7 @@ model Category {
 
   @@index([tenantId])
   @@index([position])
+  @@unique([tenantId, name])
 }
 
 model Product {
@@ -289,6 +290,7 @@ model Product {
   @@index([tenantId])
   @@index([categoryId])
   @@index([active])
+  @@unique([tenantId, name])
 }
 
 model Order {
@@ -405,6 +407,7 @@ model ChatMessage {
 
   @@index([tenantId])
   @@index([sessionId])
+  @@index([customerId])
   @@index([createdAt])
 }
 
@@ -463,6 +466,7 @@ model InventoryLog {
   createdAt        DateTime      @default(now())
 
   @@index([tenantId])
+  @@index([inventoryItemId])
   @@index([createdAt])
 }
 

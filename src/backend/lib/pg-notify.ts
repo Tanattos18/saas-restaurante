@@ -1,4 +1,5 @@
 ﻿import { Pool } from 'pg'
+import { logger } from './logger'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -33,7 +34,7 @@ export function subscribe(channel: string, callback: Callback): () => void {
   listeners.set(channel, [...existing, callback])
 
   ensureListening().catch((err) => {
-    console.error('[pg-notify] Erro ao escutar canais:', err)
+    logger.error('Erro ao escutar canais', 'pg-notify', err)
   })
 
   return () => {

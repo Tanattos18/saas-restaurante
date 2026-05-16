@@ -2,6 +2,7 @@
 import prisma from '@/backend/lib/prisma'
 import { notify } from '@/backend/lib/pg-notify'
 import { PLANS, type PlanId } from '@/backend/lib/stripe'
+import { logger } from '@/backend/lib/logger'
 import type { OrderChannel, OrderType, OrderStatus } from '@prisma/client'
 
 interface CreateOrderInput {
@@ -201,7 +202,7 @@ export function orderService(tenantId: string) {
         },
       })
       notify(`kds_${tenantId}`, JSON.stringify({ type: 'UPDATE', orderId: id, status })).catch((err) => {
-        console.error('Erro ao notificar KDS:', err)
+        logger.error('Erro ao notificar KDS', 'order.service', err)
       })
       return updated
     },

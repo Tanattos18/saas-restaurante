@@ -1,4 +1,6 @@
-﻿interface SendTextParams {
+﻿import { logger } from './logger'
+
+interface SendTextParams {
   instanceName: string
   phone: string
   text: string
@@ -32,7 +34,7 @@ async function evolutionRequest(endpoint: string, body: unknown) {
   })
   if (!res.ok) {
     const text = await res.text()
-    console.error(`[Evolution API] Erro ${res.status} em ${endpoint}: ${text.slice(0, 200)}`)
+    logger.error(`Erro ${res.status} em ${endpoint}: ${text.slice(0, 200)}`, 'Evolution API')
     throw new Error(`Evolution API retornou ${res.status}`)
   }
 }
