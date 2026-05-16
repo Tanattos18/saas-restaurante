@@ -31,7 +31,9 @@ async function evolutionRequest(endpoint: string, body: unknown) {
     body: JSON.stringify(body),
   })
   if (!res.ok) {
-    console.error(`Evolution API error ${res.status}:`, await res.text())
+    const text = await res.text()
+    console.error(`[Evolution API] Erro ${res.status} em ${endpoint}: ${text.slice(0, 200)}`)
+    throw new Error(`Evolution API retornou ${res.status}`)
   }
 }
 

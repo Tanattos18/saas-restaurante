@@ -32,7 +32,9 @@ export function subscribe(channel: string, callback: Callback): () => void {
   const existing = listeners.get(channel) ?? []
   listeners.set(channel, [...existing, callback])
 
-  ensureListening().catch(console.error)
+  ensureListening().catch((err) => {
+    console.error('[pg-notify] Erro ao escutar canais:', err)
+  })
 
   return () => {
     const cbs = listeners.get(channel)
