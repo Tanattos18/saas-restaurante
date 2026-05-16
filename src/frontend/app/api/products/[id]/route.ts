@@ -28,7 +28,7 @@ export async function PATCH(request: Request, { params }: Props) {
     const body = await request.json()
     const parsed = productSchema.partial().safeParse(body)
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors[0]?.message ?? 'Dados inválidos' }, { status: 400 })
+      return NextResponse.json({ success: false, error: parsed.error.issues[0]?.message ?? 'Dados inválidos' }, { status: 400 })
     }
     const service = productService(auth.tenantId)
     const product = await service.update(id, parsed.data)

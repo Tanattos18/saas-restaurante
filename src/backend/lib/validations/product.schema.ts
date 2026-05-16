@@ -1,7 +1,7 @@
 ﻿import { z } from 'zod'
 
 export const categorySchema = z.object({
-  name: z.string({ required_error: 'Nome é obrigatório' }).min(2, 'Nome deve ter no mínimo 2 caracteres'),
+  name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres'),
   description: z.string().optional().nullable(),
   icon: z.string().optional().nullable(),
   position: z.number().int().optional().default(0),
@@ -10,11 +10,11 @@ export const categorySchema = z.object({
 })
 
 export const productSchema = z.object({
-  name: z.string({ required_error: 'Nome é obrigatório' }).min(2, 'Nome deve ter no mínimo 2 caracteres'),
+  name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres'),
   description: z.string().optional().nullable(),
-  price: z.number({ required_error: 'Preço é obrigatório' }).positive('Preço deve ser positivo'),
+  price: z.number().positive('Preço deve ser positivo'),
   promoPrice: z.number().positive('Preço promocional deve ser positivo').optional().nullable(),
-  categoryId: z.string({ required_error: 'Categoria é obrigatória' }),
+  categoryId: z.string(),
   image: z.string().url('URL inválida').optional().nullable(),
   active: z.boolean().optional().default(true),
   showInQRCode: z.boolean().optional().default(true),
@@ -28,8 +28,8 @@ export const productSchema = z.object({
 })
 
 export const stockUpdateSchema = z.object({
-  quantity: z.number({ required_error: 'Quantidade é obrigatória' }),
-  reason: z.string({ required_error: 'Motivo é obrigatório' }).min(3),
+  quantity: z.number(),
+  reason: z.string().min(3),
 })
 
 export const reorderSchema = z.object({

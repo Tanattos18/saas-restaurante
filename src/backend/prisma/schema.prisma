@@ -412,21 +412,33 @@ model ChatMessage {
 }
 
 model KitchenDevice {
-  id              String       @id @default(uuid())
-  tenantId        String
-  name            String
-  deviceCode      String       @unique
-  type            DeviceType   @default(DISPLAY)
-  status          DeviceStatus @default(ACTIVE)
-  currentOrderIds String[]
-  lastPingAt      DateTime     @default(now())
-  settings        Json?
-  tenant          Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id          String                @id @default(uuid())
+  tenantId    String
+  name        String
+  deviceCode  String                @unique
+  type        DeviceType            @default(DISPLAY)
+  status      DeviceStatus          @default(ACTIVE)
+  lastPingAt  DateTime              @default(now())
+  settings    Json?
+  tenant      Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  orders      KitchenDeviceOrder[]
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
 
   @@index([tenantId])
   @@index([deviceCode])
+}
+
+model KitchenDeviceOrder {
+  id        String         @id @default(uuid())
+  deviceId  String
+  orderId   String
+  addedAt   DateTime       @default(now())
+  device    KitchenDevice  @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  order     Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId])
+  @@index([orderId])
 }
 
 model InventoryItem {
