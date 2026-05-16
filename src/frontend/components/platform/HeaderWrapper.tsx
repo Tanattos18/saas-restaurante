@@ -47,7 +47,7 @@ export function HeaderWrapper({ tenantSlug: _tenantSlug }: { tenantSlug: string 
   const planConfig: Record<string, { label: string; bg: string }> = {
     FREE: { label: 'Gratuito', bg: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' },
     BASIC: { label: 'Básico', bg: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400' },
-    PRO: { label: 'Profissional', bg: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400' },
+    PRO: { label: 'Profissional', bg: 'bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-400' },
     ENTERPRISE: { label: 'Empresarial', bg: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-400' },
   }
 
@@ -90,7 +90,7 @@ export function HeaderWrapper({ tenantSlug: _tenantSlug }: { tenantSlug: string 
             onClick={() => setUserMenuOpen(!userMenuOpen)}
             className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl hover:bg-muted transition-colors duration-200"
           >
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center shadow-sm">
               <span className="text-white font-bold text-xs">{getInitials(userName)}</span>
             </div>
             <span className="hidden sm:block text-sm font-medium text-foreground">{userName}</span>

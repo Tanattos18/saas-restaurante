@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 
@@ -27,14 +27,14 @@ const statusConfig: Record<string, { label: string; dot: string; bg: string }> =
   PENDING: { label: 'Pendente', dot: 'bg-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/30' },
   ACCEPTED: { label: 'Aceito', dot: 'bg-blue-500', bg: 'bg-blue-50 dark:bg-blue-950/30' },
   PREPARING: { label: 'Preparando', dot: 'bg-purple-500', bg: 'bg-purple-50 dark:bg-purple-950/30' },
-  READY: { label: 'Pronto', dot: 'bg-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
+  READY: { label: 'Pronto', dot: 'bg-violet-500', bg: 'bg-violet-50 dark:bg-violet-950/30' },
   ON_DELIVERY: { label: 'Saiu p/ Entrega', dot: 'bg-orange-500', bg: 'bg-orange-50 dark:bg-orange-950/30' },
   DELIVERED: { label: 'Entregue', dot: 'bg-gray-500', bg: 'bg-gray-50 dark:bg-gray-950/30' },
   CANCELED: { label: 'Cancelado', dot: 'bg-red-500', bg: 'bg-red-50 dark:bg-red-950/30' },
 }
 
 const channelIcons: Record<string, string> = {
-  WHATSAPP: '💬', QR_CODE: '📱', COUNTER: '🏪', PHONE: '📞', IFOOD: '🟢',
+  WHATSAPP: '??', QR_CODE: '??', COUNTER: '??', PHONE: '??', IFOOD: '??',
 }
 
 export function RecentOrders({ orders, tenantSlug }: Props) {
@@ -58,13 +58,13 @@ export function RecentOrders({ orders, tenantSlug }: Props) {
           <Link
             key={order.id}
             href={`/${tenantSlug}/orders/${order.id}`}
-            className={`flex items-center gap-3 rounded-lg border bg-card p-3.5 text-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-emerald-200 dark:hover:border-emerald-800 ${i < 2 ? 'animate-fade-in-up' : ''}`}
+            className={`flex items-center gap-3 rounded-lg border bg-card p-3.5 text-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-violet-200 dark:hover:border-violet-800 ${i < 2 ? 'animate-fade-in-up' : ''}`}
             style={{ animationDelay: `${i * 50}ms` }}
           >
             {/* Order number + channel */}
             <div className="flex items-center gap-2 min-w-[80px]">
               <span className="font-bold text-foreground">#{order.orderNumber}</span>
-              <span className="text-base">{channelIcons[order.channel] || '📋'}</span>
+              <span className="text-base">{channelIcons[order.channel] || '??'}</span>
             </div>
 
             {/* Customer name */}

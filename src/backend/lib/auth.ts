@@ -1,5 +1,5 @@
 ﻿import { cookies } from 'next/headers'
-import { verifyToken, type JwtPayload } from './jwt'
+import { verifyAccessToken, type JwtPayload } from './jwt'
 
 export interface AuthContext {
   userId: string
@@ -17,7 +17,7 @@ export async function getAuthContext(): Promise<AuthContext | null> {
   const token = await getTokenFromRequest()
   if (!token) return null
 
-  const payload = await verifyToken(token)
+  const payload = await verifyAccessToken(token)
   if (!payload?.userId || !payload?.tenantId) return null
 
   return {

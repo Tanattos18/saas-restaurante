@@ -115,63 +115,69 @@ export function orderService(tenantId: string) {
         }
       }
 
-      // Usar transação para garantir sequência de orderNumber sem race condition
-      const orderNumber = await prisma.$transaction(async (tx) => {
+      // Buscar produtos em lote (evita N+1)
+      const productIds = input.items.map(i => i.productId)
+      const products = await prisma.product.findMany({
+        where: { id: { in: productIds }, tenantId },
+      })
+      const productMap = new Map(products.map(p => [p.id, p]))
+
+      // Usar transação para orderNumber + create (evita race condition)
+      return prisma.$transaction(async (tx) => {
         const lastOrder = await tx.order.findFirst({
           where: { tenantId },
           orderBy: { orderNumber: 'desc' },
           select: { orderNumber: true },
         })
-        return (lastOrder?.orderNumber ?? 0) + 1
-      })
+        const orderNumber = (lastOrder?.orderNumber ?? 0) + 1
 
-      let subtotal = 0
-      const orderItems: Array<{ productId: string; quantity: number; unitPrice: number; totalPrice: number; notes: string | null }> = []
+        let subtotal = 0
+        const orderItems: Array<{ productId: string; quantity: number; unitPrice: number; totalPrice: number; notes: string | null }> = []
 
-      for (const item of input.items) {
-        const product = await prisma.product.findUnique({ where: { id: item.productId } })
-        if (!product) continue
-        const price = Number(product.promoPrice ?? product.price)
-        const qty = item.quantity ?? 1
-        subtotal += price * qty
-        orderItems.push({
-          productId: product.id,
-          quantity: qty,
-          unitPrice: price,
-          totalPrice: price * qty,
-          notes: item.notes || null,
-        })
-      }
+        for (const item of input.items) {
+          const product = productMap.get(item.productId)
+          if (!product) continue
+          const price = Number(product.promoPrice ?? product.price)
+          const qty = item.quantity ?? 1
+          subtotal += price * qty
+          orderItems.push({
+            productId: product.id,
+            quantity: qty,
+            unitPrice: price,
+            totalPrice: price * qty,
+            notes: item.notes || null,
+          })
+        }
 
-      const deliveryFee = input.deliveryFee ?? 0
-      const discount = input.discount ?? 0
-      const total = subtotal + deliveryFee - discount
+        const deliveryFee = input.deliveryFee ?? 0
+        const discount = input.discount ?? 0
+        const total = subtotal + deliveryFee - discount
 
-      // Criar OrderItem com tenantId incluído (será injetado pelo createTenantPrisma)
-      const orderItemsWithTenant = orderItems.map(item => ({
-        ...item,
-        tenantId, // Adicionar tenantId explicitamente para garantir multi-tenancy
-      }))
-
-      return db.order.create({
-        data: {
+        const orderItemsWithTenant = orderItems.map(item => ({
+          ...item,
           tenantId,
-          orderNumber,
-          channel: input.channel as never,
-          type: input.type as never,
-          status: 'PENDING',
-          customerName: input.customerName,
-          customerPhone: input.customerPhone,
-          customerAddress: input.customerAddress ?? null,
-          customerId: input.customerId ?? null,
-          subtotal,
-          deliveryFee,
-          discount,
-          total,
-          notes: input.notes ?? null,
-          items: { create: orderItemsWithTenant },
-        },
-        include: { items: true },
+        }))
+
+        return tx.order.create({
+          data: {
+            tenantId,
+            orderNumber,
+            channel: input.channel as never,
+            type: input.type as never,
+            status: 'PENDING',
+            customerName: input.customerName,
+            customerPhone: input.customerPhone,
+            customerAddress: input.customerAddress ?? null,
+            customerId: input.customerId ?? null,
+            subtotal,
+            deliveryFee,
+            discount,
+            total,
+            notes: input.notes ?? null,
+            items: { create: orderItemsWithTenant },
+          },
+          include: { items: true },
+        })
       })
     },
 
@@ -193,7 +199,9 @@ export function orderService(tenantId: string) {
           ...(notes ? { kitchenNotes: notes } : {}),
         },
       })
-      notify(`kds_${tenantId}`, JSON.stringify({ type: 'UPDATE', orderId: id, status })).catch(() => {})
+      notify(`kds_${tenantId}`, JSON.stringify({ type: 'UPDATE', orderId: id, status })).catch((err) => {
+        console.error('Erro ao notificar KDS:', err)
+      })
       return updated
     },
 

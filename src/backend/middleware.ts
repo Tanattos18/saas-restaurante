@@ -1,6 +1,6 @@
 ﻿import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyToken } from '@/backend/lib/jwt'
+import { verifyAccessToken } from '@/backend/lib/jwt'
 
 const publicPaths = [
   '/login',
@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  const payload = await verifyToken(token)
+  const payload = await verifyAccessToken(token)
 
   if (!payload?.userId || !payload?.tenantId) {
     if (pathname.startsWith('/api/')) {

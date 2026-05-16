@@ -1,6 +1,6 @@
 ﻿import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { signAccessToken, verifyToken } from '@/lib/jwt'
+import { signAccessToken, verifyRefreshToken } from '@/lib/jwt'
 
 export async function POST() {
   try {
@@ -14,7 +14,7 @@ export async function POST() {
       )
     }
 
-    const payload = await verifyToken(refreshToken)
+    const payload = await verifyRefreshToken(refreshToken)
 
     if (!payload?.userId || !payload?.tenantId) {
       return NextResponse.json(

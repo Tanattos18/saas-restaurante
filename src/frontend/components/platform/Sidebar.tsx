@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -66,7 +66,7 @@ export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
         {/* Logo */}
         <div className="h-16 flex items-center px-5 border-b border-border">
           <Link href={basePath} className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-105">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center shadow-sm transition-transform duration-200 group-hover:scale-105">
               <span className="text-white font-bold text-sm">S</span>
             </div>
             <div>
@@ -92,12 +92,12 @@ export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
                   flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                   transition-all duration-200 relative
                   ${isActive
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 shadow-sm'
+                    ? 'bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-400 shadow-sm'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   }
                 `}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-emerald-600 dark:text-emerald-400' : ''}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-violet-600 dark:text-violet-400' : ''}`} />
                 <span className="flex-1">{item.label}</span>
                 {isPending && (
                   <span className="inline-flex items-center justify-center min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-bold px-1.5 rounded-full shadow-sm animate-scale-in">
@@ -105,7 +105,7 @@ export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
                   </span>
                 )}
                 {isActive && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-emerald-500" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-violet-500" />
                 )}
               </Link>
             )
