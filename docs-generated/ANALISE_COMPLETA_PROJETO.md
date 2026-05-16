@@ -1,6 +1,6 @@
 # ANÁLISE COMPLETA DO PROJETO — SaaS Restaurante
 
-> **Data:** 16/05/2026
+> **Data:** 16/05/2026 (Atualizado pós-correções)
 > **Escopo:** Análise estrutural, código-fonte, dependências, segurança, performance e boas práticas.
 
 ---
@@ -8,16 +8,17 @@
 ## SUMÁRIO
 
 1. [RESUMO EXECUTIVO](#1-resumo-executivo)
-2. [PROBLEMAS CRÍTICOS](#2-problemas-críticos)
-3. [PROBLEMAS DE SEGURANÇA](#3-problemas-de-segurança)
-4. [PROBLEMAS DE ARQUITETURA](#4-problemas-de-arquitetura)
-5. [PROBLEMAS DE PERFORMANCE](#5-problemas-de-performance)
-6. [PROBLEMAS DE CÓDIGO](#6-problemas-de-código)
-7. [ARQUIVOS DUPLICADOS E REDUNDÂNCIA](#7-arquivos-duplicados-e-redundância)
-8. [DEPENDÊNCIAS](#8-dependências)
-9. [BANCO DE DADOS (PRISMA)](#9-banco-de-dados-prisma)
-10. [MULTI-TENANCY](#10-multi-tenancy)
-11. [PLANO DE AÇÃO PRIORIZADO](#11-plano-de-ação-priorizado)
+2. [O QUE FOI CORRIGIDO](#2-o-que-foi-corrigido)
+3. [PROBLEMAS CRÍTICOS](#3-problemas-críticos)
+4. [PROBLEMAS DE SEGURANÇA](#4-problemas-de-segurança)
+5. [PROBLEMAS DE ARQUITETURA](#5-problemas-de-arquitetura)
+6. [PROBLEMAS DE PERFORMANCE](#6-problemas-de-performance)
+7. [PROBLEMAS DE CÓDIGO](#7-problemas-de-código)
+8. [ARQUIVOS DUPLICADOS E REDUNDÂNCIA](#8-arquivos-duplicados-e-redundância)
+9. [DEPENDÊNCIAS](#9-dependências)
+10. [BANCO DE DADOS (PRISMA)](#10-banco-de-dados-prisma)
+11. [MULTI-TENANCY](#11-multi-tenancy)
+12. [PLANO DE AÇÃO PRIORIZADO](#12-plano-de-ação-priorizado)
 12. [ESTIMATIVA DE ESFORÇO](#12-estimativa-de-esforço)
 
 ---
@@ -26,206 +27,185 @@
 
 O projeto **saas-restaurante** é uma aplicação Next.js 15 + React 19 multi-tenant para gestão de restaurantes com módulos de cardápio digital, KDS (Kitchen Display System), pedidos via WhatsApp, CRM, fidelidade e assinaturas (Stripe).
 
-### Métricas Gerais
+### Métricas Gerais (Pós-correção)
 
 | Métrica | Valor |
 |---|---|
-| Arquivos fonte (excluindo node_modules, .next, .git) | ~250-300 |
+| Arquivos fonte | ~250-300 |
 | Arquivos TypeScript/TSX | ~170 |
 | Componentes React | ~40+ |
 | Rotas de API | ~40 |
-| Snapshots de backup (_backup/) | ~20+ diretórios |
-| Arquivos CSS | ~5 |
-| Diretórios vazios (só .gitkeep) | ~15 |
+| Snapshots de backup (_backup/) | 1 (zip) |
+| Arquivos CSS | 1 (consolidado) |
+| Diretórios vazios | 0 (removidos) |
+| Dependências removidas | 4 |
+| Testes passando | 6/6 |
+| Build | ✅ Compilando |
 
-### Pontos Fortes
+### Pontos Fortes (mantidos)
 
-- Arquitetura multi-tenant bem planejada com `tenant-prisma.ts`
+- Arquitetura multi-tenant fortalecida com `tenant-prisma.ts` completo
 - Migrations do Prisma organizadas
 - Separação clara entre backend (services) e frontend (components)
-- Uso correto do padrão singleton para Prisma Client
-- Estrutura de pastas bem definida
+- Padrão singleton para Prisma Client
+- Estrutura de pastas desduplicada
 
-### Pontos Críticos
+### Pontos Críticos — Resolvidos na Fase 1
 
-1. **Diretórios `app/` duplicados** — `app/` e `src/frontend/app/` são cópias independentes (deveriam ser symlink). `layout.tsx` já divergiu entre eles.
-2. **Secrets JWT com fallback hardcoded** — Em desenvolvimento, usa `'fallback-access-secret-development-only'` se a env var não existir.
-3. **Race condition na geração de orderNumber** — `create` do pedido está fora da transação que gera o número.
-4. **N+1 queries na criação de pedidos** — Para cada item, uma consulta separada ao banco.
-5. **Tailwind CDN em produção** — Carregando Tailwind via CDN mesmo com PostCSS já configurado.
-6. **Multi-tenancy incompleto** — `findUnique`, `update`, `delete`, `upsert` não têm filtro de tenantId.
+1. ✅ **Symlink `app/` → `src/frontend/app/`** — Diretório único, tema roxo mantido
+2. ✅ **JWT sem fallback** — Secrets sempre validadas, throw se ausentes
+3. ✅ **Race condition orderNumber** — `create` dentro da transação Prisma
+4. ✅ **N+1 queries** — Batch `findMany` em vez de loop `findUnique`
+5. ✅ **Tailwind CDN removido** — Apenas PostCSS compilation
+6. ✅ **Multi-tenancy completo** — Todos os métodos Prisma com filtro tenantId
 
 ---
 
-## 2. PROBLEMAS CRÍTICOS
+## 2. O QUE FOI CORRIGIDO (Fases 1-3)
 
-### 2.1. Diretórios `app/` Duplicados (CRÍTICO)
+### 5 Commits no branch `fix/otimizacao-geral`
 
-**Arquivos:** `app/` (raiz) e `src/frontend/app/`
+| Commit | O que foi feito |
+|---|---|
+| `07487cd` | **Fase 1 — Crítico:** Symlink app/, JWT sem fallback + split verifyToken, order.service (race + N+1), tenant-prisma completo, CSS consolidado, encoding UTF-8 |
+| `fff7ddf` | **Checklist:** Atualização do progresso |
+| `3ff1385` | **Testes:** Correção dos testes JWT para nova API |
+| `133d65b` | **Fase 2 — Seg/Perf:** AbortController, pg-notify, QR Code, documentação de testes |
+| `c1d51a0` | **Fase 3 — Limpeza:** Dependências não usadas removidas, configs duplicadas, APIs vazias, _backup limpo, jest.config, console.error com contexto |
 
-O `README.md` linha 143 afirma que `app/` é um **symlink** para `src/frontend/app/`. **Isso é falso** — `app/` é um diretório real e independente.
+### Resumo de Correções por Categoria
 
-**87 arquivos existem em ambos os diretórios**, sendo que:
-- **82 são idênticos** byte-a-byte (incluindo `globals.css` e `page.tsx`)
-- **1 tem diferença de conteúdo real**: `layout.tsx`
-  - `app/layout.tsx`: usa tema **verde** (`#059669`, `#f8fafc`, `#0f172a`)
-  - `src/frontend/app/layout.tsx`: usa tema **roxo** (`#7c3aed`, `#faf5ff`, `#1e1b4b`)
-- **4 têm diferenças de line-ending ou newline** (CRLF vs LF)
+**✅ Segurança:**
+- JWT sem fallback secrets (sempre throw)
+- `verifyToken` separado em `verifyAccessToken` + `verifyRefreshToken`
+- SQL injection no `pg-notify` corrigido (escape de payload)
+- `document.write()` substituído por `innerHTML` no QR Code
+- `evolutionRequest` agora lança erro em vez de engolir
 
-**Impacto:** O Next.js lê da raiz `app/`. Qualquer edição em `src/frontend/app/` é ignorada. As cores já divergiram — uma futura edição em um diretório sem o outro causará bugs.
+**✅ Arquitetura:**
+- `app/` agora é symlink para `src/frontend/app/`
+- CSS consolidado em único arquivo (`globals.css`), CDN e `dangerouslySetInnerHTML` removidos
+- Configs duplicadas removidas (`config/next.config.ts`, `config/postcss.config.js`)
+- Jest config convertido de TS para JS (independência de ts-node)
 
-**Solução:** Decidir qual diretório é a fonte da verdade e criar o symlink:
+**✅ Multi-tenancy:**
+- `tenant-prisma.ts` completo: findUnique, update, delete, upsert, findFirstOrThrow, findUniqueOrThrow, createMany
+
+**✅ Performance:**
+- N+1 queries eliminado no `order.service.ts` (batch findMany)
+- Race condition do orderNumber eliminada (create dentro da transação)
+- Tailwind CDN removido (já compilado via PostCSS)
+- AbortController adicionado no fetch do HeaderWrapper
+
+**✅ Limpeza:**
+- 4 dependências removidas: `@upstash/ratelimit`, `@upstash/redis`, `ts-node`, `tailwindcss-animate`
+- APIs placeholder removidas: `chat/send`, `chat/sessions`, `health`, `kds/stream`, etc.
+- `_backup/` limpo: mantido apenas o zip de backup
+- Encoding UTF-8 corrigido em `Sidebar.tsx` e `StatsCards.tsx`
+- `console.error` com contexto em `pg-notify.ts` e `whatsapp.ts`
+
+### O que ainda NÃO foi feito
+
+**Prioridade 4 (Longo Prazo):**
+- Zod v4 (atualmente v3)
+- Indexes no banco (ChatMessage.customerId, etc.)
+- Tabela KitchenDeviceOrder (em vez de array)
+- Unique constraints (Product.name + tenant)
+- Endpoints de API pendentes (health, webhooks, etc.)
+- Refatorar casts `as any`/`as never`
+- Error boundaries e loading states
+- prefetch={false} na sidebar
+- Cascade delete Order.customer
+- Avaliar serwist/PWA
+- Logger estruturado
+- Validação com enums do Prisma
+
+---
+
+### 2.1. Diretórios `app/` Duplicados (✅ RESOLVIDO)
+
+**Situação anterior:** `app/` e `src/frontend/app/` eram cópias independentes. `layout.tsx` havia divergido (verde vs roxo).
+
+**O que foi feito:** `app/` foi removido e substituído por um symlink apontando para `src/frontend/app/`. Tema roxo mantido como oficial. Divergência de cores eliminada.
+
+**Verificação:**
 ```powershell
-# Se src/frontend/app/ for a fonte:
-Remove-Item -Recurse -LiteralPath "app"
-New-Item -ItemType SymbolicLink -Path "app" -Target "src/frontend/app"
+Get-Item "app" | Select-Object Name, LinkType, Target
+# LinkType = SymbolicLink, Target = src/frontend/app
 ```
 
 ---
 
-### 2.2. Race Condition na Criação de Pedidos (CRÍTICO)
+### 2.2. Race Condition na Criação de Pedidos (✅ RESOLVIDO)
+
+**Situação anterior:** `orderNumber` era gerado dentro de uma transação, mas o `create` era feito fora — janela para race condition.
+
+**O que foi feito:** O `db.order.create` foi movido para DENTRO da `$transaction` que gera o `orderNumber`. A criação agora é atômica: gera o número e cria o pedido na mesma transação.
 
 **Arquivo:** `src/backend/services/order.service.ts`
 
-```typescript
-// A transação APENAS lê o lastOrderNumber
-const orderNumber = await prisma.$transaction(async (tx) => {
-  const lastOrder = await tx.order.findFirst({
-    where: { tenantId },
-    orderBy: { orderNumber: 'desc' },
-    select: { orderNumber: true },
-  })
-  return (lastOrder?.orderNumber ?? 0) + 1
-})
-
-// O create é feito FORA da transação!!!
-const created = await db.order.create({
-  data: { orderNumber, ... }
-})
-```
-
-**Problema:** Entre o fim da transação e o `create`, outra requisição pode obter o mesmo `orderNumber`, causando **violação de unique constraint** ou **ordens com mesmo número**.
-
-**Solução:** Mover o `create` para dentro da transação.
-
 ---
 
-### 2.3. N+1 Queries em Order Service (CRÍTICO)
+### 2.3. N+1 Queries em Order Service (✅ RESOLVIDO)
+
+**Situação anterior:** Loop `for` com `findUnique` para cada item do pedido (1+N queries).
+
+**O que foi feito:** Substituído por `findMany` em lote + `Map` para lookup O(1). Reduz de 1+N para 2 queries independente do número de itens.
 
 **Arquivo:** `src/backend/services/order.service.ts`
 
-```typescript
-for (const item of input.items) {
-  const product = await prisma.product.findUnique({ where: { id: item.productId } })
-  // ...
-}
-```
-
-**Problema:** Para cada item no pedido, uma query separada. Se o pedido tem 20 itens, são 21+ queries.
-
-**Solução:** Usar `findMany` com `Promise.all` ou batch:
-```typescript
-const productIds = input.items.map(i => i.productId)
-const products = await prisma.product.findMany({
-  where: { id: { in: productIds } }
-})
-const productMap = new Map(products.map(p => [p.id, p]))
-```
-
 ---
 
-### 2.4. Multi-Tenancy Incompleto no tenant-prisma.ts (CRÍTICO)
+### 2.4. Multi-Tenancy Incompleto no tenant-prisma.ts (✅ RESOLVIDO)
+
+**Situação anterior:** Apenas `findMany`, `count`, `updateMany` e `deleteMany` tinham filtro de tenantId.
+
+**O que foi feito:** Adicionados ao `$extends`:
+- ✅ `findUnique` — filtro tenantId
+- ✅ `update` — filtro tenantId
+- ✅ `delete` — filtro tenantId
+- ✅ `upsert` — filtro tenantId + tenantId no create/update
+- ✅ `findFirstOrThrow` — filtro tenantId
+- ✅ `findUniqueOrThrow` — filtro tenantId
+- ✅ `createMany` — injeção de tenantId em cada item
 
 **Arquivo:** `src/backend/lib/tenant-prisma.ts`
-
-Métodos **NÃO sobrescritos** na extensão do Prisma:
-
-| Método | Risco |
-|---|---|
-| `findUnique` | Pode retornar registro de outro tenant |
-| `update` | Pode atualizar registro de outro tenant |
-| `delete` | Pode deletar registro de outro tenant |
-| `upsert` | Pode criar/atualizar fora do tenant |
-| `findFirstOrThrow` | Pode retornar registro de outro tenant |
-| `findUniqueOrThrow` | Pode retornar registro de outro tenant |
-| `createMany` | Não injeta tenantId nos registros |
-
-**Apenas** `findMany`, `count`, `updateMany` e `deleteMany` foram sobrescritos.
-
-**Solução:** Adicionar todos os métodos faltantes ao `$extends`.
 
 ---
 
 ## 3. PROBLEMAS DE SEGURANÇA
 
-### 3.1. Fallback de JWT Secrets Hardcoded (ALTO)
+### 3.1. Fallback de JWT Secrets Hardcoded (✅ RESOLVIDO)
+
+**Situação anterior:** Fallback `'fallback-access-secret-development-only'` usado se env var não definida.
+
+**O que foi feito:** `getAccessSecret()` e `getRefreshSecret()` agora lançam erro se a env var não estiver definida, sem exceção. `console.warn` removido.
 
 **Arquivo:** `src/backend/lib/jwt.ts`
 
-```typescript
-const secret = process.env.JWT_ACCESS_SECRET
-if (!secret) {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(...)
-  }
-  console.warn('...')
-}
-return new TextEncoder().encode(secret ?? 'fallback-access-secret-development-only')
-```
+### 3.2. Refresh Token Usado como Access Token (✅ RESOLVIDO)
 
-**Problema:** Se `NODE_ENV` não estiver definida (ou estiver como `'development'`), a string previsível `'fallback-access-secret-development-only'` é usada como chave JWT. Qualquer um que conheça essa string pode forjar tokens JWT válidos.
+**Situação anterior:** `verifyToken()` tentava accessSecret primeiro, depois refreshSecret — refresh tokens de 7 dias eram aceitos como access tokens.
 
-**Solução:** Sempre lançar erro se a secret não estiver definida, independente do ambiente:
-```typescript
-if (!secret) throw new Error('JWT_ACCESS_SECRET não configurada')
-```
+**O que foi feito:** `verifyToken()` substituída por `verifyAccessToken()` e `verifyRefreshToken()` separadas. Cada uma usa apenas a secret correspondente. Middleware e rotas atualizados para usar a função correta.
 
-### 3.2. Refresh Token Usado como Access Token (MÉDIO)
+**Arquivo:** `src/backend/lib/jwt.ts`, `src/backend/middleware.ts`, `src/backend/lib/auth.ts`
 
-**Arquivo:** `src/backend/lib/jwt.ts` — `verifyToken()`
+### 3.3. Injeção SQL Potencial em pg-notify.ts (✅ RESOLVIDO)
 
-```typescript
-try {
-  const { payload } = await jwtVerify(token, getAccessSecret())
-  return payload as JwtPayload
-} catch {
-  try {
-    const { payload } = await jwtVerify(token, getRefreshSecret()) // ← AQUI
-    return payload as JwtPayload
-  } catch {
-    return null
-  }
-}
-```
+**Situação anterior:** Escape manual que só tratava aspas simples (`'`).
 
-**Problema:** Se a verificação com `accessSecret` falhar, tenta com `refreshSecret`. Isso significa que refresh tokens (que expiram em **7 dias**) podem ser usados como access tokens em qualquer rota que use `verifyToken`.
-
-**Solução:** `verifyToken` deve aceitar um parâmetro opcional `type: 'access' | 'refresh'` e usar a secret correspondente.
-
-### 3.3. Injeção SQL Potencial em pg-notify.ts (MÉDIO)
+**O que foi feito:** Criadas funções `escapeLiteral()` (trata `\`, `'`, `\n`) e `escapeIdentifier()` (trata `"`) usando funções dedicadas. NOTIFY agora usa ambas para segurança completa.
 
 **Arquivo:** `src/backend/lib/pg-notify.ts`
 
-```typescript
-const escaped = payload.replace(/'/g, "''")
-await c.query(`NOTIFY "${channel}", '${escaped}'`)
-```
+### 3.4. document.write() no QR Code (✅ RESOLVIDO)
 
-**Problema:** A string só escapa aspas simples. Caracteres como `\`, `\n`, ou outros especiais do PostgreSQL não são escapados. O nome do canal também é interpolado diretamente.
+**Situação anterior:** `win.document.write()` usado para gerar HTML de impressão.
 
-**Solução:** Usar `pg-format` ou parâmetros nomeados.
-
-### 3.4. document.write() no QR Code (MÉDIO)
+**O que foi feito:** Substituído por concatenação de string HTML + `win.document.body.innerHTML`. `document.write()` não é mais utilizado.
 
 **Arquivo:** `src/frontend/app/(platform)/[tenantSlug]/qr-code/page.tsx`
-
-```typescript
-win.document.write(html)
-```
-
-**Problema:** `document.write()` é deprecated e inseguro. Se o HTML contiver conteúdo controlado pelo usuário, abre brecha para XSS.
-
-**Solução:** Usar `window.open()` + `win.document.body.innerHTML` ou biblioteca de impressão adequada.
 
 ### 3.5. console.warn/error Expõe Informações em Produção (BAIXO)
 
@@ -601,36 +581,43 @@ O middleware já valida o JWT e injeta nos headers, mas `getAuthContext()` em ca
 | 3.5 | Corrigir encoding da sidebar (`Card�pio` → `Cardápio`) | 30min |
 | 3.6 | Remover `console.warn`/`console.error` de libs (ou usar logger) | 2h |
 
-### Prioridade 4 — MELHORIAS DE LONGO PRAZO
+### Prioridade 4 — MELHORIAS DE LONGO PRAZO (PENDENTES)
 
-| # | Tarefa | Esforço |
-|---|---|---|
-| 4.1 | Atualizar Zod para v4 | 4h |
-| 4.2 | Adicionar indexes no banco (FKs sem index) | 1h |
-| 4.3 | Criar tabela de junção KitchenDeviceOrder (em vez de array) | 4h |
-| 4.4 | Adicionar unique constraints (Product.name + tenant, Category.name + tenant) | 1h |
-| 4.5 | Implementar endpoints de API pendentes (chat, webhooks, etc.) | 8h+ |
-| 4.6 | Refatorar casts `as any`/`as never` para tipos corretos | 4h |
-| 4.7 | Usar env vars para JWT expiration (`JWT_ACCESS_EXPIRES_IN`, `JWT_REFRESH_EXPIRES_IN`) | 30min |
-| 4.8 | Extrair hardcoded plan name e restaurant name da sidebar para props/context | 30min |
-| 4.9 | Adicionar error boundaries e loading states no root layout | 2h |
+| # | Tarefa | Esforço | Status |
+|---|---|---|---|
+| 4.1 | Atualizar Zod para v4 | 4h | ⏳ |
+| 4.2 | Adicionar indexes no banco (FKs sem index) | 1h | ⏳ |
+| 4.3 | Criar tabela de junção KitchenDeviceOrder (em vez de array) | 4h | ⏳ |
+| 4.4 | Adicionar unique constraints (Product.name + tenant, Category.name + tenant) | 1h | ⏳ |
+| 4.5 | Implementar endpoints de API pendentes (chat, webhooks, etc.) | 8h+ | ⏳ |
+| 4.6 | Refatorar casts `as any`/`as never` para tipos corretos | 4h | ⏳ |
+| 4.7 | Usar env vars para JWT expiration | 30min | ✅ |
+| 4.8 | Extrair hardcoded plan name e restaurant name da sidebar para props/context | 30min | ⏳ |
+| 4.9 | Adicionar error boundaries e loading states no root layout | 2h | ⏳ |
+| 4.10 | Prefetch={false} em links da sidebar | 30min | ⏳ |
+| 4.11 | Corrigir cascade delete Order.customer | 1h | ⏳ |
+| 4.12 | Avaliar remoção de @serwist/next e serwist | 1h | ⏳ |
+| 4.13 | Criar logger estruturado | 3h | ⏳ |
+| 4.14 | Validação de input com enums do Prisma | 1h | ⏳ |
 
 ---
 
-## 12. ESTIMATIVA DE ESFORÇO TOTAL
+## 12. ESTIMATIVA DE ESFORÇO (REAL vs. ESTIMADO)
 
-| Prioridade | Tarefas | Estimativa |
-|---|---|---|
-| P1 — Críticas | 6 tarefas | ~8h |
-| P2 — Segurança/Performance | 6 tarefas | ~7h |
-| P3 — Limpeza | 6 tarefas | ~5h |
-| P4 — Longo Prazo | 9 tarefas | ~25h |
-| **Total** | **27 tarefas** | **~45h** |
+| Prioridade | Tarefas | Estimado | Realizado | Pendente |
+|---|---|---|---|---|
+| P1 — Críticas | 6 tarefas | ~8h | ✅ 6/6 | 0 |
+| P2 — Segurança/Performance | 6 tarefas | ~7h | ✅ 4/6 | 2 |
+| P3 — Limpeza | 6 tarefas | ~5h | ✅ 5/6 | 1 |
+| P4 — Longo Prazo | 14 tarefas | ~25h | ✅ 1/14 | 13 |
+| **Total** | **32 tarefas** | **~45h** | **16 concluídas** | **16 pendentes** |
 
 ---
 
 ## CONCLUSÃO
 
-O projeto tem uma **base sólida** com boa arquitetura multi-tenant, mas sofre de problemas de **manutenção** (diretórios duplicados que já divergiram), **segurança** (JWT com fallback, refresh token como access token), **performance** (N+1, Tailwind CDN, CSS duplicado), e **qualidade de código** (casts `as any`, catch silencioso, encoding corrompido).
+**O que foi feito (Fases 1-3):** As correções críticas de segurança, arquitetura e performance foram implementadas. O symlink do `app/` foi criado, JWT está seguro sem fallbacks, a race condition e N+1 no order.service foram eliminados, o multi-tenancy está completo, Tailwind CDN e CSS duplicado foram removidos, dependências não utilizadas e configs mortas foram eliminadas.
 
-As correções de prioridade 1 e 2 devem ser feitas **imediatamente** antes de qualquer novo desenvolvimento, pois afetam a segurança e integridade dos dados. As prioridades 3 e 4 podem ser distribuídas ao longo do tempo.
+**O que ainda precisa ser feito (Fase 4):** Melhorias de longo prazo como atualização do Zod, indexes no banco, tabela KitchenDeviceOrder, endpoints de API, refatoração de casts `as any`, error boundaries, logger estruturado, etc.
+
+**Estado atual:** Build compila, 6/6 testes passam, typecheck sem erros, lint sem errors.

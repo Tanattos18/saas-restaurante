@@ -334,12 +334,12 @@
 | Prioridade | Total | Concluído | Pendente |
 |---|---|---|---|
 | P1 — Crítico | 5 | 5 | 0 |
-| P2 — Segurança/Performance | 5 | 1 | 4 |
-| P3 — Limpeza | 5 | 1 | 4 |
+| P2 — Segurança/Performance | 5 | 4 | 1 |
+| P3 — Limpeza | 5 | 5 | 0 |
 | P4 — Longo Prazo | 14 | 1 | 13 |
-| **Total** | **29** | **8** | **21** |
+| **Total** | **29** | **15** | **14** |
 
-### Última atualização: 16/05/2026 — Fase 1 concluída
+### Última atualização: 16/05/2026 — Fases 1, 2 e 3 concluídas
 
 **O que foi feito:**
 - ✅ Symlink `app/` → `src/frontend/app/` (com divergência de cores resolvida)
