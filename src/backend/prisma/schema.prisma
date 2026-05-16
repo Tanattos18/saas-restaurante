@@ -331,7 +331,7 @@ model Order {
   kitchenDisplayId       String?
   printed                Boolean         @default(false)
   tenant                 Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  customer               Customer?       @relation(fields: [customerId], references: [id])
+  customer               Customer?       @relation(fields: [customerId], references: [id], onDelete: SetNull)
   items                  OrderItem[]
   payments               Payment[]
   createdAt              DateTime        @default(now())

@@ -25,10 +25,12 @@ const menuItems = [
 
 interface Props {
   tenantSlug: string
+  tenantName?: string
+  planName?: string
   pendingOrdersCount?: number
 }
 
-export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
+export function Sidebar({ tenantSlug, tenantName = 'Restaurante Teste', planName = 'Plano PRO', pendingOrdersCount = 0 }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -83,10 +85,13 @@ export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
             const isPending = item.href === 'orders' && pendingOrdersCount > 0
             const Icon = item.icon
 
+            const disablePrefetch = !['dashboard', 'orders', 'kds', 'menu'].includes(item.href)
+
             return (
               <Link
                 key={item.href}
                 href={`${basePath}/${item.href}`}
+                prefetch={disablePrefetch ? false : undefined}
                 onClick={() => setOpen(false)}
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
@@ -115,8 +120,8 @@ export function Sidebar({ tenantSlug, pendingOrdersCount = 0 }: Props) {
         {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-border bg-card">
           <div className="p-3 rounded-lg bg-muted/50 border border-border">
-            <p className="text-xs font-semibold text-foreground">Plano PRO</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Restaurante Teste</p>
+            <p className="text-xs font-semibold text-foreground">{planName}</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{tenantName}</p>
           </div>
         </div>
       </aside>

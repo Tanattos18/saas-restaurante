@@ -2,14 +2,15 @@
 import prisma from '@/backend/lib/prisma'
 import { notify } from '@/backend/lib/pg-notify'
 import { PLANS, type PlanId } from '@/backend/lib/stripe'
+import type { OrderChannel, OrderType, OrderStatus } from '@prisma/client'
 
 interface CreateOrderInput {
   customerId?: string
   customerName: string
   customerPhone: string
   customerAddress?: string
-  channel: string
-  type: string
+  channel: OrderChannel
+  type: OrderType
   items: Array<{ productId: string; quantity: number; notes?: string }>
   deliveryFee?: number
   discount?: number
@@ -162,9 +163,9 @@ export function orderService(tenantId: string) {
           data: {
             tenantId,
             orderNumber,
-            channel: input.channel as never,
-            type: input.type as never,
-            status: 'PENDING',
+            channel: input.channel,
+            type: input.type,
+            status: 'PENDING' as OrderStatus,
             customerName: input.customerName,
             customerPhone: input.customerPhone,
             customerAddress: input.customerAddress ?? null,
@@ -181,7 +182,7 @@ export function orderService(tenantId: string) {
       })
     },
 
-    async updateStatus(id: string, status: string, notes?: string) {
+    async updateStatus(id: string, status: OrderStatus, notes?: string) {
       const now = new Date()
       const timestamps: Record<string, Record<string, Date>> = {
         ACCEPTED: { acceptedAt: now },
@@ -194,7 +195,7 @@ export function orderService(tenantId: string) {
       const updated = await db.order.update({
         where: { id },
         data: {
-          status: status as never,
+          status,
           ...(timestamps[status] ?? {}),
           ...(notes ? { kitchenNotes: notes } : {}),
         },
