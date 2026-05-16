@@ -19,14 +19,16 @@ export function HeaderWrapper({ tenantSlug: _tenantSlug }: { tenantSlug: string 
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const ac = new AbortController()
     Promise.all([
-      fetch('/api/tenant/me').then((r) => r.json()),
-      fetch('/api/auth/me').then((r) => r.json()),
+      fetch('/api/tenant/me', { signal: ac.signal }).then((r) => r.json()),
+      fetch('/api/auth/me', { signal: ac.signal }).then((r) => r.json()),
     ]).then(([tenantData, userData]) => {
       if (tenantData.success) setTenant(tenantData.data)
       if (userData.success) setUserName(userData.data?.name || 'Admin')
       setLoading(false)
     }).catch(() => setLoading(false))
+    return () => ac.abort()
   }, [])
 
   useEffect(() => {

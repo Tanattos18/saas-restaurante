@@ -33,15 +33,15 @@ export default function QRCodePage() {
   function printAll() {
     const win = window.open('', '_blank')
     if (!win) return
-    win.document.write('<html><head><title>QR Codes</title><style>body{font-family:sans-serif;padding:20px}table{width:100%}td{text-align:center;padding:10px}img{width:200px;height:200px}p{font-size:14px}</style></head><body>')
-    win.document.write('<h1 style="text-align:center">QR Codes — Mesas</h1><table>')
+    let html = '<html><head><title>QR Codes</title><style>body{font-family:sans-serif;padding:20px}table{width:100%}td{text-align:center;padding:10px}img{width:200px;height:200px}p{font-size:14px}</style></head><body>'
+    html += '<h1 style="text-align:center">QR Codes — Mesas</h1><table>'
     qrCodes.forEach((qr, i) => {
-      if (i % 3 === 0) win.document.write('<tr>')
-      win.document.write(`<td><img src="${qr.qrCodeDataUrl}" /><p>Mesa ${qr.tableNumber}</p></td>`)
-      if ((i + 1) % 3 === 0 || i === qrCodes.length - 1) win.document.write('</tr>')
+      if (i % 3 === 0) html += '<tr>'
+      html += `<td><img src="${qr.qrCodeDataUrl}" /><p>Mesa ${qr.tableNumber}</p></td>`
+      if ((i + 1) % 3 === 0 || i === qrCodes.length - 1) html += '</tr>'
     })
-    win.document.write('</table></body></html>')
-    win.document.close()
+    html += '</table></body></html>'
+    win.document.body.innerHTML = html
     win.print()
   }
 

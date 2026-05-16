@@ -46,11 +46,18 @@ export function subscribe(channel: string, callback: Callback): () => void {
   }
 }
 
+function escapeLiteral(str: string): string {
+  return "'" + str.replace(/\\/g, '\\\\').replace(/'/g, "''").replace(/\n/g, '\\n') + "'"
+}
+
+function escapeIdentifier(str: string): string {
+  return '"' + str.replace(/"/g, '""') + '"'
+}
+
 export async function notify(channel: string, payload: string): Promise<void> {
   const c = await pool.connect()
   try {
-    const escaped = payload.replace(/'/g, "''")
-    await c.query(`NOTIFY "${channel}", '${escaped}'`)
+    await c.query(`NOTIFY ${escapeIdentifier(channel)}, ${escapeLiteral(payload)}`)
   } finally {
     c.release()
   }
