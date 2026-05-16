@@ -50,7 +50,9 @@ export async function jwtVerify(token: string, _secret: Buffer | string) {
   const parts = token.split('.')
   if (parts.length !== 3) return { payload: null }
   try {
-    const payload = JSON.parse(base64UrlDecode(parts[1]).toString())
+    const content = parts[1]
+    if (!content) return { payload: null }
+    const payload = JSON.parse(base64UrlDecode(content).toString())
     return { payload } as any
   } catch {
     return { payload: null }
