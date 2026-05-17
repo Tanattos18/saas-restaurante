@@ -70,7 +70,7 @@ export default async function CustomerDetailPage({ params }: Props) {
             <p className="text-sm text-muted-foreground">Nenhuma transação.</p>
           ) : (
             <div className="space-y-2">
-              {transactions.slice(0, 20).map((t) => (
+              {transactions.slice(0, 20).map((t: { id: string; points: number; description: string; createdAt: Date }) => (
                 <div key={t.id} className="flex justify-between text-sm">
                   <div>
                     <span className={t.points > 0 ? 'text-green-600' : 'text-red-600'}>
