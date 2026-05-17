@@ -1,0 +1,192 @@
+# 📋 Prompt Pronto para Copiar e Colar
+
+Aqui está um prompt completo que você pode usar para documentar o problema ou enviar para outro assistente de IA:
+
+---
+
+```markdown
+# 🐛 Problema: Warning de Edge Runtime com biblioteca `jose` no Next.js 15 + Render
+
+## 📌 Contexto do Projeto
+- **Framework**: Next.js 15.5.18
+- **Runtime**: Node.js 24.14.1 (Render)
+- **Repositório**: https://github.com/Tanattos18/saas-restaurante
+- **Build command**: `npm install; npm run build`
+- **Biblioteca problemática**: `jose` (usada em `src/backend/lib/jwt.ts` e `src/backend/middleware.ts`)
+
+---
+
+## ⚠️ Erro/Warning Exibido no Deploy
+
+```
+./node_modules/jose/dist/webapi/lib/deflate.js
+A Node.js API is used (CompressionStream at line: 10) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+Import trace for requested module:
+./node_modules/jose/dist/webapi/lib/deflate.js
+./node_modules/jose/dist/webapi/jwe/flattened/decrypt.js
+./node_modules/jose/dist/webapi/index.js
+./src/backend/lib/jwt.ts
+./src/backend/middleware.ts
+
+./node_modules/jose/dist/webapi/lib/deflate.js
+A Node.js API is used (DecompressionStream at line: 26) which is not supported in the Edge Runtime.
+```
+
+---
+
+## 🔍 O que está acontecendo?
+
+O arquivo `middleware.ts` do Next.js roda por padrão no **Edge Runtime**, que tem limitações de APIs disponíveis. A biblioteca `jose`, ao ser importada, está usando APIs do Node.js (`CompressionStream` e `DecompressionStream`) que **não são suportadas no Edge**.
+
+Isso gera warnings durante o build. Embora o build possa concluir com sucesso, pode causar falhas em runtime no middleware.
+
+---
+
+## ✅ Soluções Sugeridas (escolha uma)
+
+### 🔹 Opção 1: Forçar runtime Node.js no middleware (Recomendado)
+
+No arquivo `src/backend/middleware.ts`, adicione a configuração de runtime:
+
+```typescript
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  // sua lógica atual...
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/caminhos/:path*'], // ajuste conforme seus paths
+  runtime: 'nodejs', // ← Força uso do Node.js runtime (Next.js 15.2+)
+};
+```
+
+> ✅ Vantagem: Resolve o problema sem refatorar a lógica do `jose`.  
+> ⚠️ Observação: O middleware perderá os benefícios de latência do Edge, mas ganha compatibilidade total com Node.js.
+
+---
+
+### 🔹 Opção 2: Usar imports compatíveis com Edge Runtime da biblioteca `jose`
+
+Substitua imports genéricos por imports específicos da versão Web:
+
+```typescript
+// ❌ Evite:
+import { jwtVerify, SignJWT } from 'jose';
+
+// ✅ Prefira:
+import { jwtVerify } from 'jose/jwt/verify';
+import { SignJWT } from 'jose/jwt/sign';
+import { importPKCS8, importSPKI } from 'jose/key/import';
+```
+
+E certifique-se de que a versão do `jose` está atualizada:
+```bash
+npm install jose@latest
+```
+
+> ✅ Vantagem: Mantém o middleware no Edge Runtime.  
+> ⚠️ Desvantagem: Pode exigir ajustes na forma como as chaves e tokens são manipulados.
+
+---
+
+### 🔹 Opção 3: Mover validação de JWT para Server Actions ou API Routes
+
+Se o middleware não precisa validar tokens, mova essa lógica para locais que rodam no Node.js por padrão:
+
+```typescript
+// app/api/auth/verify/route.ts (API Route)
+import { jwtVerify } from 'jose';
+
+export async function POST(request: Request) {
+  const { token } = await request.json();
+  const verified = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
+  return Response.json({ valid: true });
+}
+```
+
+E no middleware, faça apenas uma chamada HTTP para validar:
+```typescript
+// middleware.ts
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get('token')?.value;
+  
+  if (token) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify`, {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+    if (!res.ok) return NextResponse.redirect(new URL('/login', request.url));
+  }
+  
+  return NextResponse.next();
+}
+```
+
+> ✅ Vantagem: Separação clara de responsabilidades e compatibilidade garantida.  
+> ⚠️ Desvantagem: Adiciona uma chamada HTTP extra (pode ser mitigada com cache).
+
+---
+
+## 🛠️ Passos para Aplicar a Correção
+
+1. Escolha uma das opções acima conforme sua arquitetura.
+2. Aplique as alterações no código.
+3. Teste localmente:
+   ```bash
+   npm run build
+   npm run start
+   ```
+4. Commit e push para o GitHub:
+   ```bash
+   git add .
+   git commit -m "fix: ajusta runtime do middleware para compatibilidade com jose"
+   git push origin main
+   ```
+5. O Render fará o deploy automático. Monitore os logs em:  
+   https://dashboard.render.com/web/srv-d84jid19rddc739mcbq0/deploys
+
+---
+
+## 🧪 Verificações Adicionais
+
+- [ ] A versão do `jose` está compatível? `npm list jose`
+- [ ] O `next.config.js` não está forçando `experimental.serverActions` de forma conflitante?
+- [ ] Há outras dependências usando APIs não suportadas no Edge? Execute:
+  ```bash
+  npm run build 2>&1 | grep -i "edge runtime"
+  ```
+
+---
+
+## 📎 Informações Extras
+
+- Docs Next.js Edge Runtime: https://nextjs.org/docs/api-reference/edge-runtime  
+- Docs `jose` para Web: https://github.com/panva/jose#web-crypto-api  
+- Render + Next.js: https://render.com/docs/deploy-nextjs
+
+Se precisar de ajuda para ajustar o código específico do `jwt.ts` ou `middleware.ts`, posso revisar os arquivos!
+```
+
+---
+
+## 💡 Como usar este prompt:
+
+1. **Copie todo o bloco acima** (entre as linhas `---`)
+2. **Cole em um novo chat** com qualquer assistente de IA
+3. **Adicione trechos do seu código** se quiser ajuda específica:
+   ```markdown
+   ## 📄 Trecho do middleware.ts:
+   ```typescript
+   // cole seu código aqui
+   ```
+   ```
+
+4. **Ou use para documentar** no README do seu repositório como "Notas de Deploy"
+
+---
+
+> 🚀 **Dica bônus**: Se quiser, posso te ajudar a aplicar a **Opção 1** agora mesmo. É só me enviar o conteúdo do seu arquivo `src/backend/middleware.ts` que eu ajusto para você!

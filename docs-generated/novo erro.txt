@@ -1,0 +1,174 @@
+```markdown
+# 🐛 Solicitação de Correção: Next.js 15 não encontra `app/` ou `pages/` no deploy no Render
+
+## 👋 Contexto
+Olá, Claude! Preciso da sua ajuda para corrigir um erro de build no deploy de um projeto Next.js 15 na plataforma Render.
+
+## 📌 Informações do Projeto
+- **Repositório**: https://github.com/Tanattos18/saas-restaurante
+- **Framework**: Next.js 15.5.18 (App Router)
+- **Estrutura**: Projeto usa pasta `src/` (ex: `src/app/`, `src/backend/`)
+- **Plataforma de deploy**: Render.com
+- **Build command**: `npm install; npm run build`
+- **Node.js**: 24.14.1
+
+---
+
+## ❌ Erro no Deploy (Render)
+
+```
+> Build error occurred
+[Error: > Couldn't find any `pages` or `app` directory. 
+Please create one under the project root]
+==> Build failed 😞
+```
+
+## 🔍 Diagnóstico Provável
+O Next.js, por padrão, procura `app/` ou `pages/` na **raiz do projeto**. Como meu projeto usa a estrutura `src/app/`, o Next.js não está encontrando os arquivos.
+
+A solução provavelmente é configurar a opção `srcDir` no `next.config.js`.
+
+---
+
+## 🎯 O que Preciso que Você Faça
+
+1. **Analise a estrutura do meu projeto** (vou colar os arquivos abaixo)
+2. **Corrija o `next.config.js`** para reconhecer a pasta `src/` como diretório fonte
+3. **Verifique se há outros arquivos que precisam de ajuste**:
+   - `tsconfig.json` (paths, include)
+   - `middleware.ts` (import paths)
+   - Qualquer outro arquivo com imports relativos que possam quebrar
+4. **Me retorne**:
+   - ✅ O código completo do `next.config.js` corrigido
+   - ✅ Lista de outros arquivos que precisam de alteração (se houver)
+   - ✅ Instruções curtas de como aplicar e testar
+
+---
+
+## 📄 Arquivos do Projeto (para análise)
+
+<details>
+<summary>📁 Estrutura de pastas (saída de `tree -L 3` ou `ls -R`)</summary>
+
+```
+# 👉 COLE AQUI A SAÍDA DO COMANDO:
+# tree -L 3 -a  (ou ls -R)
+# Exemplo:
+# .
+# ├── src/
+# │   ├── app/
+# │   │   ├── page.tsx
+# │   │   ├── layout.tsx
+# │   │   └── globals.css
+# │   ├── backend/
+# │   │   ├── lib/
+# │   │   └── middleware.ts
+# ├── public/
+# ├── package.json
+# ├── next.config.js
+# └── tsconfig.json
+```
+
+</details>
+
+<details>
+<summary>📄 next.config.js (atual)</summary>
+
+```javascript
+// 👉 COLE O CONTEÚDO DO SEU next.config.js AQUI
+```
+
+</details>
+
+<details>
+<summary>📄 tsconfig.json (atual)</summary>
+
+```json
+// 👉 COLE O CONTEÚDO DO SEU tsconfig.json AQUI
+```
+
+</details>
+
+<details>
+<summary>📄 package.json (scripts relevantes)</summary>
+
+```json
+// 👉 COLE APENAS A SEÇÃO "scripts" DO SEU package.json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>📄 src/backend/middleware.ts (se aplicável)</summary>
+
+```typescript
+// 👉 COLE O CONTEÚDO DO SEU middleware.ts AQUI
+// (só se ele usar imports relativos que possam ser afetados pelo srcDir)
+```
+
+</details>
+
+---
+
+## ⚙️ Restrições / Preferências
+- ✅ Mantenha compatibilidade com Next.js 15 e App Router
+- ✅ Preserve configurações experimentais existentes (ex: `serverActions`)
+- ✅ Se possível, explique brevemente *por que* cada alteração é necessária
+- ❌ Não sugira mover arquivos de pasta (quero manter a estrutura `src/`)
+
+---
+
+## 🧪 Como Vou Testar a Correção
+1. Aplicar as alterações localmente
+2. Rodar `npm run build` para validar
+3. Commit, push e aguardar deploy automático no Render
+
+---
+
+## 💬 Observações Adicionais
+- Antes desse erro, tive um warning sobre `jose` + Edge Runtime, mas o build concluía. Agora o build está falhando antes de começar.
+- Se precisar de mais arquivos ou logs, me avise que eu colo aqui!
+
+Obrigado! 🙏
+```
+
+---
+
+## 💡 Como usar este prompt:
+
+1. **Abra o [Claude](https://claude.ai/)** e inicie um novo chat
+2. **Copie todo o bloco acima** (entre as linhas `---`)
+3. **Preencha as seções `<details>`** com o conteúdo real dos seus arquivos:
+   - Para ver a estrutura: `tree -L 3 -a` ou `ls -R` no terminal
+   - Para ver os arquivos: `cat nome-do-arquivo` ou abra no editor
+4. **Cole tudo no Claude** e aguarde a resposta
+5. **Aplique as correções sugeridas**, teste localmente e faça push
+
+---
+
+## 🚀 Dica Extra: Comando Rápido para Gerar a Estrutura
+
+No terminal, na raiz do projeto `saas-restaurante`, execute:
+
+```bash
+# Linux/Mac:
+tree -L 3 -a -I 'node_modules|.git|.next' 
+
+# Windows (se não tiver tree):
+dir /a /s | findstr /v "node_modules .git .next"
+```
+
+Isso gera uma lista limpa para colar no prompt!
+
+---
+
+> ✨ **Quer que eu mesmo analise seus arquivos agora?**  
+> Se preferir, cole aqui o conteúdo do `next.config.js` + a estrutura de pastas (`ls -R`) que eu te ajudo a corrigir sem precisar do Claude! 🛠️
