@@ -48,20 +48,18 @@ export default async function CustomerDetailPage({ params }: Props) {
             <p className="text-sm text-muted-foreground">Nenhum pedido.</p>
           ) : (
             <div className="space-y-2">
-              {customer.orders.map((o) => {
-                const order = o as { id: string; orderNumber: number; createdAt: Date; total: unknown; items: { quantity: number; product: { name: string } }[] }
-                return (
-                <div key={order.id} className="rounded border p-3 text-sm">
+              {customer.orders.map((o: { id: string; orderNumber: number; createdAt: Date; total: unknown; items: { quantity: number; product: { name: string } }[] }) => (
+                <div key={o.id} className="rounded border p-3 text-sm">
                   <div className="flex justify-between font-medium">
-                    <span>#{order.orderNumber}</span>
-                    <span className="text-muted-foreground">{new Date(order.createdAt).toLocaleDateString('pt-BR')}</span>
+                    <span>#{o.orderNumber}</span>
+                    <span className="text-muted-foreground">{new Date(o.createdAt).toLocaleDateString('pt-BR')}</span>
                   </div>
                   <p className="text-muted-foreground mt-1">
-                    {order.items.map((i) => `${i.quantity}x ${i.product.name}`).join(', ')}
+                    {o.items.map((i) => `${i.quantity}x ${i.product.name}`).join(', ')}
                   </p>
-                  <p className="font-medium mt-1">R$ {Number(order.total).toFixed(2)}</p>
+                  <p className="font-medium mt-1">R$ {Number(o.total).toFixed(2)}</p>
                 </div>
-              )})}
+              ))}
             </div>
           )}
         </div>
