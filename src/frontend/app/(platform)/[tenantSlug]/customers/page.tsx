@@ -35,7 +35,7 @@ export default async function CustomersPage() {
             </tr>
           </thead>
           <tbody>
-            {customers.map((c) => (
+            {customers.map((c: { id: string; name: string; phone: string; totalOrders: number; totalSpent: unknown; loyaltyPoints: number; loyaltyLevel: string }) => (
               <tr key={c.id} className="border-b last:border-0 hover:bg-muted/30">
                 <td className="px-4 py-3 font-medium">{c.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{c.phone}</td>
